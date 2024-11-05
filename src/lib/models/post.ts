@@ -1,4 +1,5 @@
 import mongoose, { type Document } from "mongoose";
+import { v4 as uuid } from "uuid";
 
 export interface IPost extends Document {
   user_id: string;
@@ -14,7 +15,7 @@ export default mongoose.models.Post ??
     "Post",
     new mongoose.Schema<IPost>(
       {
-        _id: { type: String, required: true, unique: true },
+        _id: { type: String, required: true, unique: true, default: uuid() },
         user_id: { type: String, required: true },
         title: { type: String, required: true },
         text: { type: String, required: true },

@@ -1,4 +1,5 @@
 import mongoose, { type Document } from "mongoose";
+import { v4 as uuid } from "uuid";
 
 export interface IComment extends Document {
   post_id: string;
@@ -13,7 +14,7 @@ export default mongoose.models.Comment ??
     "Comment",
     new mongoose.Schema<IComment>(
       {
-        _id: { type: String, required: true, unique: true },
+        _id: { type: String, required: true, unique: true, default: uuid() },
         post_id: { type: String, required: true },
         user_id: { type: String, required: true },
         text: { type: String, required: true },
