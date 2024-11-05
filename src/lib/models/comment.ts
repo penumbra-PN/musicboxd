@@ -1,6 +1,7 @@
 import mongoose, { type Document } from "mongoose";
 
 export interface IComment extends Document {
+  post_id: string;
   user_id: string;
   text: string;
   likes: number;
@@ -13,6 +14,7 @@ export default mongoose.models.Comment ??
     new mongoose.Schema<IComment>(
       {
         _id: { type: String, required: true, unique: true },
+        post_id: { type: String, required: true },
         user_id: { type: String, required: true },
         text: { type: String, required: true },
         likes: { type: Number, required: true, default: 0 },
