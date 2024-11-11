@@ -14,7 +14,7 @@ export default mongoose.models.Song ??
     "Song",
     new mongoose.Schema<ISong>(
       {
-        _id: { type: String, required: true, unique: true, default: uuid() },
+        _id: { type: String, required: true, default: uuid() },
         name: { type: String, required: true },
         artist: { type: String, required: true },
         album: { type: String, required: true },

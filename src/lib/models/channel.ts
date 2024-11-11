@@ -12,7 +12,7 @@ export default mongoose.models.Channel ??
     "Channel",
     new mongoose.Schema<IChannel>(
       {
-        _id: { type: String, required: true, unique: true, default: uuid() },
+        _id: { type: String, required: true, default: uuid() },
         userA_id: { type: String, required: true },
         userB_id: { type: String, required: true },
         messages: { type: [String], required: true, default: [] },

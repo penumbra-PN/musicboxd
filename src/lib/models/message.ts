@@ -12,7 +12,7 @@ export default mongoose.models.Message ??
     "Message",
     new mongoose.Schema<IMessage>(
       {
-        _id: { type: String, required: true, unique: true, default: uuid() },
+        _id: { type: String, required: true, default: uuid() },
         channel_id: { type: String, required: true },
         user_id: { type: String, required: true },
         text: { type: String, required: true },

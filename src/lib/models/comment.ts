@@ -14,7 +14,7 @@ export default mongoose.models.Comment ??
     "Comment",
     new mongoose.Schema<IComment>(
       {
-        _id: { type: String, required: true, unique: true, default: uuid() },
+        _id: { type: String, required: true, default: uuid() },
         post_id: { type: String, required: true },
         user_id: { type: String, required: true },
         text: { type: String, required: true },

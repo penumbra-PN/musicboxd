@@ -12,7 +12,7 @@ export default mongoose.models.Review ??
     "Review",
     new mongoose.Schema<IReview>(
       {
-        _id: { type: String, required: true, unique: true },
+        _id: { type: String, required: true },
         song_id: { type: String, required: true },
         user_id: { type: String, required: true },
         text: { type: String, required: true },
