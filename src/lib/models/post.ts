@@ -15,7 +15,7 @@ export default mongoose.models.Post ??
     "Post",
     new mongoose.Schema<IPost>(
       {
-        _id: { type: String, required: true, unique: true, default: uuid() },
+        _id: { type: String, required: true, default: uuid() },
         user_id: { type: String, required: true },
         title: { type: String, required: true },
         text: { type: String, required: true },

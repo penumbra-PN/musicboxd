@@ -9,12 +9,15 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.9.1",
     "@lucia-auth/adapter-mongoose": "^3.0.1",
     "mongoose": "^8.8.0",
     "next": "14.2.16",
     "react": "^18",
     "react-dom": "^18",
-    "uuid": "^11.0.2"
+    "react-hook-form": "^7.53.2",
+    "uuid": "^11.0.2",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/node": "^20",

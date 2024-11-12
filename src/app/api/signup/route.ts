@@ -28,7 +28,7 @@ export const POST = async (req: NextRequest) => {
     const authRequest = auth.handleRequest(req.method, context);
     authRequest.setSession(session);
 
-    return new Response(JSON.stringify({ message: "Successfully created user." }), { status: 201 });
+    return new Response(null, { status: 201 });
   } catch (error) {
     console.log(error);
     return NextResponse.json({ error: "An unknown error occurred." }, { status: 500 });

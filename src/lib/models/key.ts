@@ -10,7 +10,7 @@ export default mongoose.models.Key ??
     "Key",
     new mongoose.Schema<IKey>(
       {
-        _id: { type: String, required: true, unique: true },
+        _id: { type: String, required: true },
         user_id: { type: String, required: true },
         hashed_password: { type: String, required: true },
       } as const,
