@@ -2,7 +2,7 @@ import * as context from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import { LuciaError } from "lucia";
 
-import { auth } from "@/lib/lucia";
+import { auth, ErrorMessage } from "@/lib/lucia";
 
 export const POST = async (req: NextRequest) => {
   try {
@@ -19,15 +19,14 @@ export const POST = async (req: NextRequest) => {
     const authRequest = auth.handleRequest(req.method, context);
     authRequest.setSession(session);
 
-    return new Response(JSON.stringify({ message: "Successfully logged in." }), { status: 200 });
+    return new Response(null, { status: 200 });
   } catch (error) {
     if (
       error instanceof LuciaError &&
-      (error.message === "AUTH_INVALID_KEY_ID" || error.message === "AUTH_INVALID_PASSWORD")
+      (error.message === ErrorMessage.INVALID_KEY_ID || error.message === ErrorMessage.INVALID_PASSWORD)
     ) {
-      return NextResponse.json({ error: "Incorrect username or password." }, { status: 403 });
+      return NextResponse.json({ message: "Incorrect username or password." }, { status: 403 });
     }
-
-    return NextResponse.json({ error: "An unknown error occurred." }, { status: 500 });
+    return NextResponse.json({ message: "Internal server error." }, { status: 500 });
   }
 };

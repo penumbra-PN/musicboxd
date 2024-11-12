@@ -1,70 +1,61 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import { UserLogin, type UserLoginType } from "@/lib/validators/user";
 
 export default function LoginForm() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors },
+  } = useForm<UserLoginType>({ resolver: zodResolver(UserLogin) });
   const router = useRouter();
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const login = async (data: UserLoginType) => {
     try {
       const response = await fetch("/api/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify(data),
       });
-      if (response.status === 200) {
-        router.push("/");
+      if (response.ok) {
+        router.push("/profile");
       } else {
-        setError("Failed to log in");
+        const data = await response.json();
+        console.log(data.message);
+        setError("root", {
+          message: data.message,
+        });
       }
     } catch (error) {
       console.log(error);
-      setError("Failed to log in");
+      setError("root", {
+        message: "Internal server error.",
+      });
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="mx-auto mt-40 max-w-lg rounded-md bg-white p-6 shadow-md">
-      <h3 className="mb-4 text-center text-2xl font-bold text-gray-700">Log In</h3>
-      <div className="mb-4">
-        <label htmlFor="loginEmail" className="mb-2 block text-sm font-medium text-gray-700">
-          Email:
-        </label>
-        <input
-          type="email"
-          id="loginEmail"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="w-full rounded-md border p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
+    <form onSubmit={handleSubmit(login)}>
+      <div>
+        <label htmlFor="email">Email: </label>
+        <input type="email" {...register("email")} />
+        {errors.email && <span>{errors.email.message}</span>}
       </div>
-      <div className="mb-4">
-        <label htmlFor="loginPassword" className="mb-2 block text-sm font-medium text-gray-700">
-          Password:
-        </label>
-        <input
-          type="password"
-          id="loginPassword"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="w-full rounded-md border p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
+      <div>
+        <label htmlFor="password">Password: </label>
+        <input type="password" {...register("password")} />
+        {errors.password && <span>{errors.password.message}</span>}
       </div>
-      {error && <p className="my-4 text-sm font-bold text-red-500">{error}</p>}
-      <button
-        type="submit"
-        className="w-full rounded-md bg-blue-500 p-2 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-      >
-        Login
-      </button>
+      {errors.root && <p>{errors.root?.message}</p>}
+      <button type="submit">Log In</button>
     </form>
   );
 }

@@ -1,88 +1,65 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import { UserSignup, UserSignupType } from "@/lib/validators/user";
 
 export default function SignupForm() {
-  const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors },
+  } = useForm<UserSignupType>({ resolver: zodResolver(UserSignup) });
   const router = useRouter();
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
+  const signup = async (data: UserSignupType) => {
     try {
       const response = await fetch("/api/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password, username }),
+        body: JSON.stringify(data),
       });
-
       if (response.ok) {
-        router.push("/");
+        router.push("/profile");
       } else {
-        setError("Unable to sign up.");
+        const data = await response.json();
+        setError("root", {
+          message: data.message,
+        });
       }
     } catch (error) {
       console.log(error);
-      setError("Unable to sign up.");
+      setError("root", {
+        message: "Internal server error.",
+      });
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="mx-auto mt-40 max-w-lg rounded-md bg-white p-6 shadow-md">
-      <h3 className="mb-4 text-center text-2xl font-bold text-gray-700">Sign up</h3>
-      <div className="mb-4">
-        <label htmlFor="username" className="mb-2 block text-sm font-medium text-gray-700">
-          Username
-        </label>
-        <input
-          type="text"
-          id="username"
-          value={username}
-          onChange={(event) => setUsername(event.target.value)}
-          required
-          className="w-full rounded-md border p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
+    <form onSubmit={handleSubmit(signup)}>
+      <div>
+        <label htmlFor="email">Username: </label>
+        <input type="text" {...register("username")} />
+        {errors.username && <span>{errors.username.message}</span>}
       </div>
-      <div className="mb-4">
-        <label htmlFor="email" className="mb-2 block text-sm font-medium text-gray-700">
-          Email
-        </label>
-        <input
-          type="email"
-          id="email"
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
-          required
-          className="w-full rounded-md border p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
+      <div>
+        <label htmlFor="email">Email: </label>
+        <input type="email" {...register("email")} />
+        {errors.email && <span>{errors.email.message}</span>}
       </div>
-      <div className="mb-4">
-        <label htmlFor="password" className="mb-2 block text-sm font-medium text-gray-700">
-          Password
-        </label>
-        <input
-          type="password"
-          id="password"
-          value={password}
-          onChange={(event) => setPassword(event.target.value)}
-          required
-          className="w-full rounded-md border p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
+      <div>
+        <label htmlFor="password">Password: </label>
+        <input type="password" {...register("password")} />
+        {errors.password && <span>{errors.password.message}</span>}
       </div>
-      {error && <div className="mb-4 text-red-500">{error}</div>}
-      <button
-        type="submit"
-        className="w-full rounded-md bg-blue-500 p-2 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-      >
-        Sign up
-      </button>
+      {errors.root && <p>{errors.root?.message}</p>}
+      <button type="submit">Sign Up</button>
     </form>
   );
 }

@@ -1,4 +1,4 @@
-import { lucia } from "lucia";
+import { lucia, type Session as SessionType } from "lucia";
 import { nextjs_future } from "lucia/middleware";
 import { mongoose } from "@lucia-auth/adapter-mongoose";
 import { cache } from "react";
@@ -23,9 +23,20 @@ export const auth = lucia({
   },
 });
 
-export type Auth = typeof auth;
-
-export const getSession = cache(() => {
+export const getSession = cache(async (): Promise<SessionType> => {
   const authRequest = auth.handleRequest("GET", context);
-  return authRequest.validate();
+  return await authRequest.validate();
 });
+
+export enum ErrorMessage {
+  INVALID_SESSION_ID = "AUTH_INVALID_SESSION_ID",
+  INVALID_PASSWORD = "AUTH_INVALID_PASSWORD",
+  DUPLICATE_KEY_ID = "AUTH_DUPLICATE_KEY_ID",
+  INVALID_KEY_ID = "AUTH_INVALID_KEY_ID",
+  INVALID_USER_ID = "AUTH_INVALID_USER_ID",
+  INVALID_REQUEST = "AUTH_INVALID_REQUEST",
+  NOT_AUTHENTICATED = "AUTH_NOT_AUTHENTICATED",
+  UNAUTHORIZED = "REQUEST_UNAUTHORIZED",
+  UNKNOWN = "UNKNOWN_ERROR",
+  OUTDATED_PASSWORD = "AUTH_OUTDATED_PASSWORD",
+}

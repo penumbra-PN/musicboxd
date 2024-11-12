@@ -8,14 +8,12 @@ export const POST = async (request: NextRequest) => {
 
   const session = await authRequest.validate();
   if (!session) {
-    return new Response(null, {
-      status: 401,
-    });
+    return new Response(null, { status: 401 });
   }
 
   await auth.invalidateSession(session.sessionId);
 
   authRequest.setSession(null);
 
-  return new Response(JSON.stringify({ message: "Successfully logged out." }), { status: 200 });
+  return new Response(null, { status: 200 });
 };

@@ -1,24 +1,29 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 
-import LogoutButton from "@/components/LogoutButton";
 import { getSession } from "@/lib/lucia";
 
-export default async function Home() {
+export default async function HomePage() {
   const session = await getSession();
 
-  if (!session) {
-    redirect("/login");
+  if (session) {
+    redirect("/profile");
   }
 
   return (
-    <main className="mx-auto min-h-screen max-w-5xl py-2">
-      {session && (
-        <div>
-          <h1>Home</h1>
-          <code>{session.user.username}</code>
-          <LogoutButton />
+    <div className="mx-auto flex min-h-screen flex-col">
+      <nav className="flex items-center justify-between p-2 text-lg">
+        <Link href="/">Musicboxd</Link>
+        <div className="flex gap-x-2">
+          <Link href="/login">Log In</Link>
+          <Link href="/signup">Sign Up</Link>
         </div>
-      )}
-    </main>
+      </nav>
+      <main className="flex grow items-center justify-center">
+        <h1 className="text-4xl">
+          <strong>Musicboxd</strong>
+        </h1>
+      </main>
+    </div>
   );
 }
