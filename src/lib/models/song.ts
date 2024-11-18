@@ -9,7 +9,7 @@ export interface ISong extends Document {
   reviews: string[];
 }
 
-export default mongoose.models.Song ??
+export default mongoose.models.Song ||
   mongoose.model<ISong>(
     "Song",
     new mongoose.Schema<ISong>(

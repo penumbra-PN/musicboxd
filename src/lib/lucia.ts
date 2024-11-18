@@ -5,7 +5,7 @@ import { cache } from "react";
 import * as context from "next/headers";
 
 import connectDatabase from "@/lib/database";
-import User from "@/lib/models/user";
+import User, { type IUser } from "@/lib/models/user";
 import Key from "@/lib/models/key";
 import Session from "@/lib/models/session";
 
@@ -16,9 +16,9 @@ export const auth = lucia({
   middleware: nextjs_future(),
   sessionCookie: { expires: false },
   adapter: mongoose({ User, Key, Session }),
-  getUserAttributes: (data) => {
+  getUserAttributes: (user: IUser) => {
     return {
-      username: data.username,
+      ...user,
     };
   },
 });

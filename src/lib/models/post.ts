@@ -10,7 +10,7 @@ export interface IPost extends Document {
   comments: string[];
 }
 
-export default mongoose.models.Post ??
+export default mongoose.models.Post ||
   mongoose.model<IPost>(
     "Post",
     new mongoose.Schema<IPost>(

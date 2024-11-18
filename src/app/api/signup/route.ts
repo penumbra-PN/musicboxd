@@ -31,6 +31,6 @@ export const POST = async (req: NextRequest) => {
     return new Response(null, { status: 201 });
   } catch (error) {
     console.log(error);
-    return NextResponse.json({ error: "An unknown error occurred." }, { status: 500 });
+    return NextResponse.json({ error: "Internal server error." }, { status: 500 });
   }
 };

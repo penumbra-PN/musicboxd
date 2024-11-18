@@ -7,7 +7,7 @@ export interface IMessage extends Document {
   text: string;
 }
 
-export default mongoose.models.Message ??
+export default mongoose.models.Message ||
   mongoose.model<IMessage>(
     "Message",
     new mongoose.Schema<IMessage>(
