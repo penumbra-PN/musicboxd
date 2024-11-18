@@ -5,7 +5,7 @@ export interface IKey extends Document {
   hashed_password: string;
 }
 
-export default mongoose.models.Key ??
+export default mongoose.models.Key ||
   mongoose.model(
     "Key",
     new mongoose.Schema<IKey>(

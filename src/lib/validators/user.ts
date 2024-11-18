@@ -53,3 +53,25 @@ export const UserLogin = z.object({
 });
 
 export type UserLoginType = z.infer<typeof UserLogin>;
+
+export const EditUserProfile = z.object({
+  username: z
+    .string({
+      message: "Username is required.",
+    })
+    .min(3, {
+      message: "Username must have at least 3 characters.",
+    })
+    .max(31, {
+      message: "Username must have at most 31 characters.",
+    }),
+  bio: z
+    .string({
+      message: "Bio is required.",
+    })
+    .max(255, {
+      message: "Bio must have at most 255 characters.",
+    }),
+});
+
+export type EditUserProfileType = z.infer<typeof EditUserProfile>;

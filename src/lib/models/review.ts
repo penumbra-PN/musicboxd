@@ -7,7 +7,7 @@ export interface IReview extends Document {
   rating: number;
 }
 
-export default mongoose.models.Review ??
+export default mongoose.models.Review ||
   mongoose.model<IReview>(
     "Review",
     new mongoose.Schema<IReview>(

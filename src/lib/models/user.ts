@@ -3,6 +3,7 @@ import mongoose, { type Document } from "mongoose";
 export interface IUser extends Document {
   email: string;
   username: string;
+  bio: string;
   friends: string[];
   friend_requests: string[];
   reviews: string[];
@@ -13,7 +14,7 @@ export interface IUser extends Document {
   messages: string[];
 }
 
-export default mongoose.models.User ??
+export default mongoose.models.User ||
   mongoose.model<IUser>(
     "User",
     new mongoose.Schema<IUser>(
@@ -21,6 +22,7 @@ export default mongoose.models.User ??
         _id: { type: String, required: true },
         email: { type: String, required: true, unique: true },
         username: { type: String, required: true, unique: true },
+        bio: { type: String, required: true, default: "" },
         friends: { type: [String], required: true, default: [] },
         friend_requests: { type: [String], required: true, default: [] },
         reviews: { type: [String], required: true, default: [] },

@@ -7,7 +7,7 @@ export interface IChannel extends Document {
   messages: string[];
 }
 
-export default mongoose.models.Channel ??
+export default mongoose.models.Channel ||
   mongoose.model<IChannel>(
     "Channel",
     new mongoose.Schema<IChannel>(

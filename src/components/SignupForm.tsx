@@ -44,7 +44,7 @@ export default function SignupForm() {
   return (
     <form onSubmit={handleSubmit(signup)}>
       <div>
-        <label htmlFor="email">Username: </label>
+        <label htmlFor="username">Username: </label>
         <input type="text" {...register("username")} />
         {errors.username && <span>{errors.username.message}</span>}
       </div>

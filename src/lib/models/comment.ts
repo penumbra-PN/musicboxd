@@ -9,7 +9,7 @@ export interface IComment extends Document {
   dislikes: number;
 }
 
-export default mongoose.models.Comment ??
+export default mongoose.models.Comment ||
   mongoose.model<IComment>(
     "Comment",
     new mongoose.Schema<IComment>(
