@@ -15,8 +15,8 @@ export const POST = async (req: NextRequest) => {
         password,
       },
       attributes: {
-        email,
-        username,
+        email: email,
+        username: username,
       },
     });
 

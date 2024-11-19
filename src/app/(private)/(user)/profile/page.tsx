@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { type Session } from "lucia";
 
 import LogoutButton from "@/components/LogoutButton";
+import ProfileSections from "@/components/ProfileSections";
 import { getSession } from "@/lib/lucia";
 import User, { type IUser } from "@/lib/models/user";
 import Review from "@/lib/models/review";
@@ -24,25 +25,21 @@ export default async function ProfilePage() {
   const comments = await Promise.all(user.comments.map(async (_id) => await Comment.findById(_id)));
 
   return (
-    <main className="flex min-h-screen w-screen flex-col items-center justify-center">
-      <Link href="/src/app/(private)/(user)/profileprofile/edit">Edit</Link>
-      <h1>{session.user.username}&#39;s Profile</h1>
+    <main className="flex min-h-screen w-screen flex-col items-center justify-center gap-y-4">
+      <Link href="/profile/edit">Edit</Link>
+      <h1 className="text-4xl">{session.user.username}&#39;s Profile</h1>
       <div className="flex flex-col">
-        <h2>Bio</h2>
+        <h2 className="text-2xl">Bio</h2>
         <p>{session.user.bio}</p>
       </div>
-      <div className="flex flex-col">
-        <h2>Friends</h2>
-        {friends.map((friend) => {
-          return <p key={friend._id}>{friend.username}</p>;
-        })}
-      </div>
-      <div className="flex flex-col">
-        <h2>Friend Requests</h2>
-        {friendRequests.map((friendRequest) => {
-          return <p key={friendRequest._id}>{friendRequest.username}</p>;
-        })}
-      </div>
+      <ProfileSections
+        userId={user.id}
+        friends={JSON.parse(JSON.stringify(friends))}
+        friendRequests={JSON.parse(JSON.stringify(friendRequests))}
+        reviews={JSON.parse(JSON.stringify(reviews))}
+        posts={JSON.parse(JSON.stringify(posts))}
+        comments={JSON.parse(JSON.stringify(comments))}
+      />
       <LogoutButton />
     </main>
   );

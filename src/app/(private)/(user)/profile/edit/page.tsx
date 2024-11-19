@@ -16,9 +16,9 @@ export default async function EditProfilePage() {
   const user = session.user as IUser;
 
   return (
-    <main className="flex min-h-screen w-screen flex-col items-center justify-center">
+    <main className="flex min-h-screen w-screen flex-col items-center justify-center gap-y-4">
       <Link href="/profile">Back</Link>
-      <h1>Editing {user.username}&#39;s Profile</h1>
+      <h1 className="text-4xl">Editing {user.username}&#39;s Profile</h1>
       <EditProfileForm id={user.id} username={user.username} bio={user.bio} />
     </main>
   );
