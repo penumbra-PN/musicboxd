@@ -1,15 +1,40 @@
 import mongoose from "mongoose";
+declare global {
+  var mongoose: any;
+}
 
-const connectDatabase = async () => {
-  try {
-    const connection = await mongoose.connect(process.env.MONGODB_URI as string);
-    if (process.env.NODE_ENV === "development") {
-      console.log(`MongoDB Connected: ${connection.connection.host}`);
-    }
-  } catch (error) {
-    console.error(error);
-    process.exit(1);
+let cached = global.mongoose;
+
+if (!cached) {
+  cached = global.mongoose = { conn: null, promise: null };
+}
+
+async function connectDatabase() {
+  const MONGODB_URI = process.env.MONGODB_URI!;
+
+  if (!MONGODB_URI) {
+    throw new Error("Please define the MONGODB_URI environment variable inside .env.local");
   }
-};
+
+  if (cached.conn) {
+    return cached.conn;
+  }
+  if (!cached.promise) {
+    cached.promise = mongoose.connect(MONGODB_URI).then((mongoose) => {
+      return mongoose;
+    });
+  }
+  try {
+    cached.conn = await cached.promise;
+    if (process.env.NODE_ENV === "development") {
+      console.log(`MongoDB Connected: ${cached.conn.connection.host}`);
+    }
+  } catch (e) {
+    cached.promise = null;
+    throw e;
+  }
+
+  return cached.conn;
+}
 
 export default connectDatabase;

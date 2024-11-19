@@ -22,7 +22,7 @@ export default mongoose.models.User ||
         _id: { type: String, required: true },
         email: { type: String, required: true, unique: true },
         username: { type: String, required: true, unique: true },
-        bio: { type: String, required: true, default: "" },
+        bio: { type: String, default: "" },
         friends: { type: [String], required: true, default: [] },
         friend_requests: { type: [String], required: true, default: [] },
         reviews: { type: [String], required: true, default: [] },
