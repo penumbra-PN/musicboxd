@@ -25,15 +25,17 @@ export default function LoginForm() {
         },
         body: JSON.stringify(data),
       });
-      if (response.ok) {
-        router.push("/profile");
-      } else {
+
+      if (!response.ok) {
         const data = await response.json();
-        console.log(data.message);
+        console.log(data);
         setError("root", {
-          message: data.message,
+          message: data.error,
         });
+        return;
       }
+
+      router.push("/profile");
     } catch (error) {
       console.log(error);
       setError("root", {
@@ -43,19 +45,25 @@ export default function LoginForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit(login)}>
-      <div>
-        <label htmlFor="email">Email: </label>
-        <input type="email" {...register("email")} />
+    <form className="flex flex-col gap-y-4" onSubmit={handleSubmit(login)}>
+      <div className="flex flex-col">
+        <label className="text-xl" htmlFor="email">
+          Email
+        </label>
+        <input className="rounded border border-solid border-black p-2" type="email" {...register("email")} />
         {errors.email && <span>{errors.email.message}</span>}
       </div>
-      <div>
-        <label htmlFor="password">Password: </label>
-        <input type="password" {...register("password")} />
+      <div className="flex flex-col">
+        <label className="text-xl" htmlFor="password">
+          Password
+        </label>
+        <input className="rounded border border-solid border-black p-2" type="password" {...register("password")} />
         {errors.password && <span>{errors.password.message}</span>}
       </div>
       {errors.root && <p>{errors.root?.message}</p>}
-      <button type="submit">Log In</button>
+      <button className="w-full rounded border border-solid border-black p-2" type="submit">
+        Log In
+      </button>
     </form>
   );
 }

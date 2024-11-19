@@ -7,13 +7,23 @@ export default function LogoutButton() {
   const router = useRouter();
 
   const handleLogout = async () => {
-    await fetch("/api/logout", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    router.push("/login");
+    try {
+      const response = await fetch("/api/logout", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        console.log(data);
+      }
+
+      router.push("/login");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

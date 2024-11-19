@@ -1,8 +1,17 @@
-import LoginForm from "@/components/LoginForm";
+import { redirect } from "next/navigation";
 
-export default function LoginPage() {
+import LoginForm from "@/components/LoginForm";
+import { getSession } from "@/lib/lucia";
+
+export default async function LoginPage() {
+  const session = await getSession();
+
+  if (session) {
+    redirect("/profile");
+  }
+
   return (
-    <div className="min-h-screen w-screen">
+    <div className="flex min-h-screen w-screen flex-col items-center justify-center">
       <LoginForm />
     </div>
   );

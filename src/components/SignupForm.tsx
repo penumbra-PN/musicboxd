@@ -25,14 +25,16 @@ export default function SignupForm() {
         },
         body: JSON.stringify(data),
       });
-      if (response.ok) {
-        router.push("/profile");
-      } else {
+
+      if (!response.ok) {
         const data = await response.json();
         setError("root", {
-          message: data.message,
+          message: data.error,
         });
+        return;
       }
+
+      router.push("/profile");
     } catch (error) {
       console.log(error);
       setError("root", {
@@ -42,24 +44,32 @@ export default function SignupForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit(signup)}>
-      <div>
-        <label htmlFor="username">Username: </label>
-        <input type="text" {...register("username")} />
+    <form className="flex flex-col gap-y-4" onSubmit={handleSubmit(signup)}>
+      <div className="flex flex-col">
+        <label className="text-xl" htmlFor="username">
+          Username
+        </label>
+        <input className="rounded border border-solid border-black p-2" type="text" {...register("username")} />
         {errors.username && <span>{errors.username.message}</span>}
       </div>
-      <div>
-        <label htmlFor="email">Email: </label>
-        <input type="email" {...register("email")} />
+      <div className="flex flex-col">
+        <label className="text-xl" htmlFor="email">
+          Email
+        </label>
+        <input className="rounded border border-solid border-black p-2" type="email" {...register("email")} />
         {errors.email && <span>{errors.email.message}</span>}
       </div>
-      <div>
-        <label htmlFor="password">Password: </label>
-        <input type="password" {...register("password")} />
+      <div className="flex flex-col">
+        <label className="text-xl" htmlFor="password">
+          Password
+        </label>
+        <input className="rounded border border-solid border-black p-2" type="password" {...register("password")} />
         {errors.password && <span>{errors.password.message}</span>}
       </div>
       {errors.root && <p>{errors.root?.message}</p>}
-      <button type="submit">Sign Up</button>
+      <button className="w-full rounded border border-solid border-black p-2" type="submit">
+        Sign Up
+      </button>
     </form>
   );
 }

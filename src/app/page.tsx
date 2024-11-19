@@ -1,15 +1,6 @@
 import Link from "next/link";
-import { redirect } from "next/navigation";
-
-import { getSession } from "@/lib/lucia";
 
 export default async function HomePage() {
-  const session = await getSession();
-
-  if (session) {
-    redirect("/profile");
-  }
-
   return (
     <div className="mx-auto flex min-h-screen flex-col">
       <nav className="flex items-center justify-between p-2 text-lg">
