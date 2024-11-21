@@ -57,7 +57,7 @@ export default function EditProfileForm(props: EditProfileFormProps) {
           defaultValue={props.username}
           {...register("username")}
         />
-        {errors.username && <span>{errors.username.message}</span>}
+        {errors.username && <span className="text-red-600">{errors.username.message}</span>}
       </div>
       <div className="flex items-center gap-x-2">
         <label htmlFor="username">Bio:</label>
@@ -67,9 +67,9 @@ export default function EditProfileForm(props: EditProfileFormProps) {
           defaultValue={props.bio}
           {...register("bio")}
         />
-        {errors.bio && <span>{errors.bio.message}</span>}
+        {errors.bio && <span className="text-red-600">{errors.bio.message}</span>}
       </div>
-      {errors.root && <p>{errors.root?.message}</p>}
+      {errors.root && <span className="text-red-600">{errors.root?.message}</span>}
       <button className="w-fit self-center border border-solid border-black p-2" type="submit">
         Save
       </button>

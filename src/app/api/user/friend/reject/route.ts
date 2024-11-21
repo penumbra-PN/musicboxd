@@ -2,9 +2,9 @@ import * as context from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 import { auth } from "@/lib/lucia";
-import User, { type IUser } from "@/lib/models/user";
+import User, { IUser } from "@/lib/models/user";
 
-export const POST = async (request: NextRequest) => {
+export const DELETE = async (request: NextRequest) => {
   try {
     const authRequest = auth.handleRequest(request.method, context);
 
@@ -46,9 +46,6 @@ export const POST = async (request: NextRequest) => {
 
     receiver = (await User.findById(receiver.id).exec()) as IUser;
     receiver.friend_requests.splice(receiver.friend_requests.indexOf(sender.id), 1);
-    sender.friends.push(receiver.id);
-    receiver.friends.push(sender.id);
-    await sender.save();
     await receiver.save();
 
     return NextResponse.json(

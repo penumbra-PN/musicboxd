@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/lucia";
 import User, { type IUser } from "@/lib/models/user";
 
-export const POST = async (request: NextRequest) => {
+export const DELETE = async (request: NextRequest) => {
   try {
     const authRequest = auth.handleRequest(request.method, context);
 
@@ -18,13 +18,13 @@ export const POST = async (request: NextRequest) => {
       );
     }
 
-    let receiver = session.user as IUser;
+    let user = session.user as IUser;
 
     const body = await request.json();
-    const { senderId } = body;
+    const { friendId } = body;
 
-    const sender = (await User.findById(senderId).exec()) as IUser;
-    if (!sender) {
+    const friend = (await User.findById(friendId).exec()) as IUser;
+    if (!friend) {
       return NextResponse.json(
         {
           success: false,
@@ -34,27 +34,26 @@ export const POST = async (request: NextRequest) => {
       );
     }
 
-    if (!receiver.friend_requests.includes(sender.id)) {
+    if (!user.friends.includes(friend.id) || !friend.friends.includes(user.id)) {
       return NextResponse.json(
         {
           success: false,
-          error: "Friend request not found.",
+          error: "Friend not found.",
         },
         { status: 404 },
       );
     }
 
-    receiver = (await User.findById(receiver.id).exec()) as IUser;
-    receiver.friend_requests.splice(receiver.friend_requests.indexOf(sender.id), 1);
-    sender.friends.push(receiver.id);
-    receiver.friends.push(sender.id);
-    await sender.save();
-    await receiver.save();
+    user = (await User.findById(user.id).exec()) as IUser;
+    user.friends.splice(user.friends.indexOf(friend.id), 1);
+    friend.friends.splice(friend.friends.indexOf(user.id), 1);
+    await user.save();
+    await friend.save();
 
     return NextResponse.json(
       {
         success: true,
-        user: sender,
+        user: friend,
       },
       { status: 200 },
     );

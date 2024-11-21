@@ -52,9 +52,35 @@ export default function FriendsList(props: FriendsListProps) {
     input.current.value = "";
   };
 
+  const removeFriend = async (id: string) => {
+    try {
+      const response = await fetch("/api/user/friend/remove", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          friendId: id,
+        }),
+      });
+
+      const data = await response.json();
+      if (!response.ok || !data.success) {
+        setError(data.message);
+      } else {
+        setFriends((friendRequests) => friendRequests.filter((request) => request._id !== data.user._id));
+        setError(null);
+        router.refresh();
+      }
+    } catch (error) {
+      console.log(error);
+      setError("Internal server error.");
+    }
+  };
+
   return (
     <div className="flex flex-col gap-y-2">
-      {error && <p className="text-red-600">{error}</p>}
+      {error && <span className="text-red-600">{error}</span>}
       <form className="flex items-center justify-between gap-x-2" onSubmit={(e) => sendFriendRequest(e)}>
         <label htmlFor="username">Send Friend Request:</label>
         <input className="grow border border-solid border-black p-2" type="text" name="username" ref={input} />
@@ -62,13 +88,19 @@ export default function FriendsList(props: FriendsListProps) {
           Send
         </button>
       </form>
-      <ul>
+      <ul className="flex flex-col gap-y-4">
         {friends.map((friend) => {
           return (
-            <li key={friend._id as string}>
+            <li className="flex grow items-center justify-between" key={friend._id as string}>
               <Link className="hover:underline" href={`/profile/${friend._id}`}>
                 {friend.username}
               </Link>
+              <button
+                className="w-fit border border-solid border-black p-2"
+                onClick={() => removeFriend(friend._id as string)}
+              >
+                Remove
+              </button>
             </li>
           );
         })}

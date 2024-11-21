@@ -54,18 +54,18 @@ export default function LoginForm() {
             Email
           </label>
           <input className="rounded border border-solid border-black p-2" type="email" {...register("email")} />
-          {errors.email && <span>{errors.email.message}</span>}
+          {errors.email && <span className="text-red-600">{errors.email.message}</span>}
         </div>
         <div className="flex flex-col">
           <label className="text-xl" htmlFor="password">
             Password
           </label>
           <input className="rounded border border-solid border-black p-2" type="password" {...register("password")} />
-          {errors.password && <span>{errors.password.message}</span>}
+          {errors.password && <span className="text-red-600">{errors.password.message}</span>}
         </div>
-        {errors.root && <p>{errors.root?.message}</p>}
+        {errors.root && <span className="text-red-600">{errors.root?.message}</span>}
         <button className="w-full rounded border border-solid border-black p-2" type="submit">
-          Log In
+          Submit
         </button>
       </form>
     </div>
