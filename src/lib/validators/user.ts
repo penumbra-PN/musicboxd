@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const UserSignup = z.object({
+export const Signup = z.object({
   username: z
     .string({
       message: "Username is required.",
@@ -30,9 +30,9 @@ export const UserSignup = z.object({
     }),
 });
 
-export type UserSignupType = z.infer<typeof UserSignup>;
+export type SignupType = z.infer<typeof Signup>;
 
-export const UserLogin = z.object({
+export const Login = z.object({
   email: z
     .string({
       message: "Email is required.",
@@ -52,9 +52,9 @@ export const UserLogin = z.object({
     }),
 });
 
-export type UserLoginType = z.infer<typeof UserLogin>;
+export type LoginType = z.infer<typeof Login>;
 
-export const EditUserProfile = z.object({
+export const EditProfile = z.object({
   username: z
     .string({
       message: "Username is required.",
@@ -74,4 +74,4 @@ export const EditUserProfile = z.object({
     }),
 });
 
-export type EditUserProfileType = z.infer<typeof EditUserProfile>;
+export type EditProfileType = z.infer<typeof EditProfile>;

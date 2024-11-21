@@ -15,12 +15,13 @@ export default function LogoutButton() {
         },
       });
 
-      if (!response.ok) {
-        const data = await response.json();
+      const data = await response.json();
+      if (!response.ok || !data.success) {
         console.log(data);
+      } else {
+        router.push("/login");
+        router.refresh();
       }
-
-      router.push("/login");
     } catch (error) {
       console.log(error);
     }

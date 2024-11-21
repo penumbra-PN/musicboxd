@@ -1,10 +1,11 @@
-import { revalidatePath } from "next/cache";
 import * as context from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 import { auth } from "@/lib/lucia";
+import User, { type IUser } from "@/lib/models/user";
+import { EditProfile } from "@/lib/validators/user";
 
-export const DELETE = async (request: NextRequest) => {
+export const PATCH = async (request: NextRequest) => {
   try {
     const authRequest = auth.handleRequest(request.method, context);
 
@@ -18,11 +19,24 @@ export const DELETE = async (request: NextRequest) => {
       );
     }
 
-    await auth.invalidateSession(session.sessionId);
+    const body = await request.json();
 
-    authRequest.setSession(null);
+    const validated = EditProfile.safeParse(body);
+    if (!validated.success) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: validated.error.flatten().formErrors,
+        },
+        { status: 400 },
+      );
+    }
 
-    revalidatePath("/");
+    const user = session.user as IUser;
+
+    await User.findByIdAndUpdate(user.id, {
+      $set: body,
+    }).exec();
 
     return NextResponse.json(
       {

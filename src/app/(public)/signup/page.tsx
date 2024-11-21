@@ -1,18 +1,24 @@
 import { redirect } from "next/navigation";
 
+import Header from "@/components/Header";
 import SignupForm from "@/components/SignupForm";
 import { getSession } from "@/lib/lucia";
+import { type IUser } from "@/lib/models/user";
 
 export default async function SignupPage() {
   const session = await getSession();
 
   if (session) {
-    redirect("/profile");
+    const sessionUser = session.user as IUser;
+    return redirect(`/profile/${sessionUser.id}`);
   }
 
   return (
-    <div className="flex min-h-screen w-screen flex-col items-center justify-center">
-      <SignupForm />
+    <div className="mx-auto flex min-h-screen flex-col">
+      <Header />
+      <main className="flex grow items-center justify-center">
+        <SignupForm />
+      </main>
     </div>
   );
 }
