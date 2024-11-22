@@ -34,6 +34,22 @@ export const PATCH = async (request: NextRequest) => {
 
     const user = session.user as IUser;
 
+    const exists = await User.findOne({
+      username: {
+        $regex: `^${body.username}$`,
+        $options: "i",
+      },
+    });
+    if (exists && user.id !== exists.id) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Username already taken.",
+        },
+        { status: 400 },
+      );
+    }
+
     await User.findByIdAndUpdate(user.id, {
       $set: body,
     }).exec();

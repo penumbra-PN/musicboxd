@@ -26,7 +26,7 @@ export const POST = async (request: NextRequest) => {
       (await User.findOne({ email: email }).exec()) ||
       (await User.findOne({
         username: {
-          $regex: username,
+          $regex: `^${username}$`,
           $options: "i",
         },
       }).exec());

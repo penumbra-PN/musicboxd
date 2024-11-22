@@ -3,6 +3,8 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { auth } from "@/lib/lucia";
 import User, { type IUser } from "@/lib/models/user";
+import Channel, { type IChannel } from "@/lib/models/channel";
+import Message, { type IMessage } from "@/lib/models/message";
 
 export const DELETE = async (request: NextRequest) => {
   try {
@@ -49,6 +51,33 @@ export const DELETE = async (request: NextRequest) => {
     friend.friends.splice(friend.friends.indexOf(user.id), 1);
     await user.save();
     await friend.save();
+
+    const channels = (await Channel.find({
+      $or: [
+        {
+          userA_id: user.id,
+          userB_id: friend.id,
+        },
+        {
+          userA_id: friend.id,
+          userB_id: user.id,
+        },
+      ],
+    }).exec()) as IChannel[];
+    for (const channel of channels) {
+      const messages = (await Message.find({
+        channel_id: channel.id,
+      }).exec()) as IMessage[];
+      for (const message of messages) {
+        const messageUser = (await User.findById(message.user_id).exec()) as IUser;
+        messageUser.messages.splice(messageUser.messages.indexOf(message.id), 1);
+        await messageUser.save();
+
+        await Message.findByIdAndDelete(message.id).exec();
+      }
+
+      await Channel.findByIdAndDelete(channel.id).exec();
+    }
 
     return NextResponse.json(
       {

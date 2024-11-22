@@ -15,7 +15,7 @@ export default mongoose.models.Channel ||
         _id: { type: String, required: true, default: uuid() },
         userA_id: { type: String, required: true },
         userB_id: { type: String, required: true },
-        messages: { type: [String], required: true, default: [] },
+        messages: { type: [String], default: [] },
       } as const,
       { _id: false, timestamps: true },
     ),

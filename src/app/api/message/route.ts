@@ -3,8 +3,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { v4 as uuid } from "uuid";
 
 import { auth } from "@/lib/lucia";
-import User, { type IUser } from "@/lib/models/user";
 import Channel, { type IChannel } from "@/lib/models/channel";
+import User, { type IUser } from "@/lib/models/user";
+import Message, { IMessage } from "@/lib/models/message";
 
 export const POST = async (request: NextRequest) => {
   try {
@@ -20,13 +21,24 @@ export const POST = async (request: NextRequest) => {
       );
     }
 
-    let receiver = session.user as IUser;
+    const sessionUser = session.user as IUser;
 
     const body = await request.json();
-    const { senderId } = body;
+    const { channelId, userId, text } = body;
 
-    const sender = (await User.findById(senderId).exec()) as IUser;
-    if (!sender) {
+    const channel = (await Channel.findById(channelId).exec()) as IChannel;
+    if (!channel) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Channel not found.",
+        },
+        { status: 404 },
+      );
+    }
+
+    const user = (await User.findById(userId).exec()) as IUser;
+    if (!user) {
       return NextResponse.json(
         {
           success: false,
@@ -36,34 +48,31 @@ export const POST = async (request: NextRequest) => {
       );
     }
 
-    if (!receiver.friend_requests.includes(sender.id)) {
+    if (user.id !== sessionUser.id) {
       return NextResponse.json(
         {
           success: false,
-          error: "Friend request not found.",
         },
-        { status: 404 },
+        { status: 403 },
       );
     }
 
-    receiver = (await User.findById(receiver.id).exec()) as IUser;
-    receiver.friend_requests.splice(receiver.friend_requests.indexOf(sender.id), 1);
-    sender.friends.push(receiver.id);
-    receiver.friends.push(sender.id);
-    await sender.save();
-    await receiver.save();
-
-    const channel = (await Channel.create({
+    const message = (await Message.create({
       _id: uuid(),
-      userA_id: sender.id,
-      userB_id: receiver.id,
-    })) as IChannel;
+      channel_id: channel.id,
+      user_id: user.id,
+      text: text,
+    })) as IMessage;
+
+    channel.messages.push(message.id);
+    await channel.save();
+
+    user.messages.push(message.id);
+    await user.save();
 
     return NextResponse.json(
       {
-        success: true,
-        user: sender,
-        channelId: channel.id,
+        message: message,
       },
       { status: 200 },
     );

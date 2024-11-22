@@ -7,12 +7,20 @@ import { type IUser } from "@/lib/models/user";
 import { useRouter } from "next/navigation";
 
 type FriendsListProps = {
-  friends: IUser[];
+  friends: {
+    friend: IUser;
+    channelId: string;
+  }[];
 };
 
 export default function FriendsList(props: FriendsListProps) {
   const [error, setError] = useState<string | null>(null);
-  const [friends, setFriends] = useState<IUser[]>(props.friends);
+  const [friends, setFriends] = useState<
+    {
+      friend: IUser;
+      channelId: string;
+    }[]
+  >(props.friends);
   const input = useRef<HTMLInputElement | null>(null);
   const router = useRouter();
 
@@ -39,7 +47,13 @@ export default function FriendsList(props: FriendsListProps) {
         setError(data.error);
       } else {
         if (data.user) {
-          setFriends((friends) => [...friends, data.user]);
+          setFriends((friends) => [
+            ...friends,
+            {
+              friend: data.user,
+              channelId: data.channelId,
+            },
+          ]);
         }
         setError(null);
         router.refresh();
@@ -68,7 +82,7 @@ export default function FriendsList(props: FriendsListProps) {
       if (!response.ok || !data.success) {
         setError(data.message);
       } else {
-        setFriends((friendRequests) => friendRequests.filter((request) => request._id !== data.user._id));
+        setFriends((e) => e.filter((x) => x.friend._id !== data.user._id));
         setError(null);
         router.refresh();
       }
@@ -89,18 +103,23 @@ export default function FriendsList(props: FriendsListProps) {
         </button>
       </form>
       <ul className="flex flex-col gap-y-4">
-        {friends.map((friend) => {
+        {friends.map((e) => {
           return (
-            <li className="flex grow items-center justify-between" key={friend._id as string}>
-              <Link className="hover:underline" href={`/profile/${friend._id}`}>
-                {friend.username}
+            <li className="flex grow items-center justify-between" key={e.friend._id as string}>
+              <Link className="hover:underline" href={`/profile/${e.friend._id}`}>
+                {e.friend.username}
               </Link>
-              <button
-                className="w-fit border border-solid border-black p-2"
-                onClick={() => removeFriend(friend._id as string)}
-              >
-                Remove
-              </button>
+              <div className="flex gap-x-2">
+                <Link className="w-fit border border-solid border-black p-2" href={`/channel/${e.channelId}`}>
+                  Message
+                </Link>
+                <button
+                  className="w-fit border border-solid border-black p-2"
+                  onClick={() => removeFriend(e.friend._id as string)}
+                >
+                  Remove
+                </button>
+              </div>
             </li>
           );
         })}

@@ -1,8 +1,10 @@
 import * as context from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
+import { v4 as uuid } from "uuid";
 
 import { auth } from "@/lib/lucia";
 import User, { type IUser } from "@/lib/models/user";
+import Channel, { type IChannel } from "@/lib/models/channel";
 
 export const POST = async (request: NextRequest) => {
   try {
@@ -25,7 +27,7 @@ export const POST = async (request: NextRequest) => {
 
     const receiver = (await User.findOne({
       username: {
-        $regex: username,
+        $regex: `^${username}$`,
         $options: "i",
       },
     }).exec()) as IUser;
@@ -77,10 +79,17 @@ export const POST = async (request: NextRequest) => {
       await sender.save();
       await receiver.save();
 
+      const channel = (await Channel.create({
+        _id: uuid(),
+        userA_id: sender.id,
+        userB_id: receiver.id,
+      })) as IChannel;
+
       return NextResponse.json(
         {
           success: true,
           user: receiver,
+          channelId: channel.id,
         },
         { status: 200 },
       );

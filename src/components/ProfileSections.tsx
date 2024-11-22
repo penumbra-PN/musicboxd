@@ -18,7 +18,10 @@ enum ProfileSection {
 }
 
 type ProfileSectionProps = {
-  friends: IUser[];
+  friends: {
+    friend: IUser;
+    channelId: string;
+  }[];
   friendRequests: IUser[];
   reviews: IReview[];
   posts: IPost[];

@@ -10,7 +10,6 @@ export interface IUser extends Document {
   posts: string[];
   comments: string[];
   recently_listened: string[];
-  private_messages: string[];
   messages: string[];
 }
 
@@ -29,7 +28,6 @@ export default mongoose.models.User ||
         posts: { type: [String], required: true, default: [] },
         comments: { type: [String], required: true, default: [] },
         recently_listened: { type: [String], required: true, default: [] },
-        private_messages: { type: [String], required: true, default: [] },
         messages: { type: [String], required: true, default: [] },
       } as const,
       { _id: false, timestamps: true },

@@ -8,7 +8,9 @@ import { getSession } from "@/lib/lucia";
 import User, { type IUser } from "@/lib/models/user";
 import Review, { type IReview } from "@/lib/models/review";
 import Post, { type IPost } from "@/lib/models/post";
-import Comment, { IComment } from "@/lib/models/comment";
+import Comment, { type IComment } from "@/lib/models/comment";
+import Channel, { type IChannel } from "@/lib/models/channel";
+import { $and } from "sift";
 
 export default async function ProfilePage({ params }: { params: { id: string } }) {
   const session: Session = await getSession();
@@ -32,7 +34,24 @@ export default async function ProfilePage({ params }: { params: { id: string } }
     );
   }
 
-  const friends = await Promise.all(sessionUser.friends.map(async (id) => (await User.findById(id).exec()) as IUser));
+  const friends = await Promise.all(
+    sessionUser.friends.map(async (id) => {
+      const channel = (await Channel.findOne({
+        $or: [
+          { $and: [{ userA_id: sessionUser.id }, { userB_id: id }] },
+          { $and: [{ userB_id: sessionUser.id }, { userA_id: id }] },
+        ],
+      }).exec()) as IChannel;
+      if (!channel) {
+        return notFound();
+      }
+
+      return {
+        friend: (await User.findById(id).exec()) as IUser,
+        channelId: channel.id,
+      };
+    }),
+  );
   const friendRequests = await Promise.all(
     sessionUser.friend_requests.map(async (id) => (await User.findById(id).exec()) as IUser),
   );
