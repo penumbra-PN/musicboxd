@@ -1,9 +1,24 @@
-import LoginForm from "@/components/LoginForm";
+import { redirect } from "next/navigation";
 
-export default function LoginPage() {
+import Header from "@/components/Header";
+import LoginForm from "@/components/LoginForm";
+import { getSession } from "@/lib/lucia";
+import { type IUser } from "@/lib/models/user";
+
+export default async function LoginPage() {
+  const session = await getSession();
+
+  if (session) {
+    const sessionUser = session.user as IUser;
+    return redirect(`/profile/${sessionUser.id}`);
+  }
+
   return (
-    <div className="min-h-screen w-screen">
-      <LoginForm />
+    <div className="mx-auto flex min-h-screen flex-col">
+      <Header />
+      <main className="flex grow items-center justify-center">
+        <LoginForm />
+      </main>
     </div>
   );
 }

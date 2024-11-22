@@ -3,6 +3,7 @@
 import { useState } from "react";
 
 import FriendsList from "@/components/FriendsList";
+import FriendRequestsList from "@/components/FriendRequestsList";
 import { type IUser } from "@/lib/models/user";
 import { type IReview } from "@/lib/models/review";
 import { type IPost } from "@/lib/models/post";
@@ -17,8 +18,10 @@ enum ProfileSection {
 }
 
 type ProfileSectionProps = {
-  userId: string;
-  friends: IUser[];
+  friends: {
+    friend: IUser;
+    channelId: string;
+  }[];
   friendRequests: IUser[];
   reviews: IReview[];
   posts: IPost[];
@@ -33,15 +36,13 @@ export default function ProfileSections(props: ProfileSectionProps) {
       case ProfileSection.FRIENDS:
         return (
           <div className="flex flex-col">
-            <FriendsList userId={props.userId} friends={props.friends} />
+            <FriendsList friends={props.friends} />
           </div>
         );
       case ProfileSection.FRIEND_REQUESTS:
         return (
           <div className="flex flex-col">
-            {props.friendRequests.map((friendRequest) => {
-              return <p key={friendRequest.id}>{friendRequest.username}</p>;
-            })}
+            <FriendRequestsList friendRequests={props.friendRequests} />
           </div>
         );
       case ProfileSection.REVIEWS:
@@ -78,13 +79,13 @@ export default function ProfileSections(props: ProfileSectionProps) {
           className={`${currentSection === ProfileSection.FRIENDS ? "text-pink-400" : ""} text-2xl underline`}
           onClick={() => setCurrentSection(ProfileSection.FRIENDS)}
         >
-          Friends
+          Friends {props.friends.length > 0 ? `(${props.friends.length})` : ""}
         </button>
         <button
           className={`${currentSection === ProfileSection.FRIEND_REQUESTS ? "text-pink-400" : ""} text-2xl underline`}
           onClick={() => setCurrentSection(ProfileSection.FRIEND_REQUESTS)}
         >
-          Friend Requests
+          Friend Requests {props.friendRequests.length > 0 ? `(${props.friendRequests.length})` : ""}
         </button>
         <button
           className={`${currentSection === ProfileSection.REVIEWS ? "text-pink-400" : ""} text-2xl underline`}

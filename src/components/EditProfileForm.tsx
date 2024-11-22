@@ -2,13 +2,12 @@
 
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { editProfile } from "@/app/actions/editProfile";
-import { EditUserProfile, type EditUserProfileType } from "@/lib/validators/user";
+import { EditProfile, type EditProfileType } from "@/lib/validators/user";
 
 type EditProfileFormProps = {
-  id: string;
   username: string;
   bio: string;
 };
@@ -19,42 +18,59 @@ export default function EditProfileForm(props: EditProfileFormProps) {
     handleSubmit,
     setError,
     formState: { errors },
-  } = useForm<EditUserProfileType>({ resolver: zodResolver(EditUserProfile) });
+  } = useForm<EditProfileType>({ resolver: zodResolver(EditProfile) });
+  const router = useRouter();
+
+  const editProfile = async (body: EditProfileType) => {
+    try {
+      const response = await fetch("/api/user/edit", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      });
+
+      const data = await response.json();
+      if (!response.ok || !data.success) {
+        setError("root", {
+          message: data.error,
+        });
+      }
+
+      router.refresh();
+    } catch (error) {
+      console.log(error);
+      setError("root", {
+        message: "Internal server error.",
+      });
+    }
+  };
 
   return (
-    <form
-      className="flex flex-col"
-      onSubmit={handleSubmit(async (data: EditUserProfileType) => {
-        try {
-          const response = await editProfile(props.id, data);
-          if (!response.success) {
-            setError("root", {
-              message: response.error ?? "Unknown error.",
-            });
-          }
-        } catch {
-          setError("root", {
-            message: "Internal server error.",
-          });
-        }
-      })}
-    >
-      <div>
-        <label className="text-2xl" htmlFor="username">
-          Username:
-        </label>
-        <input type="text" defaultValue={props.username} {...register("username")} />
-        {errors.username && <span>{errors.username.message}</span>}
+    <form className="flex flex-col gap-y-4" onSubmit={handleSubmit(editProfile)}>
+      <div className="flex items-center gap-x-2">
+        <label htmlFor="username">Username:</label>
+        <input
+          className="grow border border-solid border-black p-2"
+          type="text"
+          defaultValue={props.username}
+          {...register("username")}
+        />
+        {errors.username && <span className="text-red-600">{errors.username.message}</span>}
       </div>
-      <div>
-        <label className="text-2xl" htmlFor="username">
-          Bio:
-        </label>
-        <input type="text" defaultValue={props.bio} {...register("bio")} />
-        {errors.bio && <span>{errors.bio.message}</span>}
+      <div className="flex items-center gap-x-2">
+        <label htmlFor="username">Bio:</label>
+        <input
+          className="grow border border-solid border-black p-2"
+          type="text"
+          defaultValue={props.bio}
+          {...register("bio")}
+        />
+        {errors.bio && <span className="text-red-600">{errors.bio.message}</span>}
       </div>
-      {errors.root && <p>{errors.root?.message}</p>}
-      <button className="text-2xl" type="submit">
+      {errors.root && <span className="text-red-600">{errors.root?.message}</span>}
+      <button className="w-fit self-center border border-solid border-black p-2" type="submit">
         Save
       </button>
     </form>
