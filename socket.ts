@@ -38,6 +38,7 @@ io.on("connection", (socket) => {
       text: body.text,
       ownerId: body.ownerId,
       ownerUsername: body.ownerUsername,
+      createdAt: body.createdAt,
     });
   });
 });

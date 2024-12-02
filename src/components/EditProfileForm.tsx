@@ -49,8 +49,10 @@ export default function EditProfileForm(props: EditProfileFormProps) {
 
   return (
     <form className="flex flex-col gap-y-4" onSubmit={handleSubmit(editProfile)}>
-      <div className="flex items-center gap-x-2">
-        <label htmlFor="username">Username:</label>
+      <div className="flex flex-col gap-y-2">
+        <label htmlFor="username">
+          <strong>Username:</strong>
+        </label>
         <input
           className="grow border border-solid border-black p-2"
           type="text"
@@ -59,14 +61,11 @@ export default function EditProfileForm(props: EditProfileFormProps) {
         />
         {errors.username && <span className="text-red-600">{errors.username.message}</span>}
       </div>
-      <div className="flex items-center gap-x-2">
-        <label htmlFor="username">Bio:</label>
-        <input
-          className="grow border border-solid border-black p-2"
-          type="text"
-          defaultValue={props.bio}
-          {...register("bio")}
-        />
+      <div className="flex flex-col gap-y-2">
+        <label htmlFor="username">
+          <strong>Bio:</strong>
+        </label>
+        <textarea className="grow border border-solid border-black p-2" defaultValue={props.bio} {...register("bio")} />
         {errors.bio && <span className="text-red-600">{errors.bio.message}</span>}
       </div>
       {errors.root && <span className="text-red-600">{errors.root?.message}</span>}

@@ -6,6 +6,7 @@ type ClientMessage = {
   text: string;
   ownerId: string;
   ownerUsername: string;
+  createdAt: string;
 };
 
 export const useChat = (
@@ -54,6 +55,7 @@ export const useChat = (
           text: text,
           ownerId: ownerId,
           ownerUsername: ownerUsername,
+          createdAt: data.message.created_at,
         });
       } else {
         console.log(data);

@@ -7,6 +7,8 @@ export interface ISong extends Document {
   album: string;
   spotify_id: string;
   reviews: string[];
+  created_at: string;
+  updated_at: string;
 }
 
 export default mongoose.models.Song ||
@@ -21,6 +23,12 @@ export default mongoose.models.Song ||
         spotify_id: { type: String, required: true, unique: true },
         reviews: { type: [String], required: true, default: [] },
       } as const,
-      { _id: false },
+      {
+        _id: false,
+        timestamps: {
+          createdAt: "created_at",
+          updatedAt: "updated_at",
+        },
+      },
     ),
   );

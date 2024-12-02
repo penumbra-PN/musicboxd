@@ -25,10 +25,11 @@ export default function ChannelMessages(props: ChannelMessagesProps) {
     props.channelId,
     props.messages.map((e) => {
       return {
-        id: e.message.id,
+        id: e.message._id as string,
         text: e.message.text,
         ownerId: e.message.user_id,
         ownerUsername: e.username,
+        createdAt: e.message.created_at,
       };
     }),
   );
@@ -59,10 +60,11 @@ export default function ChannelMessages(props: ChannelMessagesProps) {
         {messages.map((message) => {
           return (
             <div key={message.id}>
-              <div>
+              <div className="flex gap-x-2">
                 <Link className="hover:underline" href={`/profile/${message.ownerId}`}>
                   <strong>{message.ownerUsername}</strong>
                 </Link>
+                <span>{new Date(message.createdAt).toLocaleDateString()}</span>
               </div>
               <p>{message.text}</p>
             </div>

@@ -5,6 +5,8 @@ export interface IChannel extends Document {
   userA_id: string;
   userB_id: string;
   messages: string[];
+  created_at: string;
+  updated_at: string;
 }
 
 export default mongoose.models.Channel ||
@@ -17,6 +19,12 @@ export default mongoose.models.Channel ||
         userB_id: { type: String, required: true },
         messages: { type: [String], default: [] },
       } as const,
-      { _id: false, timestamps: true },
+      {
+        _id: false,
+        timestamps: {
+          createdAt: "created_at",
+          updatedAt: "updated_at",
+        },
+      },
     ),
   );

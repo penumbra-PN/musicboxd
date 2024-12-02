@@ -5,6 +5,8 @@ export interface IReview extends Document {
   user_id: string;
   text: string;
   rating: number;
+  created_at: string;
+  updated_at: string;
 }
 
 export default mongoose.models.Review ||
@@ -18,6 +20,12 @@ export default mongoose.models.Review ||
         text: { type: String, required: true },
         rating: { type: Number, required: true },
       } as const,
-      { _id: false, timestamps: true },
+      {
+        _id: false,
+        timestamps: {
+          createdAt: "created_at",
+          updatedAt: "updated_at",
+        },
+      },
     ),
   );

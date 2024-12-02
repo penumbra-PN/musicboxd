@@ -7,6 +7,8 @@ export interface IComment extends Document {
   text: string;
   likes: number;
   dislikes: number;
+  created_at: string;
+  updated_at: string;
 }
 
 export default mongoose.models.Comment ||
@@ -21,6 +23,12 @@ export default mongoose.models.Comment ||
         likes: { type: Number, required: true, default: 0 },
         dislikes: { type: Number, required: true, default: 0 },
       } as const,
-      { _id: false, timestamps: true },
+      {
+        _id: false,
+        timestamps: {
+          createdAt: "created_at",
+          updatedAt: "updated_at",
+        },
+      },
     ),
   );

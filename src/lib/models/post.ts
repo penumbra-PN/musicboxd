@@ -8,6 +8,8 @@ export interface IPost extends Document {
   likes: number;
   dislikes: number;
   comments: string[];
+  created_at: string;
+  updated_at: string;
 }
 
 export default mongoose.models.Post ||
@@ -23,6 +25,12 @@ export default mongoose.models.Post ||
         dislikes: { type: Number, required: true, default: 0 },
         comments: { type: [String], required: true, default: [] },
       } as const,
-      { _id: false, timestamps: true },
+      {
+        _id: false,
+        timestamps: {
+          createdAt: "created_at",
+          updatedAt: "updated_at",
+        },
+      },
     ),
   );

@@ -5,6 +5,8 @@ export interface IMessage extends Document {
   channel_id: string;
   user_id: string;
   text: string;
+  created_at: string;
+  updated_at: string;
 }
 
 export default mongoose.models.Message ||
@@ -17,6 +19,12 @@ export default mongoose.models.Message ||
         user_id: { type: String, required: true },
         text: { type: String, required: true },
       } as const,
-      { _id: false, timestamps: true },
+      {
+        _id: false,
+        timestamps: {
+          createdAt: "created_at",
+          updatedAt: "updated_at",
+        },
+      },
     ),
   );

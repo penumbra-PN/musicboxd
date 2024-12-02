@@ -11,6 +11,8 @@ export interface IUser extends Document {
   comments: string[];
   recently_listened: string[];
   messages: string[];
+  created_at: string;
+  updated_at: string;
 }
 
 export default mongoose.models.User ||
@@ -30,6 +32,12 @@ export default mongoose.models.User ||
         recently_listened: { type: [String], required: true, default: [] },
         messages: { type: [String], required: true, default: [] },
       } as const,
-      { _id: false, timestamps: true },
+      {
+        _id: false,
+        timestamps: {
+          createdAt: "created_at",
+          updatedAt: "updated_at",
+        },
+      },
     ),
   );
