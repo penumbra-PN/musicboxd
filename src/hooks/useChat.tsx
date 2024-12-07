@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { io, type Socket } from "socket.io-client";
+import { toast } from "react-toastify";
 
 type ClientMessage = {
   id: string;
@@ -58,7 +59,7 @@ export const useChat = (
           createdAt: data.message.created_at,
         });
       } else {
-        console.log(data);
+        toast.error(data.error);
       }
     } catch (error) {
       console.log(error);

@@ -79,13 +79,13 @@ export default function ProfileSections(props: ProfileSectionProps) {
           className={`${currentSection === ProfileSection.FRIENDS ? "text-pink-400" : ""} text-2xl underline`}
           onClick={() => setCurrentSection(ProfileSection.FRIENDS)}
         >
-          Friends {props.friends.length > 0 ? `(${props.friends.length})` : ""}
+          Friends
         </button>
         <button
           className={`${currentSection === ProfileSection.FRIEND_REQUESTS ? "text-pink-400" : ""} text-2xl underline`}
           onClick={() => setCurrentSection(ProfileSection.FRIEND_REQUESTS)}
         >
-          Friend Requests {props.friendRequests.length > 0 ? `(${props.friendRequests.length})` : ""}
+          Friend Requests
         </button>
         <button
           className={`${currentSection === ProfileSection.REVIEWS ? "text-pink-400" : ""} text-2xl underline`}

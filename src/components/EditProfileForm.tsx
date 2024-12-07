@@ -4,6 +4,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "react-toastify";
 
 import { EditProfile, type EditProfileType } from "@/lib/validators/user";
 
@@ -16,7 +17,6 @@ export default function EditProfileForm(props: EditProfileFormProps) {
   const {
     register,
     handleSubmit,
-    setError,
     formState: { errors },
   } = useForm<EditProfileType>({ resolver: zodResolver(EditProfile) });
   const router = useRouter();
@@ -33,17 +33,14 @@ export default function EditProfileForm(props: EditProfileFormProps) {
 
       const data = await response.json();
       if (!response.ok || !data.success) {
-        setError("root", {
-          message: data.error,
-        });
+        toast.error(data.error);
       }
 
       router.refresh();
+      toast.success("Successfully edited profile.");
     } catch (error) {
       console.log(error);
-      setError("root", {
-        message: "Internal server error.",
-      });
+      toast.error("Internal server error.");
     }
   };
 

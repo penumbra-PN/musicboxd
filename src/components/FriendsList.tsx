@@ -2,6 +2,7 @@
 
 import React, { useRef, useState } from "react";
 import Link from "next/link";
+import { toast } from "react-toastify";
 
 import { type IUser } from "@/lib/models/user";
 import { useRouter } from "next/navigation";
@@ -14,7 +15,6 @@ type FriendsListProps = {
 };
 
 export default function FriendsList(props: FriendsListProps) {
-  const [error, setError] = useState<string | null>(null);
   const [friends, setFriends] = useState<
     {
       friend: IUser;
@@ -27,7 +27,11 @@ export default function FriendsList(props: FriendsListProps) {
   const sendFriendRequest = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.current) {
-      setError("Input has not been initialized.");
+      toast.error("Input has not been initialized.");
+      return;
+    }
+
+    if (!input.current.value) {
       return;
     }
 
@@ -44,7 +48,7 @@ export default function FriendsList(props: FriendsListProps) {
 
       const data = await response.json();
       if (!response.ok || !data.success) {
-        setError(data.error);
+        toast.error(data.error);
       } else {
         if (data.user) {
           setFriends((friends) => [
@@ -55,12 +59,12 @@ export default function FriendsList(props: FriendsListProps) {
             },
           ]);
         }
-        setError(null);
         router.refresh();
+        toast.success("Successfully sent friend request.");
       }
     } catch (error) {
       console.log(error);
-      setError("Internal server error.");
+      toast.error("Internal server error.");
     }
 
     input.current.value = "";
@@ -80,21 +84,19 @@ export default function FriendsList(props: FriendsListProps) {
 
       const data = await response.json();
       if (!response.ok || !data.success) {
-        setError(data.message);
+        toast.error(data.message);
       } else {
         setFriends((e) => e.filter((x) => x.friend._id !== data.user._id));
-        setError(null);
         router.refresh();
       }
     } catch (error) {
       console.log(error);
-      setError("Internal server error.");
+      toast.error("Internal server error.");
     }
   };
 
   return (
-    <div className="flex flex-col gap-y-2">
-      {error && <span className="text-red-600">{error}</span>}
+    <div className="flex flex-col gap-y-6">
       <form className="flex items-center justify-between gap-x-2" onSubmit={(e) => sendFriendRequest(e)}>
         <label htmlFor="username">Send Friend Request:</label>
         <input className="grow border border-solid border-black p-2" type="text" name="username" ref={input} />

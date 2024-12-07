@@ -4,6 +4,7 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "react-toastify";
 
 import { Login, type LoginType } from "@/lib/validators/user";
 
@@ -11,7 +12,6 @@ export default function LoginForm() {
   const {
     register,
     handleSubmit,
-    setError,
     formState: { errors },
   } = useForm<LoginType>({ resolver: zodResolver(Login) });
   const router = useRouter();
@@ -28,18 +28,14 @@ export default function LoginForm() {
 
       const data = await response.json();
       if (!response.ok || !data.success) {
-        setError("root", {
-          message: data.error,
-        });
+        toast.error(data.error);
       } else {
         router.push(`/profile/${data.id}`);
         router.refresh();
       }
     } catch (error) {
       console.log(error);
-      setError("root", {
-        message: "Internal server error.",
-      });
+      toast.error("Internal server error.");
     }
   };
 
