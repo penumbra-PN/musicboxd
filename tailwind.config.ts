@@ -15,7 +15,7 @@ const config: Config = {
         background: "var(--background)",
         foreground: "var(--foreground)",
         'spotify-green': "#1CD85F",
-        'spotify-black': "#121212",
+        'spotify-black': "#2B2B2B",
         'spotify-white': "#FFFFFF", 
         'textbox-gray': "#ADADAD"
       },
