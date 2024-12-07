@@ -1,10 +1,12 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
+
 import { type Session } from "lucia";
+
+import EditProfileForm from "@/components/EditProfileForm";
 
 import { getSession } from "@/lib/lucia";
 import { type IUser } from "@/lib/models/user";
-import EditProfileForm from "@/components/EditProfileForm";
 
 export default async function EditProfilePage() {
   const session: Session = await getSession();

@@ -1,10 +1,12 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
+
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import { type IMessage } from "@/lib/models/message";
+
 import { useChat } from "@/hooks/useChat";
 
 type ChannelMessagesProps = {

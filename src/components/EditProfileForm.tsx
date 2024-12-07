@@ -1,9 +1,11 @@
 "use client";
 
 import React from "react";
-import { useForm } from "react-hook-form";
+
 import { useRouter } from "next/navigation";
+
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
 import { EditProfile, type EditProfileType } from "@/lib/validators/user";

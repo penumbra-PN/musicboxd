@@ -1,11 +1,13 @@
 import { notFound, redirect } from "next/navigation";
+
 import { type Session } from "lucia";
 
+import ChannelMessages from "@/components/ChannelMessages";
+
 import { getSession } from "@/lib/lucia";
-import User, { type IUser } from "@/lib/models/user";
 import Channel, { type IChannel } from "@/lib/models/channel";
 import Message, { type IMessage } from "@/lib/models/message";
-import ChannelMessages from "@/components/ChannelMessages";
+import User, { type IUser } from "@/lib/models/user";
 
 export default async function ChannelPage({ params }: { params: { id: string } }) {
   const session: Session = await getSession();

@@ -1,13 +1,15 @@
-import { lucia, type Session as SessionType } from "lucia";
-import { nextjs_future } from "lucia/middleware";
-import { mongoose } from "@lucia-auth/adapter-mongoose";
 import { cache } from "react";
+
 import * as context from "next/headers";
 
+import { mongoose } from "@lucia-auth/adapter-mongoose";
+import { type Session as SessionType, lucia } from "lucia";
+import { nextjs_future } from "lucia/middleware";
+
 import connectDatabase from "@/lib/database";
-import User, { type IUser } from "@/lib/models/user";
 import Key from "@/lib/models/key";
 import Session from "@/lib/models/session";
+import User, { type IUser } from "@/lib/models/user";
 
 connectDatabase().then();
 

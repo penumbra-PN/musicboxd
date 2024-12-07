@@ -2,12 +2,13 @@
 
 import { useState } from "react";
 
-import FriendsList from "@/components/FriendsList";
 import FriendRequestsList from "@/components/FriendRequestsList";
-import { type IUser } from "@/lib/models/user";
-import { type IReview } from "@/lib/models/review";
-import { type IPost } from "@/lib/models/post";
+import FriendsList from "@/components/FriendsList";
+
 import { type IComment } from "@/lib/models/comment";
+import { type IPost } from "@/lib/models/post";
+import { type IReview } from "@/lib/models/review";
+import { type IUser } from "@/lib/models/user";
 
 enum ProfileSection {
   FRIENDS,

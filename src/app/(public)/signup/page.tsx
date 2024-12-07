@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 
 import Header from "@/components/Header";
 import SignupForm from "@/components/SignupForm";
+
 import { getSession } from "@/lib/lucia";
 import { type IUser } from "@/lib/models/user";
 

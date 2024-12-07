@@ -1,16 +1,18 @@
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
+
 import { type Session } from "lucia";
 
 import LogoutButton from "@/components/LogoutButton";
 import ProfileSections from "@/components/ProfileSections";
 import SendFriendRequestButton from "@/components/SendFriendRequestButton";
+
 import { getSession } from "@/lib/lucia";
-import User, { type IUser } from "@/lib/models/user";
-import Review, { type IReview } from "@/lib/models/review";
-import Post, { type IPost } from "@/lib/models/post";
-import Comment, { type IComment } from "@/lib/models/comment";
 import Channel, { type IChannel } from "@/lib/models/channel";
+import Comment, { type IComment } from "@/lib/models/comment";
+import Post, { type IPost } from "@/lib/models/post";
+import Review, { type IReview } from "@/lib/models/review";
+import User, { type IUser } from "@/lib/models/user";
 
 export default async function ProfilePage({ params }: { params: { id: string } }) {
   const session: Session = await getSession();
