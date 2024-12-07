@@ -14,7 +14,7 @@ export default async function LoginPage() {
   }
 
   return (
-    <div className="mx-auto flex min-h-screen flex-col">
+    <div className="mx-auto flex min-h-screen flex-col bg-spotify-black text-spotify-green">
       <Header />
       <main className="flex grow items-center justify-center">
         <LoginForm />

@@ -71,7 +71,7 @@ export default function SignupForm() {
           {errors.password && <span className="text-red-600">{errors.password.message}</span>}
         </div>
         {errors.root && <span className="text-red-600">{errors.root?.message}</span>}
-        <button className="w-full rounded border border-solid border-black p-2" type="submit">
+        <button className="w-full rounded border border-solid border-black p-2 bg-spotify-green text-spotify-black font-bold" type="submit">
           Submit
         </button>
       </form>
