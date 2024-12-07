@@ -13,6 +13,7 @@ export const DELETE = async (request: NextRequest) => {
       return NextResponse.json(
         {
           success: false,
+          error: "Unauthorized.",
         },
         { status: 403 },
       );

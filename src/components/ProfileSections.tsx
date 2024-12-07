@@ -2,12 +2,15 @@
 
 import { useState } from "react";
 
-import FriendsList from "@/components/FriendsList";
+import Link from "next/link";
+
 import FriendRequestsList from "@/components/FriendRequestsList";
-import { type IUser } from "@/lib/models/user";
-import { type IReview } from "@/lib/models/review";
-import { type IPost } from "@/lib/models/post";
+import FriendsList from "@/components/FriendsList";
+
 import { type IComment } from "@/lib/models/comment";
+import { type IPost } from "@/lib/models/post";
+import { type IReview } from "@/lib/models/review";
+import { type IUser } from "@/lib/models/user";
 
 enum ProfileSection {
   FRIENDS,
@@ -49,7 +52,11 @@ export default function ProfileSections(props: ProfileSectionProps) {
         return (
           <div className="flex flex-col">
             {props.reviews.map((review) => {
-              return <p key={review.id}>{review.text}</p>;
+              return (
+                <Link key={review.id} href={`/song/${review.song_id}`}>
+                  {review.text}
+                </Link>
+              );
             })}
           </div>
         );
@@ -57,7 +64,11 @@ export default function ProfileSections(props: ProfileSectionProps) {
         return (
           <div className="flex flex-col">
             {props.posts.map((post) => {
-              return <p key={post.id}>{post.text}</p>;
+              return (
+                <Link key={post.id} href={`/post/${post.id}`}>
+                  {post.text}
+                </Link>
+              );
             })}
           </div>
         );
@@ -65,7 +76,11 @@ export default function ProfileSections(props: ProfileSectionProps) {
         return (
           <div className="flex flex-col">
             {props.comments.map((comment) => {
-              return <p key={comment.id}>{comment.text}</p>;
+              return (
+                <Link key={comment.id} href={`/post/${comment.post_id}`}>
+                  {comment.text}
+                </Link>
+              );
             })}
           </div>
         );
@@ -79,13 +94,13 @@ export default function ProfileSections(props: ProfileSectionProps) {
           className={`${currentSection === ProfileSection.FRIENDS ? "text-pink-400" : ""} text-2xl underline`}
           onClick={() => setCurrentSection(ProfileSection.FRIENDS)}
         >
-          Friends {props.friends.length > 0 ? `(${props.friends.length})` : ""}
+          Friends
         </button>
         <button
           className={`${currentSection === ProfileSection.FRIEND_REQUESTS ? "text-pink-400" : ""} text-2xl underline`}
           onClick={() => setCurrentSection(ProfileSection.FRIEND_REQUESTS)}
         >
-          Friend Requests {props.friendRequests.length > 0 ? `(${props.friendRequests.length})` : ""}
+          Friend Requests
         </button>
         <button
           className={`${currentSection === ProfileSection.REVIEWS ? "text-pink-400" : ""} text-2xl underline`}

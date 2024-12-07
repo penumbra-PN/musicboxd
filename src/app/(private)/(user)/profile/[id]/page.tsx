@@ -1,16 +1,19 @@
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
+
 import { type Session } from "lucia";
 
+import DeleteUserButton from "@/components/DeleteUserButton";
 import LogoutButton from "@/components/LogoutButton";
 import ProfileSections from "@/components/ProfileSections";
+import SendFriendRequestButton from "@/components/SendFriendRequestButton";
+
 import { getSession } from "@/lib/lucia";
-import User, { type IUser } from "@/lib/models/user";
-import Review, { type IReview } from "@/lib/models/review";
-import Post, { type IPost } from "@/lib/models/post";
-import Comment, { type IComment } from "@/lib/models/comment";
 import Channel, { type IChannel } from "@/lib/models/channel";
-import { $and } from "sift";
+import Comment, { type IComment } from "@/lib/models/comment";
+import Post, { type IPost } from "@/lib/models/post";
+import Review, { type IReview } from "@/lib/models/review";
+import User, { type IUser } from "@/lib/models/user";
 
 export default async function ProfilePage({ params }: { params: { id: string } }) {
   const session: Session = await getSession();
@@ -26,10 +29,27 @@ export default async function ProfilePage({ params }: { params: { id: string } }
     if (!user) {
       return notFound();
     }
+
+    const channel = (await Channel.findOne({
+      $or: [
+        { $and: [{ userA_id: sessionUser.id }, { userB_id: user.id }] },
+        { $and: [{ userB_id: sessionUser.id }, { userA_id: user.id }] },
+      ],
+    }).exec()) as IChannel;
+
     return (
       <main className="flex min-h-screen w-screen flex-col items-center justify-center gap-y-4">
         <h1 className="text-4xl">{user.username}&#39;s Profile</h1>
         <p>{user.bio}</p>
+        {user.friends.includes(sessionUser.id) ? (
+          channel ? (
+            <a className="w-fit border border-solid border-black p-2" href={`/channel/${channel.id}`}>
+              Go to Messages
+            </a>
+          ) : null
+        ) : (
+          <SendFriendRequestButton username={user.username} />
+        )}
       </main>
     );
   }
@@ -64,7 +84,7 @@ export default async function ProfilePage({ params }: { params: { id: string } }
   );
 
   return (
-    <main className="flex min-h-screen w-screen flex-col items-center justify-center gap-y-4">
+    <main className="flex min-h-screen w-screen flex-col items-center justify-center gap-y-4 relative">
       <Link href={`/profile/${sessionUser.id}/edit`}>Edit</Link>
       <h1 className="text-4xl">{sessionUser.username}&#39;s Profile</h1>
       <p>{sessionUser.bio}</p>
@@ -76,6 +96,7 @@ export default async function ProfilePage({ params }: { params: { id: string } }
         comments={JSON.parse(JSON.stringify(comments))}
       />
       <LogoutButton />
+      <DeleteUserButton />
     </main>
   );
 }

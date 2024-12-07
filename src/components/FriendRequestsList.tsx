@@ -1,8 +1,11 @@
 "use client";
 
 import React, { useState } from "react";
+
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+
+import { toast } from "react-toastify";
 
 import type { IUser } from "@/lib/models/user";
 
@@ -11,7 +14,6 @@ type FriendRequestsListProps = {
 };
 
 export default function FriendRequestsList(props: FriendRequestsListProps) {
-  const [error, setError] = useState<string | null>(null);
   const [friendRequests, setFriendRequests] = useState<IUser[]>(props.friendRequests);
   const router = useRouter();
 
@@ -29,15 +31,15 @@ export default function FriendRequestsList(props: FriendRequestsListProps) {
 
       const data = await response.json();
       if (!response.ok || !data.success) {
-        setError(data.message);
+        toast.error(data.message);
       } else {
         setFriendRequests((friendRequests) => friendRequests.filter((request) => request._id !== data.user._id));
-        setError(null);
         router.refresh();
+        toast.success("Successfully accepted friend request.");
       }
     } catch (error) {
       console.log(error);
-      setError("Internal server error.");
+      toast.error("Internal server error.");
     }
   };
 
@@ -55,21 +57,19 @@ export default function FriendRequestsList(props: FriendRequestsListProps) {
 
       const data = await response.json();
       if (!response.ok || !data.success) {
-        setError(data.message);
+        toast.error(data.message);
       } else {
         setFriendRequests((friendRequests) => friendRequests.filter((request) => request._id !== data.user._id));
-        setError(null);
         router.refresh();
       }
     } catch (error) {
       console.log(error);
-      setError("Internal server error.");
+      toast.error("Internal server error.");
     }
   };
 
   return (
     <div>
-      {error && <span className="text-red-600">{error}</span>}
       <ul className="flex flex-col gap-y-4">
         {friendRequests.map((request) => {
           return (

@@ -1,11 +1,13 @@
 import * as context from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
+
 import { v4 as uuid } from "uuid";
 
 import { auth } from "@/lib/lucia";
 import Channel, { type IChannel } from "@/lib/models/channel";
+import Message, { type IMessage } from "@/lib/models/message";
 import User, { type IUser } from "@/lib/models/user";
-import Message, { IMessage } from "@/lib/models/message";
+import { SendMessage } from "@/lib/validators/user";
 
 export const POST = async (request: NextRequest) => {
   try {
@@ -16,6 +18,7 @@ export const POST = async (request: NextRequest) => {
       return NextResponse.json(
         {
           success: false,
+          error: "Unauthorized.",
         },
         { status: 403 },
       );
@@ -24,6 +27,18 @@ export const POST = async (request: NextRequest) => {
     const sessionUser = session.user as IUser;
 
     const body = await request.json();
+
+    const validated = SendMessage.safeParse(body);
+    if (!validated.success) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: validated.error.flatten().formErrors,
+        },
+        { status: 400 },
+      );
+    }
+
     const { channelId, userId, text } = body;
 
     const channel = (await Channel.findById(channelId).exec()) as IChannel;

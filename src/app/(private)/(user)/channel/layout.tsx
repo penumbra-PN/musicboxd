@@ -1,11 +1,13 @@
 import { type ReactNode } from "react";
+
 import Link from "next/link";
 import { redirect } from "next/navigation";
+
 import { type Session } from "lucia";
 
 import { getSession } from "@/lib/lucia";
-import User, { type IUser } from "@/lib/models/user";
 import Channel, { type IChannel } from "@/lib/models/channel";
+import User, { type IUser } from "@/lib/models/user";
 
 export default async function ChannelLayout({ children }: { children: ReactNode }) {
   const session: Session = await getSession();
