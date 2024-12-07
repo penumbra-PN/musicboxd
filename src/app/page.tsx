@@ -8,7 +8,7 @@ export default async function HomePage() {
         <h1 className="text-4xl">
           <strong>Musicboxd</strong>
         </h1>
-        <p>An application built using Next.js 14 and MongoDB.</p>
+        <p className="text-spotify-white">An application built using Next.js 14 and MongoDB.</p>
       </main>
     </div>
   );
