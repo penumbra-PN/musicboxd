@@ -1,17 +1,15 @@
 "use client";
 
-import React from "react";
-
 import { useRouter } from "next/navigation";
 
 import { toast } from "react-toastify";
 
-export default function LogoutButton() {
+export default function DeleteUserButton() {
   const router = useRouter();
 
-  const handleLogout = async () => {
+  const handleDelete = async () => {
     try {
-      const response = await fetch("/api/logout", {
+      const response = await fetch("/api/user", {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -20,20 +18,22 @@ export default function LogoutButton() {
 
       const data = await response.json();
       if (!response.ok || !data.success) {
-        toast.error(data);
+        toast.error(data.error);
       } else {
-        router.push("/login");
         router.refresh();
       }
     } catch (error) {
       console.log(error);
-      toast.error("Internal server error.");
+      toast.error(JSON.stringify(error));
     }
   };
 
   return (
-    <button className="w-fit border border-solid border-black p-2" onClick={handleLogout}>
-      Log Out
+    <button
+      className="absolute bottom-0 left-0 w-fit border border-solid border-red-600 p-2 m-4 text-red-600"
+      onClick={() => handleDelete()}
+    >
+      Delete
     </button>
   );
 }

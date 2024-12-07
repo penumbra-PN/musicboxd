@@ -2,9 +2,9 @@ import * as context from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 import { auth } from "@/lib/lucia";
-import User, { type IUser } from "@/lib/models/user";
 import Channel, { type IChannel } from "@/lib/models/channel";
 import Message, { type IMessage } from "@/lib/models/message";
+import User, { type IUser } from "@/lib/models/user";
 
 export const DELETE = async (request: NextRequest) => {
   try {
@@ -15,6 +15,7 @@ export const DELETE = async (request: NextRequest) => {
       return NextResponse.json(
         {
           success: false,
+          error: "Unauthorized.",
         },
         { status: 403 },
       );

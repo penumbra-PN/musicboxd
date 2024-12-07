@@ -3,6 +3,7 @@ import { notFound, redirect } from "next/navigation";
 
 import { type Session } from "lucia";
 
+import DeleteUserButton from "@/components/DeleteUserButton";
 import LogoutButton from "@/components/LogoutButton";
 import ProfileSections from "@/components/ProfileSections";
 import SendFriendRequestButton from "@/components/SendFriendRequestButton";
@@ -83,7 +84,7 @@ export default async function ProfilePage({ params }: { params: { id: string } }
   );
 
   return (
-    <main className="flex min-h-screen w-screen flex-col items-center justify-center gap-y-4">
+    <main className="flex min-h-screen w-screen flex-col items-center justify-center gap-y-4 relative">
       <Link href={`/profile/${sessionUser.id}/edit`}>Edit</Link>
       <h1 className="text-4xl">{sessionUser.username}&#39;s Profile</h1>
       <p>{sessionUser.bio}</p>
@@ -95,6 +96,7 @@ export default async function ProfilePage({ params }: { params: { id: string } }
         comments={JSON.parse(JSON.stringify(comments))}
       />
       <LogoutButton />
+      <DeleteUserButton />
     </main>
   );
 }
