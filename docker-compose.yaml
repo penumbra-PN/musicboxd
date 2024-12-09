@@ -6,11 +6,20 @@ services:
     container_name: musicboxd
     ports:
       - "3000:3000"
-      - "8080:8080"
     env_file:
       - .env.local
     depends_on:
       - database
+      - socket
+  socket:
+    build:
+      context: socket
+      dockerfile: Dockerfile
+    container_name: musicboxd_socket
+    env_file:
+      - .env.local
+    ports:
+      - "8080:8080"
   database:
     image: mongo
     container_name: musicboxd_mongo
