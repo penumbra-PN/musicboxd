@@ -7,7 +7,7 @@ services:
     ports:
       - "3000:3000"
     env_file:
-      - .env.local
+      - .env.prod
     depends_on:
       - database
       - socket
@@ -17,7 +17,7 @@ services:
       dockerfile: Dockerfile
     container_name: musicboxd_socket
     env_file:
-      - .env.local
+      - .env.prod
     ports:
       - "8080:8080"
   database:
