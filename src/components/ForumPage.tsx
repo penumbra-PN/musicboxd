@@ -29,8 +29,8 @@ export default function Posts(props: PostProps) {
                   <Link href={`/user/${post.user_id}`}>
                     <p>@{usernames[index]}</p>
                   </Link>
-                  <p>&#x25B2; {post.likes}</p>
-                  <p>&#x25BC; {post.dislikes}</p>
+                  <button>&#x25B2; {post.likes.length}</button>
+                  <button>&#x25BC; {post.dislikes.length}</button>
                   <p>Comments: {post.comments.length}</p>
                   <br></br>
                   <br></br>
