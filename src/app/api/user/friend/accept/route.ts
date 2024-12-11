@@ -1,10 +1,11 @@
 import * as context from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
+
 import { v4 as uuid } from "uuid";
 
 import { auth } from "@/lib/lucia";
-import User, { type IUser } from "@/lib/models/user";
 import Channel, { type IChannel } from "@/lib/models/channel";
+import User, { type IUser } from "@/lib/models/user";
 
 export const POST = async (request: NextRequest) => {
   try {
@@ -15,6 +16,7 @@ export const POST = async (request: NextRequest) => {
       return NextResponse.json(
         {
           success: false,
+          error: "Unauthorized.",
         },
         { status: 403 },
       );

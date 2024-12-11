@@ -2,8 +2,8 @@ import * as context from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 import { auth } from "@/lib/lucia";
-import { Signup } from "@/lib/validators/user";
 import User from "@/lib/models/user";
+import { Signup } from "@/lib/validators/user";
 
 export const POST = async (request: NextRequest) => {
   try {

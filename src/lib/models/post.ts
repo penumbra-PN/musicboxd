@@ -5,8 +5,8 @@ export interface IPost extends Document {
   user_id: string;
   title: string;
   text: string;
-  likes: number;
-  dislikes: number;
+  likes: string[];
+  dislikes: string[];
   comments: string[];
   created_at: string;
   updated_at: string;
@@ -21,8 +21,8 @@ export default mongoose.models.Post ||
         user_id: { type: String, required: true },
         title: { type: String, required: true },
         text: { type: String, required: true },
-        likes: { type: Number, required: true, default: 0 },
-        dislikes: { type: Number, required: true, default: 0 },
+        likes: { type: [String], required: true, default: [] },
+        dislikes: { type: [String], required: true, default: [] },
         comments: { type: [String], required: true, default: [] },
       } as const,
       {

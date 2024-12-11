@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+
 declare global {
   var mongoose: any;
 }
@@ -10,7 +11,7 @@ if (!cached) {
 }
 
 async function connectDatabase() {
-  const MONGODB_URI = process.env.MONGODB_URI!;
+  const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost:27017/musicboxd";
 
   if (!MONGODB_URI) {
     throw new Error("Please define the MONGODB_URI environment variable inside .env.local");

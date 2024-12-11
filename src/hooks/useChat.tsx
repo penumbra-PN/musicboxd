@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import { io, type Socket } from "socket.io-client";
+
+import { toast } from "react-toastify";
+import { type Socket, io } from "socket.io-client";
 
 type ClientMessage = {
   id: string;
@@ -17,8 +19,8 @@ export const useChat = (
   const socketRef = useRef<Socket>();
 
   useEffect(() => {
-    const PORT = process.env.SOCKET_PORT || 8080;
-    socketRef.current = io(`http://localhost:${PORT}`);
+    const SOCKET_URL = process.env.SOCKET_URL || "http://localhost:8080";
+    socketRef.current = io(`${SOCKET_URL}`);
 
     socketRef.current.emit("joinChat", {
       roomId: roomId,
@@ -58,7 +60,7 @@ export const useChat = (
           createdAt: data.message.created_at,
         });
       } else {
-        console.log(data);
+        toast.error(data.error);
       }
     } catch (error) {
       console.log(error);

@@ -1,11 +1,7 @@
+import "dotenv/config";
 import express from "express";
 import { createServer } from "node:http";
 import { Server } from "socket.io";
-import dotenv from "dotenv";
-
-dotenv.config({
-  path: ".env.local",
-});
 
 const app = express();
 const httpServer = createServer(app);
@@ -19,7 +15,9 @@ const io = new Server(httpServer, {
 const DEVELOPMENT = process.env.NODE_ENV === "development";
 
 io.on("connection", (socket) => {
-  console.log(`Socket connected: ${socket.id}`);
+  if (DEVELOPMENT) {
+    console.log(`Socket connected: ${socket.id}`);
+  }
 
   socket.on("joinChat", (body) => {
     if (DEVELOPMENT) {
