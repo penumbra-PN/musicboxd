@@ -38,8 +38,8 @@ export default async function ProfilePage({ params }: { params: { id: string } }
     }).exec()) as IChannel;
 
     return (
-      <main className="flex min-h-screen w-screen flex-col items-center justify-center gap-y-4">
-        <h1 className="text-4xl">{user.username}&#39;s Profile</h1>
+      <main className="flex min-h-screen w-screen flex-col items-center justify-center gap-y-4 bg-spotify-black text-spotify-white">
+        <h1 className="text-4xl text-spotify-green">{user.username}&#39;s Profile</h1>
         <p>{user.bio}</p>
         {user.friends.includes(sessionUser.id) ? (
           channel ? (
@@ -84,9 +84,9 @@ export default async function ProfilePage({ params }: { params: { id: string } }
   );
 
   return (
-    <main className="flex min-h-screen w-screen flex-col items-center justify-center gap-y-4 relative">
-      <Link href={`/profile/${sessionUser.id}/edit`}>Edit</Link>
-      <h1 className="text-4xl">{sessionUser.username}&#39;s Profile</h1>
+    <main className="flex min-h-screen w-screen flex-col items-center justify-center gap-y-4 relative bg-spotify-black text-spotify-white">
+      <Link href={`/profile/${sessionUser.id}/edit`} className="underline">Edit</Link>
+      <h1 className="text-4xl text-spotify-white font-bold">{sessionUser.username}&#39;s Profile</h1>
       <p>{sessionUser.bio}</p>
       <ProfileSections
         friends={JSON.parse(JSON.stringify(friends))}

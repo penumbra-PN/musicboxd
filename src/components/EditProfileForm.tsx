@@ -53,7 +53,7 @@ export default function EditProfileForm(props: EditProfileFormProps) {
           <strong>Username:</strong>
         </label>
         <input
-          className="grow border border-solid border-black p-2"
+          className="grow border border-solid border-black p-2 text-black"
           type="text"
           defaultValue={props.username}
           {...register("username")}
@@ -64,11 +64,11 @@ export default function EditProfileForm(props: EditProfileFormProps) {
         <label htmlFor="username">
           <strong>Bio:</strong>
         </label>
-        <textarea className="grow border border-solid border-black p-2" defaultValue={props.bio} {...register("bio")} />
+        <textarea className="grow border border-solid border-black p-2 text-black" defaultValue={props.bio} {...register("bio")} />
         {errors.bio && <span className="text-red-600">{errors.bio.message}</span>}
       </div>
       {errors.root && <span className="text-red-600">{errors.root?.message}</span>}
-      <button className="w-fit self-center border border-solid border-black p-2" type="submit">
+      <button className="w-fit self-center border border-solid border-black p-2 bg-spotify-green text-spotify-black" type="submit">
         Save
       </button>
     </form>
