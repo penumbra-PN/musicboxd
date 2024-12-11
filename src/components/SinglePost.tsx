@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { type IPost } from "@/lib/models/post";
+import React, { useEffect, useState } from "react";
+
 import { type IComment } from "@/lib/models/comment";
+import { type IPost } from "@/lib/models/post";
 
 type PostProps = {
   post: IPost;
@@ -19,14 +20,14 @@ export default function SinglePost(props: PostProps) {
 
   useEffect(() => {
     let removed: string[] = [];
-    post.likes.forEach(id => {
+    post.likes.forEach((id) => {
       if (!removed.includes(id)) {
         removed.push(id);
       }
     });
     post.likes = removed;
     removed = [];
-    post.dislikes.forEach(id => {
+    post.dislikes.forEach((id) => {
       if (!removed.includes(id)) {
         removed.push(id);
       }
@@ -44,14 +45,14 @@ export default function SinglePost(props: PostProps) {
         },
         body: JSON.stringify({
           liked: true,
-        })
+        }),
       });
 
       const data = await response.json();
       if (!response.ok || !data.success) {
         return data.error;
       } else {
-        setPost(data.post)
+        setPost(data.post);
       }
     } catch (error) {
       console.log(error);
@@ -66,8 +67,8 @@ export default function SinglePost(props: PostProps) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          disliked: true
-        })
+          disliked: true,
+        }),
       });
 
       const data = await response.json();
@@ -90,23 +91,22 @@ export default function SinglePost(props: PostProps) {
         },
         body: JSON.stringify({
           commentLiked: true,
-          commentId: commentId
-
-        })
+          commentId: commentId,
+        }),
       });
 
       const data = await response.json();
       if (!response.ok || !data.success) {
         return data.error;
       } else {
-        setComments(prevComments =>
-          prevComments.map(comment => {
+        setComments((prevComments) =>
+          prevComments.map((comment) => {
             if (comment._id === data.comment._id) {
               return data.comment;
             } else {
               return comment;
             }
-          })
+          }),
         );
       }
     } catch (error) {
@@ -123,22 +123,22 @@ export default function SinglePost(props: PostProps) {
         },
         body: JSON.stringify({
           commentDisliked: true,
-          commentId: commentId
-        })
+          commentId: commentId,
+        }),
       });
 
       const data = await response.json();
       if (!response.ok || !data.success) {
         return data.error;
       } else {
-        setComments(prevComments =>
-          prevComments.map(comment => {
+        setComments((prevComments) =>
+          prevComments.map((comment) => {
             if (comment._id === data.comment._id) {
               return data.comment;
             } else {
               return comment;
             }
-          })
+          }),
         );
       }
     } catch (error) {
@@ -165,8 +165,12 @@ export default function SinglePost(props: PostProps) {
                 <p>{comment.text}</p>
                 <div className="mt-3 flex gap-x-8 text-sm">
                   <p>@{commentUsernames[index]}</p>
-                  <button onClick={() => handleCommentLikes(comment._id as string)}>&#x25B2; {comment.likes.length}</button>
-                  <button onClick={() => handleCommentDislikes(comment._id as string)}>&#x25BC; {comment.dislikes.length}</button>
+                  <button onClick={() => handleCommentLikes(comment._id as string)}>
+                    &#x25B2; {comment.likes.length}
+                  </button>
+                  <button onClick={() => handleCommentDislikes(comment._id as string)}>
+                    &#x25BC; {comment.dislikes.length}
+                  </button>
                 </div>
               </li>
             ))}

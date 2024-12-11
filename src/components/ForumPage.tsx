@@ -24,23 +24,23 @@ export default function Posts(props: PostProps) {
         },
         body: JSON.stringify({
           liked: true,
-          postId: postId
-        })
+          postId: postId,
+        }),
       });
 
       const data = await response.json();
       if (!response.ok || !data.success) {
         return data.error;
       } else {
-        setPosts(prevPosts =>
-          prevPosts.map(post => {
+        setPosts((prevPosts) =>
+          prevPosts.map((post) => {
             if (post._id === data.post._id) {
               return data.post;
             } else {
               return post;
             }
-          })
-        );      
+          }),
+        );
       }
     } catch (error) {
       console.log(error);
@@ -56,22 +56,22 @@ export default function Posts(props: PostProps) {
         },
         body: JSON.stringify({
           disliked: true,
-          postId: postId
-        })
+          postId: postId,
+        }),
       });
 
       const data = await response.json();
       if (!response.ok || !data.success) {
         return data.error;
       } else {
-        setPosts(prevPosts =>
-          prevPosts.map(post => {
+        setPosts((prevPosts) =>
+          prevPosts.map((post) => {
             if (post._id === data.post._id) {
               return data.post;
             } else {
               return post;
             }
-          })
+          }),
         );
       }
     } catch (error) {
