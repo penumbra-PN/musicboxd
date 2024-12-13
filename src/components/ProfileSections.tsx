@@ -65,7 +65,7 @@ export default function ProfileSections(props: ProfileSectionProps) {
           <div className="flex flex-col">
             {props.posts.map((post) => {
               return (
-                <Link key={post.id} href={`/post/${post.id}`}>
+                <Link key={post.id} href={`/posts/${post._id}`}>
                   {post.text}
                 </Link>
               );
@@ -77,7 +77,7 @@ export default function ProfileSections(props: ProfileSectionProps) {
           <div className="flex flex-col">
             {props.comments.map((comment) => {
               return (
-                <Link key={comment.id} href={`/post/${comment.post_id}`}>
+                <Link key={comment.id} href={`/posts/${comment.post_id}`}>
                   {comment.text}
                 </Link>
               );
