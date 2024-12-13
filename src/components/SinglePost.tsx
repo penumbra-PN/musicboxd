@@ -1,9 +1,10 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-
+import Link from "next/link";
 import { type IComment } from "@/lib/models/comment";
 import { type IPost } from "@/lib/models/post";
+import { toast } from "react-toastify";
 
 type PostProps = {
   post: IPost;
@@ -50,12 +51,13 @@ export default function SinglePost(props: PostProps) {
 
       const data = await response.json();
       if (!response.ok || !data.success) {
-        return data.error;
+        toast.error(data.error);
       } else {
         setPost(data.post);
       }
     } catch (error) {
       console.log(error);
+      toast.error("Internal server error.");
     }
   };
 
@@ -73,12 +75,13 @@ export default function SinglePost(props: PostProps) {
 
       const data = await response.json();
       if (!response.ok || !data.success) {
-        return data.error;
+        toast.error(data.error);
       } else {
         setPost(data.post);
       }
     } catch (error) {
       console.log(error);
+      toast.error("Internal server error.");
     }
   };
 
@@ -97,7 +100,7 @@ export default function SinglePost(props: PostProps) {
 
       const data = await response.json();
       if (!response.ok || !data.success) {
-        return data.error;
+        toast.error(data.error);
       } else {
         setComments((prevComments) =>
           prevComments.map((comment) => {
@@ -111,6 +114,7 @@ export default function SinglePost(props: PostProps) {
       }
     } catch (error) {
       console.log(error);
+      toast.error("Internal server error.");
     }
   };
 
@@ -129,7 +133,7 @@ export default function SinglePost(props: PostProps) {
 
       const data = await response.json();
       if (!response.ok || !data.success) {
-        return data.error;
+        toast.error(data.error);
       } else {
         setComments((prevComments) =>
           prevComments.map((comment) => {
@@ -143,6 +147,7 @@ export default function SinglePost(props: PostProps) {
       }
     } catch (error) {
       console.log(error);
+      toast.error("Internal server error.");
     }
   };
 
@@ -152,7 +157,9 @@ export default function SinglePost(props: PostProps) {
         <h3 className="text-2xl font-semibold text-pink-400">{post.title}</h3>
         <p className="text-gray mt-2">{post.text}</p>
         <div className="mt-3 flex gap-x-8 text-sm">
-          <p>@{username}</p>
+          <Link href={`/profile/${post.user_id}`}>
+            <p>@{username}</p>
+          </Link>
           <button onClick={() => handleLikes()}>&#x25B2; {post.likes.length}</button>
           <button onClick={() => handleDislikes()}>&#x25BC; {post.dislikes.length}</button>
         </div>
@@ -164,7 +171,9 @@ export default function SinglePost(props: PostProps) {
               <li key={index} className="mb-10">
                 <p>{comment.text}</p>
                 <div className="mt-3 flex gap-x-8 text-sm">
-                  <p>@{commentUsernames[index]}</p>
+                  <Link href={`/profile/${comment.user_id}`}>
+                    <p>@{commentUsernames[index]}</p>
+                  </Link>
                   <button onClick={() => handleCommentLikes(comment._id as string)}>
                     &#x25B2; {comment.likes.length}
                   </button>

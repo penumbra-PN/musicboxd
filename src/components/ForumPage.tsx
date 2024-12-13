@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 
 import { type IPost } from "@/lib/models/post";
+import { toast } from "react-toastify";
 
 type PostProps = {
   posts: IPost[];
@@ -30,7 +31,7 @@ export default function Posts(props: PostProps) {
 
       const data = await response.json();
       if (!response.ok || !data.success) {
-        return data.error;
+        toast.error(data.error);
       } else {
         setPosts((prevPosts) =>
           prevPosts.map((post) => {
@@ -44,6 +45,7 @@ export default function Posts(props: PostProps) {
       }
     } catch (error) {
       console.log(error);
+      toast.error("Internal server error.");
     }
   };
 
@@ -81,6 +83,7 @@ export default function Posts(props: PostProps) {
 
   return (
     <div className="flex flex-col gap-y-4">
+      <Link href='/posts/create'>Create A Post</Link>
       <div className="space-y-6">
         <ul>
           {posts &&
@@ -91,7 +94,7 @@ export default function Posts(props: PostProps) {
                 </Link>
                 <p className="text-gray mt-2">{post.text}</p>
                 <div className="mt-3 flex gap-x-8 text-sm">
-                  <Link href={`/user/${post.user_id}`}>
+                  <Link href={`/profile/${post.user_id}`}>
                     <p>@{usernames[index]}</p>
                   </Link>
                   <button onClick={() => handleLikes(post._id as string)}>&#x25B2; {post.likes.length}</button>
