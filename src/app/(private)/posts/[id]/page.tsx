@@ -1,8 +1,10 @@
 import { notFound, redirect } from "next/navigation";
+import Link from "next/link";
 
 import { type Session } from "lucia";
 
 import SinglePost from "@/components/SinglePost";
+import DeletePostButton from "@/components/DeletePostButton";
 
 import { getSession } from "@/lib/lucia";
 import Comment, { type IComment } from "@/lib/models/comment";
@@ -50,9 +52,21 @@ export default async function PostById({ params }: { params: { id: string } }) {
     }
   }
 
-  return (
-    <main className="flex min-h-screen w-screen flex-col items-center justify-center gap-y-4">
-      <SinglePost post={post} user={username} comments={comments} commentUsernames={commentUsernames} />
-    </main>
-  );
+  const sessionUser = session.user as IUser;
+  if (sessionUser.id !== post.user_id) {
+    return (
+      <main className="flex min-h-screen w-screen flex-col items-center justify-center gap-y-4">
+        <SinglePost post={post} user={username} comments={comments} commentUsernames={commentUsernames} />
+        <Link href={`/posts`}>See All Posts</Link>
+      </main>
+    );
+  } else {
+    return (
+      <main className="flex min-h-screen w-screen flex-col items-center justify-center gap-y-4">
+        <SinglePost post={post} user={username} comments={comments} commentUsernames={commentUsernames} />
+        <Link href={`/posts`}>See All Posts</Link>
+        <DeletePostButton postId={post._id as string}/>
+      </main>
+    );
+  } 
 }
