@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter, redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 import { toast } from "react-toastify";
 
@@ -19,8 +19,8 @@ export default function DeletePostButton(props: PostProps) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-            postId: props.postId,
-          }),
+          postId: props.postId,
+        }),
       });
 
       const data = await response.json();

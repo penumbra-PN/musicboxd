@@ -5,6 +5,7 @@ export const Signup = z.object({
     .string({
       message: "Username is required.",
     })
+    .trim()
     .min(3, {
       message: "Username must have at least 3 characters.",
     })
@@ -15,6 +16,7 @@ export const Signup = z.object({
     .string({
       message: "Email is required.",
     })
+    .trim()
     .email({
       message: "Invalid email.",
     }),
@@ -22,6 +24,7 @@ export const Signup = z.object({
     .string({
       message: "Password is required.",
     })
+    .trim()
     .min(8, {
       message: "Password must have at least 8 characters.",
     })

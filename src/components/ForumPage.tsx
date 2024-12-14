@@ -4,8 +4,9 @@ import React, { useState } from "react";
 
 import Link from "next/link";
 
-import { type IPost } from "@/lib/models/post";
 import { toast } from "react-toastify";
+
+import { type IPost } from "@/lib/models/post";
 
 type PostProps = {
   posts: IPost[];
