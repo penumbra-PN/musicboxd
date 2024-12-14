@@ -20,6 +20,9 @@ export const CreatePost = z.object({
       message: "Text is required.",
     })
     .trim()
+    .min(1, {
+      message: "Text must have at least 1 character.",
+    })
     .max(1000, {
       message: "Text must have at most 1000 characters.",
     }),

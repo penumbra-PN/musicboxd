@@ -63,11 +63,13 @@ export default function ProfileSections(props: ProfileSectionProps) {
       case ProfileSection.POSTS:
         return (
           <div className="flex flex-col">
-            <Link className="w-fit border border-solid border-black p-2" href='/posts/create'>Create A Post</Link>
+            <Link className="w-fit border border-solid border-black p-2" href="/posts/create">
+              Create A Post
+            </Link>
             {props.posts.map((post) => {
               return (
                 <Link key={post.id} href={`/posts/${post._id}`}>
-                  {post.text}
+                  {post.title}
                 </Link>
               );
             })}
