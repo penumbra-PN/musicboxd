@@ -61,8 +61,6 @@ export const POST = async (request: NextRequest) => {
         }
         await newPost.save();
 
-        console.log(newPost)
-
         //console.log(newPost);
 
         exists.posts.push(newPost._id as string);

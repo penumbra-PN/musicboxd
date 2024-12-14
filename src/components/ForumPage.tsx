@@ -83,7 +83,6 @@ export default function Posts(props: PostProps) {
 
   return (
     <div className="flex flex-col gap-y-4">
-      <Link className="w-fit border border-solid border-black p-2" href='/posts/create'>Create A Post</Link>
       <div className="space-y-6">
         <ul>
           {posts &&

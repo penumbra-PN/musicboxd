@@ -46,7 +46,7 @@ export default async function PostById({ params }: { params: { id: string } }) {
   for (let i = 0; i <= comments.length - 1; i++) {
     const user = (await User.findById(comments[i].user_id).exec()) as IUser;
     if (!user) {
-      commentUsernames.push("Username Not Found");
+      return notFound();
     } else {
       commentUsernames.push(user.username);
     }
@@ -56,15 +56,15 @@ export default async function PostById({ params }: { params: { id: string } }) {
   if (sessionUser.id !== post.user_id) {
     return (
       <main className="flex min-h-screen w-screen flex-col items-center justify-center gap-y-4">
+        <Link href={`/posts`} className="fixed top-0 left-0 mt-5 p-2 ml-4">See All Posts</Link>
         <SinglePost post={post} user={username} comments={comments} commentUsernames={commentUsernames} />
-        <Link href={`/posts`}>See All Posts</Link>
       </main>
     );
   } else {
     return (
       <main className="flex min-h-screen w-screen flex-col items-center justify-center gap-y-4">
+        <Link href={`/posts`} className="fixed top-0 left-0 mt-5 p-2 ml-4">See All Posts</Link>
         <SinglePost post={post} user={username} comments={comments} commentUsernames={commentUsernames} />
-        <Link href={`/posts`}>See All Posts</Link>
         <DeletePostButton postId={post._id as string}/>
       </main>
     );
