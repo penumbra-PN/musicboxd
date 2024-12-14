@@ -33,11 +33,9 @@ export default function CreatePostForm() {
             if (!response.ok || !data.success) {
                 toast.error(data.error);
             }
-
-            router.refresh();
             toast.success("Successfully Created Post.");
-            router.refresh();
             router.push("/posts");
+            router.refresh();
         } catch (error) {
             console.log(error);
             toast.error("Internal server error.");
