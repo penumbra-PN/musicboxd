@@ -15,8 +15,6 @@ export default async function CreatePostPage() {
     return redirect("/login");
   }
 
-  const sessionUser = session.user as IUser;
-
   return (
     <main className="flex min-h-screen w-screen flex-col items-center justify-center gap-y-4">
       <Link href={`/posts`}>Back</Link>

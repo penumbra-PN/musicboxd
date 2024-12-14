@@ -1,4 +1,4 @@
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 
 import { type Session } from "lucia";
 
@@ -22,7 +22,7 @@ export default async function PostPage() {
   try {
     let allPosts = (await Post.find().exec()) as IPost[];
     if (!allPosts) {
-      return <div>No Posts!</div>;
+      return notFound();
     }
 
     allPosts = allPosts.map((post) => post.toObject());
