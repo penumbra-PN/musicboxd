@@ -51,26 +51,26 @@ export default function SignupForm() {
           <label className="text-xl" htmlFor="username">
             Username
           </label>
-          <input className="rounded border border-solid border-black p-2 bg-textbox-gray" type="text" {...register("username")} />
+          <input className="rounded border border-solid border-black p-2 bg-textbox-gray text-spotify-black" type="text" {...register("username")} />
           {errors.username && <span className="text-red-600">{errors.username.message}</span>}
         </div>
         <div className="flex flex-col">
           <label className="text-xl" htmlFor="email">
             Email
           </label>
-          <input className="rounded border border-solid border-black p-2 bg-textbox-gray" type="email" {...register("email")} />
+          <input className="rounded border border-solid border-black p-2 bg-textbox-gray text-spotify-black" type="email" {...register("email")} />
           {errors.email && <span className="text-red-600">{errors.email.message}</span>}
         </div>
         <div className="flex flex-col">
           <label className="text-xl" htmlFor="password">
             Password
           </label>
-          <input className="rounded border border-solid border-black p-2 bg-textbox-gray" type="password" {...register("password")} />
+          <input className="rounded border border-solid border-black p-2 bg-textbox-gray text-spotify-black" type="password" {...register("password")} />
           {errors.password && <span className="text-red-600">{errors.password.message}</span>}
         </div>
         {errors.root && <span className="text-red-600">{errors.root?.message}</span>}
-        <button className="w-full rounded border border-solid border-black p-2 bg-spotify-green text-spotify-black font-bold" type="submit">
-          Submit
+        <button className="w-full rounded-3xl border border-solid border-black p-2 bg-spotify-green text-spotify-black font-extrabold" type="submit">
+          Sign Up
         </button>
       </form>
     </div>

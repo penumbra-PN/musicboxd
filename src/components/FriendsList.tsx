@@ -99,10 +99,11 @@ export default function FriendsList(props: FriendsListProps) {
 
   return (
     <div className="flex flex-col gap-y-6">
+      <h2 className="flex self-center text-xl font-bold">Send a Friend Request</h2>
       <form className="flex items-center justify-between gap-x-2" onSubmit={(e) => sendFriendRequest(e)}>
-        <label htmlFor="username">Send Friend Request:</label>
-        <input className="grow border border-solid border-black p-2" type="text" name="username" ref={input} />
-        <button className="w-fit border border-solid border-black p-2 bg-spotify-green text-spotify-black" type="submit">
+        <label htmlFor="username">Enter Username:</label>
+        <input className="grow border border-solid border-black p-2 bg-textbox-gray text-spotify-black" type="text" name="username" ref={input} />
+        <button className="w-fit rounded-3xl border border-solid border-black p-2 bg-spotify-green text-spotify-black" type="submit">
           Send
         </button>
       </form>
@@ -114,11 +115,11 @@ export default function FriendsList(props: FriendsListProps) {
                 {e.friend.username}
               </Link>
               <div className="flex gap-x-2">
-                <a className="w-fit border border-solid border-black p-2" href={`/channel/${e.channelId}`}>
+                <a className="w-fit rounded-3xl border border-solid border-black p-2 bg-spotify-green text-spotify-black" href={`/channel/${e.channelId}`}>
                   Message
                 </a>
                 <button
-                  className="w-fit border border-solid border-black p-2"
+                  className="w-fit rounded-3xl border border-solid border-black p-2 bg-spotify-green text-spotify-black"
                   onClick={() => removeFriend(e.friend._id as string)}
                 >
                   Remove

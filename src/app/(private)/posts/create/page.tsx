@@ -15,8 +15,8 @@ export default async function CreatePostPage() {
   }
 
   return (
-    <main className="flex min-h-screen w-screen flex-col items-center justify-center gap-y-4">
-      <Link href={`/posts`} className="fixed top-0 left-0 mt-5 p-2 ml-4">
+    <main className="flex min-h-screen w-screen flex-col items-center justify-center gap-y-4 bg-spotify-black text-spotify-white">
+      <Link href={`/posts`} className="fixed top-0 left-0 mt-5 p-2 ml-4 text-spotify-green">
         Back
       </Link>
 

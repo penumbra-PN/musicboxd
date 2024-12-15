@@ -79,13 +79,13 @@ export default function FriendRequestsList(props: FriendRequestsListProps) {
               </Link>
               <div className="flex gap-x-2">
                 <button
-                  className="w-fit border border-solid border-black p-2"
+                  className="w-fit rounded-3xl border border-solid border-black p-2 bg-spotify-green text-spotify-black"
                   onClick={() => acceptFriendRequest(request._id as string)}
                 >
                   Accept
                 </button>
                 <button
-                  className="w-fit border border-solid border-black p-2"
+                  className="w-fit rounded-3xl border border-solid border-black p-2 bg-spotify-green text-spotify-black"
                   onClick={() => rejectFriendRequest(request._id as string)}
                 >
                   Reject

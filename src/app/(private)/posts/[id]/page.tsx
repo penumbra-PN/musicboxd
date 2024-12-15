@@ -55,8 +55,8 @@ export default async function PostById({ params }: { params: { id: string } }) {
   const sessionUser = session.user as IUser;
   if (sessionUser.id !== post.user_id) {
     return (
-      <main className="flex min-h-screen w-screen flex-col items-center justify-center gap-y-4">
-        <Link href={`/posts`} className="fixed top-0 left-0 mt-5 p-2 ml-4">
+      <main className="flex min-h-screen w-screen flex-col items-center justify-center gap-y-4 bg-spotify-black">
+        <Link href={`/posts`} className="fixed top-0 left-0 mt-5 p-2 ml-4 text-spotify-green">
           See All Posts
         </Link>
         <SinglePost post={post} user={username} comments={comments} commentUsernames={commentUsernames} />
@@ -64,8 +64,8 @@ export default async function PostById({ params }: { params: { id: string } }) {
     );
   } else {
     return (
-      <main className="flex min-h-screen w-screen flex-col items-center justify-center gap-y-4">
-        <Link href={`/posts`} className="fixed top-0 left-0 mt-5 p-2 ml-4">
+      <main className="flex min-h-screen w-screen flex-col items-center justify-center gap-y-4 bg-spotify-black">
+        <Link href={`/posts`} className="fixed top-0 left-0 mt-5 p-2 ml-4 text-spotify-green">
           See All Posts
         </Link>
         <SinglePost post={post} user={username} comments={comments} commentUsernames={commentUsernames} />

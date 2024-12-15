@@ -16,6 +16,8 @@ type PostProps = {
 export default function Posts(props: PostProps) {
   const [posts, setPosts] = useState<IPost[]>(props.posts);
   const [usernames] = useState<string[]>(props.usernames);
+  const [likeColor, setLikeColor] = useState<string>("text-spotify-white");
+  const [dislikeColor, setDislikeColor] = useState<string>("text-spotify-white");
 
   const handleLikes = async (postId: string) => {
     try {
@@ -90,7 +92,7 @@ export default function Posts(props: PostProps) {
             posts.map((post, index) => (
               <li key={index} className="mb-10">
                 <Link href={`/posts/${post._id}`}>
-                  <h3 className="text-2xl font-semibold text-pink-400">{post.title}</h3>
+                  <h3 className="text-2xl font-semibold text-spotify-green">{post.title}</h3>
                 </Link>
                 <p className="text-gray mt-2">{post.text}</p>
                 <div className="mt-3 flex gap-x-8 text-sm">

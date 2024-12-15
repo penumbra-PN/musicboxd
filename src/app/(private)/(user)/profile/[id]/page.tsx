@@ -7,6 +7,7 @@ import DeleteUserButton from "@/components/DeleteUserButton";
 import LogoutButton from "@/components/LogoutButton";
 import ProfileSections from "@/components/ProfileSections";
 import SendFriendRequestButton from "@/components/SendFriendRequestButton";
+//import Header from "@/components/Header";
 
 import { getSession } from "@/lib/lucia";
 import Channel, { type IChannel } from "@/lib/models/channel";
