@@ -42,7 +42,7 @@ export default async function PostPage() {
       <main className="flex min-h-screen w-screen flex-col items-center justify-center gap-y-4 bg-spotify-black text-spotify-white">
         <h1 className="text-4xl">Forum Page</h1>
         <Link
-          className="fixed rounded-3xl top-0 left-0 mt-5 ml-4 p-2 w-fit border border-solid border-black p-2 bg-spotify-green text-spotify-black"
+          className="fixed rounded-3xl top-0 left-0 mt-5 ml-4 p-2 w-fit border border-solid border-black bg-spotify-green text-spotify-black"
           href="/posts/create"
         >
           Create A Post
