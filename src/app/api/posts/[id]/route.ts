@@ -1,9 +1,13 @@
 import * as context from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
+import { v4 as uuid } from "uuid";
+
 import { auth } from "@/lib/lucia";
 import Comment, { type IComment } from "@/lib/models/comment";
 import Post, { type IPost } from "@/lib/models/post";
+import User, { type IUser } from "@/lib/models/user";
+import { CreateComment } from "@/lib/validators/comment";
 
 export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
   try {
@@ -50,9 +54,70 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
     try {
       const post = (await Post.findById(params.id).exec()) as IPost;
       if (!post) {
-        return NextResponse.json({ error: "Post not found." }, { status: 404 });
+        return NextResponse.json({ success: false, error: "Post not found." }, { status: 404 });
       }
       const body = await request.json();
+
+      if (body.text) {
+        const validated = CreateComment.safeParse(body);
+        if (!validated.success) {
+          return NextResponse.json(
+            {
+              success: false,
+              error: validated.error.flatten().formErrors,
+            },
+            { status: 400 },
+          );
+        }
+
+        const user = session.user as IUser;
+
+        const exists = (await User.findById(user.id).exec()) as IUser;
+        if (!exists) {
+          return NextResponse.json({ success: false, error: "User not found." }, { status: 404 });
+        }
+
+        const newComment = (await Comment.create({
+          _id: uuid(),
+          post_id: post._id,
+          user_id: exists._id,
+          text: body.text,
+          likes: [],
+          dislikes: [],
+          created_at: new Date(),
+          updated_at: "",
+        })) as IComment;
+        if (!newComment) {
+          throw "Error: Could not add comment";
+        }
+        await newComment.save();
+
+        exists.comments.push(newComment._id as string);
+        let updateInfo = await User.findByIdAndUpdate(newComment.user_id, {
+          $set: exists,
+        }).exec();
+        if (!updateInfo) {
+          throw "Error: Could not update user";
+        }
+        await updateInfo.save();
+
+        post.comments.push(newComment._id as string);
+        updateInfo = await Post.findByIdAndUpdate(newComment.post_id, {
+          $set: post,
+        }).exec();
+        if (!updateInfo) {
+          throw "Error: Could not update post";
+        }
+        return NextResponse.json(
+          {
+            success: true,
+            post: post,
+            comment: newComment,
+            commentUsername: exists.username,
+          },
+          { status: 200 },
+        );
+      }
 
       if (body.liked) {
         if (post.dislikes.includes(session.user.id as string)) {
@@ -73,6 +138,7 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
           post.dislikes.push(session.user.id as string);
         }
       }
+
       let removed: string[] = [];
       post.likes.forEach((id) => {
         if (!removed.includes(id)) {
@@ -99,7 +165,7 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
         comment = (await Comment.findById(body.commentId).exec()) as IComment;
 
         if (!comment) {
-          return NextResponse.json({ error: "Comment not found." }, { status: 404 });
+          return NextResponse.json({ success: false, error: "Comment not found." }, { status: 404 });
         }
 
         if (body.commentLiked) {
@@ -121,6 +187,7 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
             comment.dislikes.push(session.user.id as string);
           }
         }
+
         let removed: string[] = [];
         comment.likes.forEach((id) => {
           if (!removed.includes(id)) {

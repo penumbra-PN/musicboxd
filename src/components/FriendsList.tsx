@@ -114,9 +114,9 @@ export default function FriendsList(props: FriendsListProps) {
                 {e.friend.username}
               </Link>
               <div className="flex gap-x-2">
-                <Link className="w-fit border border-solid border-black p-2" href={`/channel/${e.channelId}`}>
+                <a className="w-fit border border-solid border-black p-2" href={`/channel/${e.channelId}`}>
                   Message
-                </Link>
+                </a>
                 <button
                   className="w-fit border border-solid border-black p-2"
                   onClick={() => removeFriend(e.friend._id as string)}

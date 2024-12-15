@@ -63,10 +63,13 @@ export default function ProfileSections(props: ProfileSectionProps) {
       case ProfileSection.POSTS:
         return (
           <div className="flex flex-col">
+            <Link className="w-fit border border-solid border-black p-2" href="/posts/create">
+              Create A Post
+            </Link>
             {props.posts.map((post) => {
               return (
-                <Link key={post.id} href={`/post/${post.id}`}>
-                  {post.text}
+                <Link key={post.id} href={`/posts/${post._id}`}>
+                  {post.title}
                 </Link>
               );
             })}
@@ -77,7 +80,7 @@ export default function ProfileSections(props: ProfileSectionProps) {
           <div className="flex flex-col">
             {props.comments.map((comment) => {
               return (
-                <Link key={comment.id} href={`/post/${comment.post_id}`}>
+                <Link key={comment.id} href={`/posts/${comment.post_id}`}>
                   {comment.text}
                 </Link>
               );
