@@ -5,6 +5,7 @@ export const Signup = z.object({
     .string({
       message: "Username is required.",
     })
+    .trim()
     .min(3, {
       message: "Username must have at least 3 characters.",
     })
@@ -15,6 +16,7 @@ export const Signup = z.object({
     .string({
       message: "Email is required.",
     })
+    .trim()
     .email({
       message: "Invalid email.",
     }),
@@ -22,6 +24,7 @@ export const Signup = z.object({
     .string({
       message: "Password is required.",
     })
+    .trim()
     .min(8, {
       message: "Password must have at least 8 characters.",
     })
@@ -37,6 +40,7 @@ export const Login = z.object({
     .string({
       message: "Email is required.",
     })
+    .trim()
     .email({
       message: "Invalid email.",
     }),
@@ -44,6 +48,7 @@ export const Login = z.object({
     .string({
       message: "Password is required.",
     })
+    .trim()
     .min(8, {
       message: "Password must have at least 8 characters.",
     })
@@ -59,6 +64,7 @@ export const EditProfile = z.object({
     .string({
       message: "Username is required.",
     })
+    .trim()
     .min(3, {
       message: "Username must have at least 3 characters.",
     })
@@ -69,6 +75,7 @@ export const EditProfile = z.object({
     .string({
       message: "Bio is required.",
     })
+    .trim()
     .max(255, {
       message: "Bio must have at most 255 characters.",
     }),
@@ -87,6 +94,7 @@ export const SendMessage = z.object({
     .string({
       message: "Text is required.",
     })
+    .trim()
     .min(1, {
       message: "Text must contain have at least 1 character.",
     }),

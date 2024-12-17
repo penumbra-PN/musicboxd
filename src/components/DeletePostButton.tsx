@@ -1,30 +1,33 @@
 "use client";
 
-import { useState } from "react";
-
 import { useRouter } from "next/navigation";
 
 import { toast } from "react-toastify";
 
-export default function DeleteUserButton() {
-  const [loading, setLoading] = useState(false);
+type PostProps = {
+  postId: string;
+};
+
+export default function DeletePostButton(props: PostProps) {
   const router = useRouter();
 
   const handleDelete = async () => {
     try {
-      setLoading(true);
-      const response = await fetch("/api/user", {
+      const response = await fetch("/api/posts", {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
         },
+        body: JSON.stringify({
+          postId: props.postId,
+        }),
       });
-      setLoading(false);
 
       const data = await response.json();
       if (!response.ok || !data.success) {
         toast.error(data.error);
       } else {
+        router.push("/posts");
         router.refresh();
       }
     } catch (error) {
@@ -33,17 +36,9 @@ export default function DeleteUserButton() {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="absolute bottom-0 left-0 w-fit border border-solid border-red-600 p-2 m-4 text-red-600">
-        Currently deleting user data...
-      </div>
-    );
-  }
-
   return (
     <button
-      className="absolute bottom-0 left-0 w-fit border border-solid border-red-600 p-2 m-4 text-red-600"
+      className="fixed bottom-0 left-0 w-fit border border-solid border-red-600 p-2 m-4 text-red-600"
       onClick={() => handleDelete()}
     >
       Delete

@@ -33,8 +33,8 @@ export default async function ProfilePage({ params }: { params: { id: string } }
     const channel = (await Channel.findOne({
       $or: [
         { $and: [{ userA_id: sessionUser.id }, { userB_id: user.id }] },
-        { $and: [{ userB_id: sessionUser.id }, { userA_id: user.id }] },
-      ],
+        { $and: [{ userB_id: sessionUser.id }, { userA_id: user.id }] }
+      ]
     }).exec()) as IChannel;
 
     return (
@@ -59,8 +59,8 @@ export default async function ProfilePage({ params }: { params: { id: string } }
       const channel = (await Channel.findOne({
         $or: [
           { $and: [{ userA_id: sessionUser.id }, { userB_id: id }] },
-          { $and: [{ userB_id: sessionUser.id }, { userA_id: id }] },
-        ],
+          { $and: [{ userB_id: sessionUser.id }, { userA_id: id }] }
+        ]
       }).exec()) as IChannel;
       if (!channel) {
         return notFound();
@@ -68,23 +68,24 @@ export default async function ProfilePage({ params }: { params: { id: string } }
 
       return {
         friend: (await User.findById(id).exec()) as IUser,
-        channelId: channel.id,
+        channelId: channel.id
       };
-    }),
+    })
   );
   const friendRequests = await Promise.all(
-    sessionUser.friend_requests.map(async (id) => (await User.findById(id).exec()) as IUser),
+    sessionUser.friend_requests.map(async (id) => (await User.findById(id).exec()) as IUser)
   );
   const reviews = await Promise.all(
-    sessionUser.reviews.map(async (id) => (await Review.findById(id).exec()) as IReview),
+    sessionUser.reviews.map(async (id) => (await Review.findById(id).exec()) as IReview)
   );
   const posts = await Promise.all(sessionUser.posts.map(async (id) => (await Post.findById(id).exec()) as IPost));
   const comments = await Promise.all(
-    sessionUser.comments.map(async (id) => (await Comment.findById(id).exec()) as IComment),
+    sessionUser.comments.map(async (id) => (await Comment.findById(id).exec()) as IComment)
   );
 
   return (
     <main className="flex min-h-screen w-screen flex-col items-center justify-center gap-y-4 relative">
+      <Link className="absolute top-0 left-0 w-fit border border-solid border-black p-2 m-4" href="/home">Home</Link>
       <Link href={`/profile/${sessionUser.id}/edit`}>Edit</Link>
       <h1 className="text-4xl">{sessionUser.username}&#39;s Profile</h1>
       <p>{sessionUser.bio}</p>
