@@ -1,14 +1,27 @@
 import { NextResponse } from "next/server";
 import SpotifyWebApi from "spotify-web-api-node";
+import mongoose from "mongoose"
+import Song from "@/lib/models/song"
+import dotenv from 'dotenv';
+dotenv.config();
 
 const spotifyApi = new SpotifyWebApi({
-  clientId: '41c08a28808c48cab50a60e9fd3e988c',
-  clientSecret: 'd018aec4e9c5483dbc01cc25fc325f7e',
+  clientId: process.env.CLIENT_ID,
+  clientSecret: process.env.CLIENT_SECRET,
 });
 
 const initializeSpotifyToken = async () => {
   const data = await spotifyApi.clientCredentialsGrant();
   spotifyApi.setAccessToken(data.body.access_token);
+};
+
+const connectToDatabase = async () => {
+  if (!mongoose.connection.readyState) {
+    await mongoose.connect(process.env.MONGODB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+  }
 };
 
 export const GET = async (request: Request) => {
@@ -43,5 +56,35 @@ export const GET = async (request: Request) => {
   } catch (error) {
     console.error("Error fetching songs:", error);
     return NextResponse.json({ error: "Failed to fetch songs" }, { status: 500 });
+  }
+};
+
+export const POST = async (request: Request) => {
+  try {
+    await connectToDatabase();
+
+    const { name, artist, album, spotify_id } = await request.json();
+
+    if (!name || !artist || !album || !spotify_id) {
+      return NextResponse.json(
+        { error: "Missing required fields in request body" },
+        { status: 400 }
+      );
+    }
+
+    // Check if the song already exists
+    const existingSong = await Song.findOne({ spotify_id });
+    if (existingSong) {
+      return NextResponse.json({ message: "Song already exists" });
+    }
+
+    // Create and save the new song
+    const newSong = new Song({ name, artist, album, spotify_id });
+    await newSong.save();
+
+    return NextResponse.json({ message: "Song saved successfully" });
+  } catch (error) {
+    console.error("Error saving song:", error);
+    return NextResponse.json({ error: "Failed to save song" }, { status: 500 });
   }
 };

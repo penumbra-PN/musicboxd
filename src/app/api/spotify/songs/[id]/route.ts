@@ -1,10 +1,25 @@
 import { NextResponse } from "next/server";
 import SpotifyWebApi from "spotify-web-api-node";
+import mongoose from "mongoose";
+import Review from "@/lib/models/review"
+import User from "@/lib/models/user"
 
 const spotifyApi = new SpotifyWebApi({
-  clientId: '41c08a28808c48cab50a60e9fd3e988c',
-  clientSecret: 'd018aec4e9c5483dbc01cc25fc325f7e',
+  clientId: process.env.CLIENT_ID,
+  clientSecret: process.env.CLIENT_SECRET,
 });
+
+const MONGODB_URI = process.env.MONGODB_URI;
+
+const connectToDatabase = async () => {
+  if (mongoose.connection.readyState === 0) {
+    await mongoose.connect(MONGODB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log("Connected to MongoDB");
+  }
+};
 
 const initializeSpotifyToken = async () => {
   const data = await spotifyApi.clientCredentialsGrant();
@@ -23,7 +38,7 @@ export const GET = async (request: Request, { params }: { params: { id: string }
       await initializeSpotifyToken();
     }
 
-    const track = await spotifyApi.getTrack(id, {market: 'US'});
+    const track = await spotifyApi.getTrack(id, { market: "US" });
 
     const song = {
       id: track.body.id,
@@ -36,7 +51,26 @@ export const GET = async (request: Request, { params }: { params: { id: string }
       preview_url: track.body.preview_url || null,
     };
 
-    return NextResponse.json({ song });
+    await connectToDatabase();
+
+    const reviews = await Review.find({ song_id: id })
+
+    const enrichedReviews = await Promise.all(
+      reviews.map(async (review) => {
+        const user = await User.findById(review.user_id).exec();
+        return {
+          id: review._id,
+          text: review.text,
+          rating: review.rating,
+          created_at: review.created_at,
+          user: user
+            ? { id: user._id, name: user.username }
+            : { id: null, name: "Unknown User" },
+        };
+      })
+    );
+
+    return NextResponse.json({ song, reviews: enrichedReviews });
   } catch (error) {
     console.error("Error fetching song details:", error);
     return NextResponse.json(

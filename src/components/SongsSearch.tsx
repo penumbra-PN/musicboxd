@@ -20,6 +20,11 @@ const SongsSearch= () => {
         throw new Error("Failed to fetch songs");
       }
       const data = await response.json();
+      
+      for(const song of data.songs){
+        await saveSongToDB(song);
+      }
+      
       setSongs(data.songs);
 
     } catch (err) {
@@ -28,6 +33,29 @@ const SongsSearch= () => {
       setLoading(false);
     }
   };
+
+  const saveSongToDB = async (song) => {
+    try{
+      const response = await fetch("api/spotify/songs", {
+        method: "POST",
+        headers:{
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          name: song.name,
+          artist: song.artists.join(", "),
+          album: song.album,
+          spotify_id: song.id,
+        })
+      });
+
+      if(!response.ok){
+        throw new Error(`Failed to save song: ${song.name}`);
+      }
+    }catch (err){
+      console.error(`Error saving song to database: ${err.message}`);
+    }
+  }
 
   return (
     <div>

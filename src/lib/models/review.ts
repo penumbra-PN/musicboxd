@@ -21,7 +21,6 @@ export default mongoose.models.Review ||
         rating: { type: Number, required: true },
       } as const,
       {
-        _id: false,
         timestamps: {
           createdAt: "created_at",
           updatedAt: "updated_at",
