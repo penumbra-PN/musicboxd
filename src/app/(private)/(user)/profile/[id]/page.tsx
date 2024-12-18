@@ -38,8 +38,8 @@ export default async function ProfilePage({ params }: { params: { id: string } }
     }).exec()) as IChannel;
 
     return (
-      <main className="flex min-h-screen w-screen flex-col items-center justify-center gap-y-4">
-        <h1 className="text-4xl">{user.username}&#39;s Profile</h1>
+      <main className="flex min-h-screen w-screen flex-col items-center justify-center gap-y-4 bg-spotify-black text-spotify-white">
+        <h1 className="text-4xl text-spotify-green">{user.username}&#39;s Profile</h1>
         <p>{user.bio}</p>
         {user.friends.includes(sessionUser.id) ? (
           channel ? (

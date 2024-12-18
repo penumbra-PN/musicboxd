@@ -18,8 +18,8 @@ export default async function EditProfilePage() {
   const sessionUser = session.user as IUser;
 
   return (
-    <main className="flex min-h-screen w-screen flex-col items-center justify-center gap-y-4">
-      <Link href={`/profile/${sessionUser.id}`}>Back</Link>
+    <main className="flex min-h-screen w-screen flex-col items-center justify-center gap-y-4 bg-spotify-black text-spotify-white">
+      <Link href={`/profile/${sessionUser.id}`} className="text-spotify-green">Back</Link>
       <EditProfileForm username={sessionUser.username} bio={sessionUser.bio} />
     </main>
   );

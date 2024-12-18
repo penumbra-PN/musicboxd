@@ -102,7 +102,7 @@ export default function FriendsList(props: FriendsListProps) {
       <form className="flex items-center justify-between gap-x-2" onSubmit={(e) => sendFriendRequest(e)}>
         <label htmlFor="username">Send Friend Request:</label>
         <input className="grow border border-solid border-black p-2" type="text" name="username" ref={input} />
-        <button className="w-fit border border-solid border-black p-2" type="submit">
+        <button className="w-fit border border-solid border-black p-2 bg-spotify-green text-spotify-black" type="submit">
           Send
         </button>
       </form>

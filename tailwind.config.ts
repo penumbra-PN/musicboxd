@@ -8,9 +8,16 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        display: ''
+      },
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        'spotify-green': "#1CD85F",
+        'spotify-black': "#2B2B2B",
+        'spotify-white': "#FFFFFF", 
+        'textbox-gray': "#ADADAD"
       },
     },
   },

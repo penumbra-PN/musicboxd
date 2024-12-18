@@ -94,31 +94,31 @@ export default function ProfileSections(props: ProfileSectionProps) {
     <div className="flex flex-col gap-y-4">
       <div className="flex gap-x-8">
         <button
-          className={`${currentSection === ProfileSection.FRIENDS ? "text-pink-400" : ""} text-2xl underline`}
+          className={`${currentSection === ProfileSection.FRIENDS ? "text-spotify-green" : ""} text-2xl underline`}
           onClick={() => setCurrentSection(ProfileSection.FRIENDS)}
         >
           Friends
         </button>
         <button
-          className={`${currentSection === ProfileSection.FRIEND_REQUESTS ? "text-pink-400" : ""} text-2xl underline`}
+          className={`${currentSection === ProfileSection.FRIEND_REQUESTS ? "text-spotify-green" : ""} text-2xl underline`}
           onClick={() => setCurrentSection(ProfileSection.FRIEND_REQUESTS)}
         >
           Friend Requests
         </button>
         <button
-          className={`${currentSection === ProfileSection.REVIEWS ? "text-pink-400" : ""} text-2xl underline`}
+          className={`${currentSection === ProfileSection.REVIEWS ? "text-spotify-green" : ""} text-2xl underline`}
           onClick={() => setCurrentSection(ProfileSection.REVIEWS)}
         >
           Reviews
         </button>
         <button
-          className={`${currentSection === ProfileSection.POSTS ? "text-pink-400" : ""} text-2xl underline`}
+          className={`${currentSection === ProfileSection.POSTS ? "text-spotify-green" : ""} text-2xl underline`}
           onClick={() => setCurrentSection(ProfileSection.POSTS)}
         >
           Posts
         </button>
         <button
-          className={`${currentSection === ProfileSection.COMMENTS ? "text-pink-400" : ""} text-2xl underline`}
+          className={`${currentSection === ProfileSection.COMMENTS ? "text-spotify-green" : ""} text-2xl underline`}
           onClick={() => setCurrentSection(ProfileSection.COMMENTS)}
         >
           Comments

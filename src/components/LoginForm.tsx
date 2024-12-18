@@ -46,23 +46,23 @@ export default function LoginForm() {
       <h1 className="text-4xl">
         <strong>Log In</strong>
       </h1>
-      <form className="flex min-w-80 flex-col gap-y-4" onSubmit={handleSubmit(login)}>
+      <form className="flex min-w-80 flex-col gap-y-4 text-spotify-white" onSubmit={handleSubmit(login)}>
         <div className="flex flex-col">
           <label className="text-xl" htmlFor="email">
             Email
           </label>
-          <input className="rounded border border-solid border-black p-2" type="email" {...register("email")} />
+          <input className="rounded border border-solid border-black p-2 bg-textbox-gray" type="email" {...register("email")} />
           {errors.email && <span className="text-red-600">{errors.email.message}</span>}
         </div>
         <div className="flex flex-col">
           <label className="text-xl" htmlFor="password">
             Password
           </label>
-          <input className="rounded border border-solid border-black p-2" type="password" {...register("password")} />
+          <input className="rounded border border-solid border-black p-2 bg-textbox-gray" type="password" {...register("password")} />
           {errors.password && <span className="text-red-600">{errors.password.message}</span>}
         </div>
         {errors.root && <span className="text-red-600">{errors.root?.message}</span>}
-        <button className="w-full rounded border border-solid border-black p-2" type="submit">
+        <button className="w-full rounded border border-solid border-black p-2 bg-spotify-green text-spotify-black font-bold" type="submit">
           Submit
         </button>
       </form>
