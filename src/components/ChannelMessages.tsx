@@ -77,7 +77,7 @@ export default function ChannelMessages(props: ChannelMessagesProps) {
       </div>
       <form className="flex w-full" onSubmit={(e) => send(e)}>
         <input className="grow border border-solid border-black p-2 bg-textbox-gray text-spotify-black" type="text" ref={inputRef} />
-        <button className="w-fit border border-solid border-black p-2 bg-spotify-green text-spotify-black" type="submit">
+        <button className="w-fit border border-solid border-black p-2 hover:bg-spotify-white font-bold bg-spotify-green text-spotify-black" type="submit">
           Send
         </button>
       </form>

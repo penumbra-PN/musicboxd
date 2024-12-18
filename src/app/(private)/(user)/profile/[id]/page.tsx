@@ -44,7 +44,7 @@ export default async function ProfilePage({ params }: { params: { id: string } }
         <p>{user.bio}</p>
         {user.friends.includes(sessionUser.id) ? (
           channel ? (
-            <a className="w-fit border border-solid border-black p-2" href={`/channel/${channel.id}`}>
+            <a className="w-fit border border-solid border-black p-2 rounded-3xl bg-spotify-green text-spotify-black font-bold hover:bg-spotify-white" href={`/channel/${channel.id}`}>
               Go to Messages
             </a>
           ) : null
@@ -86,8 +86,8 @@ export default async function ProfilePage({ params }: { params: { id: string } }
 
   return (
     <main className="flex min-h-screen w-screen flex-col items-center p-16 gap-y-4 relative bg-spotify-black text-spotify-white">
-      <Link className="absolute top-0 left-0 w-fit border border-solid border-black p-2 m-4 rounded-3xl bg-spotify-green text-spotify-black" href="/home">Home</Link>
-      <Link className="absolute top-0 right-24 w-fit border border-solid border-black p-2 m-4 rounded-3xl bg-spotify-green text-spotify-black" href={`/profile/${sessionUser.id}/edit`}>Edit</Link>
+      <Link className="absolute top-0 left-0 w-fit border border-solid border-black p-2 m-4 rounded-3xl font-bold bg-spotify-green text-spotify-black hover:bg-spotify-white" href="/home">Home</Link>
+      <Link className="absolute top-0 right-24 w-fit border border-solid border-black p-2 m-4 rounded-3xl font-bold bg-spotify-green text-spotify-black hover:bg-spotify-white" href={`/profile/${sessionUser.id}/edit`}>Edit</Link>
         <h1 className="text-4xl text-spotify-green font-bold">{sessionUser.username}&#39;s Profile</h1>
         <p className="text-lg">{sessionUser.bio}</p>
         <ProfileSections

@@ -68,11 +68,11 @@ const SongsSearch= () => {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Enter a song name or artist"
-          className="border rounded px-4 py-2 w-80"
+          className="placeholder-gray-600 rounded px-4 py-2 w-80 bg-textbox-gray text-spotify-black"
         />
         <button
           onClick={handleSearch}
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+          className="bg-spotify-green text-spotify-black font-bold px-4 py-2 rounded-3xl hover:bg-spotify-white"
         >
           Search
         </button>
@@ -89,8 +89,8 @@ const SongsSearch= () => {
             <li key={song.id} className="mb-4 flex gap-x-4 items-center">
               <Link href={`/songs/${song.id}`} className="flex items-center gap-x-4">
                 <img src={song.image} alt={`${song.name} album cover`} width="50" />
-                <div>
-                  <strong>{song.name}</strong> by {song.artists.join(", ")}
+                <div className="hover:underline">
+                  <strong className="text-spotify-green">{song.name}</strong> by {song.artists.join(", ")}
                   <p>Album: {song.album}</p>
                 </div>
               </Link>

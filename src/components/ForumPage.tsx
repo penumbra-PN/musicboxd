@@ -92,11 +92,11 @@ export default function Posts(props: PostProps) {
             posts.map((post, index) => (
               <li key={index} className="mb-10">
                 <Link href={`/posts/${post._id}`}>
-                  <h3 className="text-2xl font-semibold text-spotify-green">{post.title}</h3>
+                  <h3 className="text-2xl font-semibold text-spotify-green hover:underline">{post.title}</h3>
                 </Link>
                 <p className="text-gray mt-2">{post.text}</p>
                 <div className="mt-3 flex gap-x-8 text-sm">
-                  <Link href={`/profile/${post.user_id}`}>
+                  <Link href={`/profile/${post.user_id}`} className="hover:text-spotify-green hover:underline">
                     <p>@{usernames[index]}</p>
                   </Link>
                   <button onClick={() => handleLikes(post._id as string)}>&#x25B2; {post.likes.length}</button>
