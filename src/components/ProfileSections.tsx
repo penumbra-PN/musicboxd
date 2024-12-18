@@ -62,15 +62,17 @@ export default function ProfileSections(props: ProfileSectionProps) {
         );
       case ProfileSection.POSTS:
         return (
-          <div className="flex flex-col">
+          <div className="flex flex-col inset-0 items-center justify-center relative p-10">
             <Link className="relative w-fit self-center rounded-3xl border border-solid border-black p-2 bg-spotify-green text-spotify-black" href="/posts/create">
               Create A Post
             </Link>
+            <br></br>
+            <h2 className="text-spotify-green text-3xl font-bold underline">Posts</h2>
             {props.posts.map((post) => {
               return (
                 <>
                   <br></br>
-                  <Link key={post.id} href={`/posts/${post._id}`}>
+                  <Link className="hover:text-spotify-green hover:underline" key={post.id} href={`/posts/${post._id}`}>
                     {post.title}
                   </Link>
                 </>
@@ -80,7 +82,7 @@ export default function ProfileSections(props: ProfileSectionProps) {
         );
       case ProfileSection.COMMENTS:
         return (
-          <div className="flex flex-col">
+          <div className="flex flex-col inset-0 items-center justify-center relative p-10">
             {props.comments.map((comment) => {
               return (
                 <>

@@ -98,7 +98,7 @@ export default function FriendsList(props: FriendsListProps) {
   };
 
   return (
-    <div className="flex flex-col gap-y-6">
+    <div className="flex flex-col gap-y-6 inset-0 items-center justify-center relative p-10">
       <h2 className="flex self-center text-xl font-bold">Send a Friend Request</h2>
       <form className="flex items-center justify-between gap-x-2" onSubmit={(e) => sendFriendRequest(e)}>
         <label htmlFor="username">Enter Username:</label>
@@ -107,13 +107,16 @@ export default function FriendsList(props: FriendsListProps) {
           Send
         </button>
       </form>
+      <br></br>
+      <h2 className="flex self-center text-xl font-bold">Friends</h2>
       <ul className="flex flex-col gap-y-4">
         {friends.map((e) => {
           return (
-            <li className="flex grow items-center justify-between" key={e.friend._id as string}>
-              <Link className="hover:underline" href={`/profile/${e.friend._id}`}>
+            <li className="items-center justify-center self-center" key={e.friend._id as string}>
+              <Link className="flex items-center justify-center hover:text-spotify-green hover:underline" href={`/profile/${e.friend._id}`}>
                 {e.friend.username}
               </Link>
+              <br></br>
               <div className="flex gap-x-2">
                 <a className="w-fit rounded-3xl border border-solid border-black p-2 bg-spotify-green text-spotify-black" href={`/channel/${e.channelId}`}>
                   Message

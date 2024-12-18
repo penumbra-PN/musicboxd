@@ -85,18 +85,18 @@ export default async function ProfilePage({ params }: { params: { id: string } }
   );
 
   return (
-    <main className="flex min-h-screen w-screen flex-col items-center justify-center gap-y-4 relative bg-spotify-black text-spotify-white">
+    <main className="flex min-h-screen w-screen flex-col items-center p-16 gap-y-4 relative bg-spotify-black text-spotify-white">
       <Link className="absolute top-0 left-0 w-fit border border-solid border-black p-2 m-4 rounded-3xl bg-spotify-green text-spotify-black" href="/home">Home</Link>
-      <Link className="absolute top-0 right-0 w-fit border border-solid border-black p-2 m-4 rounded-3xl bg-spotify-green text-spotify-black" href={`/profile/${sessionUser.id}/edit`}>Edit</Link>
-      <h1 className="text-4xl">{sessionUser.username}&#39;s Profile</h1>
-      <p>{sessionUser.bio}</p>
-      <ProfileSections
-        friends={JSON.parse(JSON.stringify(friends))}
-        friendRequests={JSON.parse(JSON.stringify(friendRequests))}
-        reviews={JSON.parse(JSON.stringify(reviews))}
-        posts={JSON.parse(JSON.stringify(posts))}
-        comments={JSON.parse(JSON.stringify(comments))}
-      />
+      <Link className="absolute top-0 right-24 w-fit border border-solid border-black p-2 m-4 rounded-3xl bg-spotify-green text-spotify-black" href={`/profile/${sessionUser.id}/edit`}>Edit</Link>
+        <h1 className="text-4xl">{sessionUser.username}&#39;s Profile</h1>
+        <p className="text-lg">{sessionUser.bio}</p>
+        <ProfileSections
+          friends={JSON.parse(JSON.stringify(friends))}
+          friendRequests={JSON.parse(JSON.stringify(friendRequests))}
+          reviews={JSON.parse(JSON.stringify(reviews))}
+          posts={JSON.parse(JSON.stringify(posts))}
+          comments={JSON.parse(JSON.stringify(comments))}
+        />
       <LogoutButton />
       <DeleteUserButton />
     </main>
