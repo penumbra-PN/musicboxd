@@ -1,25 +1,27 @@
 import { NextResponse } from "next/server";
+
 import SpotifyWebApi from "spotify-web-api-node";
-import mongoose from "mongoose";
-import Review from "@/lib/models/review"
-import User from "@/lib/models/user"
+
+// import mongoose from "mongoose";
+import Review from "@/lib/models/review";
+import User from "@/lib/models/user";
 
 const spotifyApi = new SpotifyWebApi({
   clientId: process.env.CLIENT_ID,
   clientSecret: process.env.CLIENT_SECRET,
 });
 
-const MONGODB_URI = process.env.MONGODB_URI;
+// const MONGODB_URI = process.env.MONGODB_URI;
 
-const connectToDatabase = async () => {
-  if (mongoose.connection.readyState === 0) {
-    await mongoose.connect(MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-    console.log("Connected to MongoDB");
-  }
-};
+// const connectToDatabase = async () => {
+//   if (mongoose.connection.readyState === 0) {
+//     await mongoose.connect(MONGODB_URI, {
+//       useNewUrlParser: true,
+//       useUnifiedTopology: true,
+//     });
+//     console.log("Connected to MongoDB");
+//   }
+// };
 
 const initializeSpotifyToken = async () => {
   const data = await spotifyApi.clientCredentialsGrant();
@@ -51,9 +53,9 @@ export const GET = async (request: Request, { params }: { params: { id: string }
       preview_url: track.body.preview_url || null,
     };
 
-    await connectToDatabase();
+    // await connectToDatabase();
 
-    const reviews = await Review.find({ song_id: id })
+    const reviews = await Review.find({ song_id: id });
 
     const enrichedReviews = await Promise.all(
       reviews.map(async (review) => {
@@ -63,19 +65,14 @@ export const GET = async (request: Request, { params }: { params: { id: string }
           text: review.text,
           rating: review.rating,
           created_at: review.created_at,
-          user: user
-            ? { id: user._id, name: user.username }
-            : { id: null, name: "Unknown User" },
+          user: user ? { id: user._id, name: user.username } : { id: null, name: "Unknown User" },
         };
-      })
+      }),
     );
 
     return NextResponse.json({ song, reviews: enrichedReviews });
   } catch (error) {
     console.error("Error fetching song details:", error);
-    return NextResponse.json(
-      { error: "Failed to fetch song details" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Failed to fetch song details" }, { status: 500 });
   }
 };

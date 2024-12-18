@@ -1,11 +1,24 @@
-"use client"
-import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
+"use client";
 
-const SongsSearch= () => {
-  const [songs, setSongs] = useState([]);
+import React, { useState } from "react";
+
+import Link from "next/link";
+
+export type Song = {
+  id: string;
+  name: string;
+  artists: string[];
+  album: string;
+  image: string;
+  release_date: string | null;
+  duration: number | null;
+  preview_url: string | null;
+};
+
+const SongsSearch = () => {
+  const [songs, setSongs] = useState<Song[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<null | string>(null);
   const [searchQuery, setSearchQuery] = useState("");
 
   const handleSearch = async () => {
@@ -20,42 +33,41 @@ const SongsSearch= () => {
         throw new Error("Failed to fetch songs");
       }
       const data = await response.json();
-      
-      for(const song of data.songs){
+
+      for (const song of data.songs) {
         await saveSongToDB(song);
       }
-      
-      setSongs(data.songs);
 
-    } catch (err) {
-      setError(err.message);
+      setSongs(data.songs);
+    } catch (error) {
+      setError((error as Error).message);
     } finally {
       setLoading(false);
     }
   };
 
-  const saveSongToDB = async (song) => {
-    try{
+  const saveSongToDB = async (song: Song) => {
+    try {
       const response = await fetch("api/spotify/songs", {
         method: "POST",
-        headers:{
-          "Content-Type": "application/json"
+        headers: {
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           name: song.name,
           artist: song.artists.join(", "),
           album: song.album,
           spotify_id: song.id,
-        })
+        }),
       });
 
-      if(!response.ok){
+      if (!response.ok) {
         throw new Error(`Failed to save song: ${song.name}`);
       }
-    }catch (err){
-      console.error(`Error saving song to database: ${err.message}`);
+    } catch (error) {
+      console.error(`Error saving song to database: ${(error as Error).message}`);
     }
-  }
+  };
 
   return (
     <div>
@@ -70,10 +82,7 @@ const SongsSearch= () => {
           placeholder="Enter a song name or artist"
           className="border rounded px-4 py-2 w-80"
         />
-        <button
-          onClick={handleSearch}
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-        >
+        <button onClick={handleSearch} className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
           Search
         </button>
       </div>
@@ -100,9 +109,7 @@ const SongsSearch= () => {
       )}
 
       {/* No Results */}
-      {!loading && !error && songs.length === 0 && (
-        <div>No songs found. Try a different search query!</div>
-      )}
+      {!loading && !error && songs.length === 0 && <div>No songs found. Try a different search query!</div>}
     </div>
   );
 };

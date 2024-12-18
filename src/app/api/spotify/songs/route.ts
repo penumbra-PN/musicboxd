@@ -1,8 +1,11 @@
 import { NextResponse } from "next/server";
+
+import dotenv from "dotenv";
+// import mongoose from "mongoose";
 import SpotifyWebApi from "spotify-web-api-node";
-import mongoose from "mongoose"
-import Song from "@/lib/models/song"
-import dotenv from 'dotenv';
+
+import Song from "@/lib/models/song";
+
 dotenv.config();
 
 const spotifyApi = new SpotifyWebApi({
@@ -15,25 +18,22 @@ const initializeSpotifyToken = async () => {
   spotifyApi.setAccessToken(data.body.access_token);
 };
 
-const connectToDatabase = async () => {
-  if (!mongoose.connection.readyState) {
-    await mongoose.connect(process.env.MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-  }
-};
+// const connectToDatabase = async () => {
+//   if (!mongoose.connection.readyState) {
+//     await mongoose.connect(process.env.MONGODB_URI!, {
+//       useNewUrlParser: true,
+//       useUnifiedTopology: true,
+//     });
+//   }
+// };
 
 export const GET = async (request: Request) => {
   try {
-    const {searchParams} = new URL(request.url);
+    const { searchParams } = new URL(request.url);
     const query = searchParams.get("query");
 
-    if(!query){
-      return NextResponse.json(
-        {error: "Missing 'query paramenter in request"},
-        {status:400}
-      );
+    if (!query) {
+      return NextResponse.json({ error: "Missing 'query paramenter in request" }, { status: 400 });
     }
 
     if (!spotifyApi.getAccessToken()) {
@@ -43,13 +43,13 @@ export const GET = async (request: Request) => {
 
     const data = await spotifyApi.searchTracks(query);
 
-    const songs = data.body.tracks.items.map((track) => ({
+    const songs = data.body.tracks!.items.map((track) => ({
       id: track.id,
       name: track.name,
-      artists: track.artists.map((artist) => artist.name),
+      artists: track.artists.map((artist) => artist.name), //
       album: track.album.name,
       image: track.album.images[0]?.url,
-      preview_url: track.preview_url
+      preview_url: track.preview_url,
     }));
 
     return NextResponse.json({ songs });
@@ -61,15 +61,12 @@ export const GET = async (request: Request) => {
 
 export const POST = async (request: Request) => {
   try {
-    await connectToDatabase();
+    // await connectToDatabase();
 
     const { name, artist, album, spotify_id } = await request.json();
 
     if (!name || !artist || !album || !spotify_id) {
-      return NextResponse.json(
-        { error: "Missing required fields in request body" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Missing required fields in request body" }, { status: 400 });
     }
 
     // Check if the song already exists
