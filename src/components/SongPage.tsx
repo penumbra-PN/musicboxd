@@ -174,7 +174,7 @@ const SongPage = ({ id, session }: { id: string; session: any }) => {
         </button>
         {addToRecentlyListenedError && <p className="text-red-500 mt-2">{addToRecentlyListenedError}</p>}
         <h2 className="mt-8 text-2xl text-spotify-green font-bold">Reviews</h2>
-        <div className="flex flex-row w-full max-w-2xl items-center justify-center">
+        <div className="flex flex-col w-full max-w-2xl items-center justify-center">
           {reviews.length > 0 ? (
             reviews.map((review) => (
               <div key={review.id} className="border-b py-4">

@@ -3,12 +3,12 @@ import { notFound, redirect } from "next/navigation";
 
 import { type Session } from "lucia";
 
-import DeleteUserButton from "@/components/DeleteUserButton";
+// import DeleteUserButton from "@/components/DeleteUserButton";
 import LogoutButton from "@/components/LogoutButton";
 import ProfileSections from "@/components/ProfileSections";
 import SendFriendRequestButton from "@/components/SendFriendRequestButton";
-//import Header from "@/components/Header";
 
+//import Header from "@/components/Header";
 import { getSession } from "@/lib/lucia";
 import Channel, { type IChannel } from "@/lib/models/channel";
 import Comment, { type IComment } from "@/lib/models/comment";
@@ -34,8 +34,8 @@ export default async function ProfilePage({ params }: { params: { id: string } }
     const channel = (await Channel.findOne({
       $or: [
         { $and: [{ userA_id: sessionUser.id }, { userB_id: user.id }] },
-        { $and: [{ userB_id: sessionUser.id }, { userA_id: user.id }] }
-      ]
+        { $and: [{ userB_id: sessionUser.id }, { userA_id: user.id }] },
+      ],
     }).exec()) as IChannel;
 
     return (
@@ -44,7 +44,10 @@ export default async function ProfilePage({ params }: { params: { id: string } }
         <p>{user.bio}</p>
         {user.friends.includes(sessionUser.id) ? (
           channel ? (
-            <a className="w-fit border border-solid border-black p-2 rounded-3xl bg-spotify-green text-spotify-black font-bold hover:bg-spotify-white" href={`/channel/${channel.id}`}>
+            <a
+              className="w-fit border border-solid border-black p-2 rounded-3xl bg-spotify-green text-spotify-black font-bold hover:bg-spotify-white"
+              href={`/channel/${channel.id}`}
+            >
               Go to Messages
             </a>
           ) : null
@@ -60,8 +63,8 @@ export default async function ProfilePage({ params }: { params: { id: string } }
       const channel = (await Channel.findOne({
         $or: [
           { $and: [{ userA_id: sessionUser.id }, { userB_id: id }] },
-          { $and: [{ userB_id: sessionUser.id }, { userA_id: id }] }
-        ]
+          { $and: [{ userB_id: sessionUser.id }, { userA_id: id }] },
+        ],
       }).exec()) as IChannel;
       if (!channel) {
         return notFound();
@@ -69,36 +72,46 @@ export default async function ProfilePage({ params }: { params: { id: string } }
 
       return {
         friend: (await User.findById(id).exec()) as IUser,
-        channelId: channel.id
+        channelId: channel.id,
       };
-    })
+    }),
   );
   const friendRequests = await Promise.all(
-    sessionUser.friend_requests.map(async (id) => (await User.findById(id).exec()) as IUser)
+    sessionUser.friend_requests.map(async (id) => (await User.findById(id).exec()) as IUser),
   );
   const reviews = await Promise.all(
-    sessionUser.reviews.map(async (id) => (await Review.findById(id).exec()) as IReview)
+    sessionUser.reviews.map(async (id) => (await Review.findById(id).exec()) as IReview),
   );
   const posts = await Promise.all(sessionUser.posts.map(async (id) => (await Post.findById(id).exec()) as IPost));
   const comments = await Promise.all(
-    sessionUser.comments.map(async (id) => (await Comment.findById(id).exec()) as IComment)
+    sessionUser.comments.map(async (id) => (await Comment.findById(id).exec()) as IComment),
   );
 
   return (
     <main className="flex min-h-screen w-screen flex-col items-center p-16 gap-y-4 relative bg-spotify-black text-spotify-white">
-      <Link className="absolute top-0 left-0 w-fit border border-solid border-black p-2 m-4 rounded-3xl font-bold bg-spotify-green text-spotify-black hover:bg-spotify-white" href="/home">Home</Link>
-      <Link className="absolute top-0 right-24 w-fit border border-solid border-black p-2 m-4 rounded-3xl font-bold bg-spotify-green text-spotify-black hover:bg-spotify-white" href={`/profile/${sessionUser.id}/edit`}>Edit</Link>
-        <h1 className="text-4xl text-spotify-green font-bold">{sessionUser.username}&#39;s Profile</h1>
-        <p className="text-lg">{sessionUser.bio}</p>
-        <ProfileSections
-          friends={JSON.parse(JSON.stringify(friends))}
-          friendRequests={JSON.parse(JSON.stringify(friendRequests))}
-          reviews={JSON.parse(JSON.stringify(reviews))}
-          posts={JSON.parse(JSON.stringify(posts))}
-          comments={JSON.parse(JSON.stringify(comments))}
-        />
+      <Link
+        className="absolute top-0 left-0 w-fit border border-solid border-black p-2 m-4 rounded-3xl font-bold bg-spotify-green text-spotify-black hover:bg-spotify-white"
+        href="/home"
+      >
+        Home
+      </Link>
+      <Link
+        className="absolute top-0 right-24 w-fit border border-solid border-black p-2 m-4 rounded-3xl font-bold bg-spotify-green text-spotify-black hover:bg-spotify-white"
+        href={`/profile/${sessionUser.id}/edit`}
+      >
+        Edit
+      </Link>
+      <h1 className="text-4xl text-spotify-green font-bold">{sessionUser.username}&#39;s Profile</h1>
+      <p className="text-lg">{sessionUser.bio}</p>
+      <ProfileSections
+        friends={JSON.parse(JSON.stringify(friends))}
+        friendRequests={JSON.parse(JSON.stringify(friendRequests))}
+        reviews={JSON.parse(JSON.stringify(reviews))}
+        posts={JSON.parse(JSON.stringify(posts))}
+        comments={JSON.parse(JSON.stringify(comments))}
+      />
       <LogoutButton />
-      <DeleteUserButton />
+      {/*<DeleteUserButton />*/}
     </main>
   );
 }

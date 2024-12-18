@@ -62,7 +62,6 @@ export const DELETE = async (request: NextRequest) => {
 
         const user = (await User.findById(post.user_id).exec()) as IUser;
         user.posts.splice(user.posts.indexOf(post.id), 1);
-        user.markModified("posts");
         await user.save();
 
         await Post.findByIdAndDelete(post.id).exec();
@@ -80,9 +79,7 @@ export const DELETE = async (request: NextRequest) => {
         const song = (await Song.findOne({
           spotify_id: review.song_id,
         }).exec()) as ISong;
-        console.log(song);
         song.reviews.splice(song.reviews.indexOf(review.id), 1);
-        song.markModified("reviews");
         await song.save();
 
         await Review.findByIdAndDelete(review.id).exec();
@@ -102,7 +99,6 @@ export const DELETE = async (request: NextRequest) => {
           const message = (await Message.findById(id).exec()) as IMessage;
           const sender = (await User.findById(message.user_id).exec()) as IUser;
           sender.messages.splice(sender.messages.indexOf(id), 1);
-          sender.markModified("messages");
           await sender.save();
 
           await Message.findByIdAndDelete(id).exec();
