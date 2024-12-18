@@ -53,7 +53,7 @@ export default function ProfileSections(props: ProfileSectionProps) {
           <div className="flex flex-col">
             {props.reviews.map((review) => {
               return (
-                <Link key={review.id} href={`/song/${review.song_id}`}>
+                <Link key={review.id} href={`/songs/${review.song_id}`}>
                   {review.text}
                 </Link>
               );

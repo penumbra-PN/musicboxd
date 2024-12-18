@@ -55,7 +55,7 @@ export default async function HomePage() {
             {popularSongs.map((song) => {
               return (
                 <li className="p-2 w-full" key={song.id}>
-                  <a className="text-lg" href={`/song/${song.id}`}>
+                  <a className="text-lg" href={`/songs/${song.spotify_id}`}>
                     {song.name}
                   </a>
                 </li>
@@ -71,7 +71,7 @@ export default async function HomePage() {
             {recentlyListened.map((song) => {
               return (
                 <li className="p-2 w-full" key={song.id}>
-                  <a className="text-lg" href={`/song/${song.id}`}>
+                  <a className="text-lg" href={`/songs/${song.spotify_id}`}>
                     {song.name}
                   </a>
                 </li>
@@ -103,7 +103,7 @@ export default async function HomePage() {
                       {recentlyListened.map((song) => {
                         return (
                           <li className="p-2 w-full" key={song.id}>
-                            <a className="text-lg" href={`/song/${song.id}`}>
+                            <a className="text-lg" href={`/songs/${song.spotify_id}`}>
                               {song.name}
                             </a>
                           </li>
