@@ -37,7 +37,7 @@ export default function SendFriendRequestButton(props: SendFriendRequestButtonPr
   };
 
   return (
-    <button className="w-fit rounded border border-solid border-black p-2" onClick={() => sendFriendRequest()}>
+    <button className="flex inset-0 items-center justify-center relative w-fit rounded-3xl border border-solid border-black p-2 bg-spotify-green text-spotify-black font-bold" onClick={() => sendFriendRequest()}>
       Send Friend Request
     </button>
   );

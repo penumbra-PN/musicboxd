@@ -46,7 +46,7 @@ export default function DeleteUserButton() {
       className="absolute bottom-0 left-0 w-fit rounded-3xl border-2 border-solid border-red-600 p-2 m-4 text-spotify-white bg-red-600 font-bold"
       onClick={() => handleDelete()}
     >
-      Delete
+      Delete Account
     </button>
   );
 }

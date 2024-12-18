@@ -39,8 +39,8 @@ export default async function ProfilePage({ params }: { params: { id: string } }
     }).exec()) as IChannel;
 
     return (
-      <main className="flex min-h-screen w-screen flex-col items-center justify-center gap-y-4 bg-spotify-black text-spotify-white">
-        <h1 className="text-4xl text-spotify-green">{user.username}&#39;s Profile</h1>
+      <main className="flex min-h-screen w-screen flex-col items-center p-16 gap-y-4 bg-spotify-black text-spotify-white">
+        <h1 className="text-4xl text-spotify-green font-bold">{user.username}&#39;s Profile</h1>
         <p>{user.bio}</p>
         {user.friends.includes(sessionUser.id) ? (
           channel ? (
@@ -88,7 +88,7 @@ export default async function ProfilePage({ params }: { params: { id: string } }
     <main className="flex min-h-screen w-screen flex-col items-center p-16 gap-y-4 relative bg-spotify-black text-spotify-white">
       <Link className="absolute top-0 left-0 w-fit border border-solid border-black p-2 m-4 rounded-3xl bg-spotify-green text-spotify-black" href="/home">Home</Link>
       <Link className="absolute top-0 right-24 w-fit border border-solid border-black p-2 m-4 rounded-3xl bg-spotify-green text-spotify-black" href={`/profile/${sessionUser.id}/edit`}>Edit</Link>
-        <h1 className="text-4xl">{sessionUser.username}&#39;s Profile</h1>
+        <h1 className="text-4xl text-spotify-green font-bold">{sessionUser.username}&#39;s Profile</h1>
         <p className="text-lg">{sessionUser.bio}</p>
         <ProfileSections
           friends={JSON.parse(JSON.stringify(friends))}
