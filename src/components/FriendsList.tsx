@@ -98,27 +98,31 @@ export default function FriendsList(props: FriendsListProps) {
   };
 
   return (
-    <div className="flex flex-col gap-y-6">
+    <div className="flex flex-col gap-y-6 inset-0 items-center justify-center relative p-10">
+      <h2 className="flex self-center text-xl font-bold">Send a Friend Request</h2>
       <form className="flex items-center justify-between gap-x-2" onSubmit={(e) => sendFriendRequest(e)}>
-        <label htmlFor="username">Send Friend Request:</label>
-        <input className="grow border border-solid border-black p-2" type="text" name="username" ref={input} />
-        <button className="w-fit border border-solid border-black p-2 bg-spotify-green text-spotify-black" type="submit">
+        <label htmlFor="username">Enter Username:</label>
+        <input className="grow border border-solid rounded border-black p-2 bg-textbox-gray text-spotify-black" type="text" name="username" ref={input} />
+        <button className="w-fit rounded-3xl border border-solid border-black p-2 font-bold hover:bg-spotify-white bg-spotify-green text-spotify-black" type="submit">
           Send
         </button>
       </form>
+      <br></br>
+      <h2 className="flex self-center text-xl font-bold">Friends</h2>
       <ul className="flex flex-col gap-y-4">
         {friends.map((e) => {
           return (
-            <li className="flex grow items-center justify-between" key={e.friend._id as string}>
-              <Link className="hover:underline" href={`/profile/${e.friend._id}`}>
+            <li className="items-center justify-center self-center" key={e.friend._id as string}>
+              <Link className="flex items-center justify-center hover:text-spotify-green hover:underline" href={`/profile/${e.friend._id}`}>
                 {e.friend.username}
               </Link>
+              <br></br>
               <div className="flex gap-x-2">
-                <a className="w-fit border border-solid border-black p-2" href={`/channel/${e.channelId}`}>
+                <a className="w-fit rounded-3xl border border-solid border-black p-2 hover:bg-spotify-white bg-spotify-green text-spotify-black font-bold" href={`/channel/${e.channelId}`}>
                   Message
                 </a>
                 <button
-                  className="w-fit border border-solid border-black p-2"
+                  className="w-fit rounded-3xl border border-solid border-red-600 p-2 hover:bg-spotify-white hover:text-red-600 bg-red-600 text-spotify-white font-bold"
                   onClick={() => removeFriend(e.friend._id as string)}
                 >
                   Remove

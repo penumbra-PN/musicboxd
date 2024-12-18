@@ -19,7 +19,7 @@ export default async function EditProfilePage() {
 
   return (
     <main className="flex min-h-screen w-screen flex-col items-center justify-center gap-y-4 bg-spotify-black text-spotify-white">
-      <Link href={`/profile/${sessionUser.id}`} className="text-spotify-green">Back</Link>
+      <Link href={`/profile/${sessionUser.id}`} className="absolute top-0 left-0 p-4 hover:text-spotify-green hover:underline">Back</Link>
       <EditProfileForm username={sessionUser.username} bio={sessionUser.bio} />
     </main>
   );

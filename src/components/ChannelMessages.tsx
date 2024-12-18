@@ -57,26 +57,27 @@ export default function ChannelMessages(props: ChannelMessagesProps) {
   };
 
   return (
-    <div className="flex h-full w-full flex-col">
-      <div className="grow overflow-x-hidden overflow-y-scroll p-2">
+    <div className="flex h-full w-full flex-col bg-spotify-black text-spotify-white">
+      <div className="grow overflow-x-hidden overflow-y-scroll p-2 bg-spotify-black text-spotify-white">
         {messages.map((message) => {
           return (
-            <div key={message.id}>
-              <div className="flex gap-x-2">
+            <div className="bg-spotify-black text-spotify-white" key={message.id}>
+              <div className="flex gap-x-4">
                 <Link className="hover:underline" href={`/profile/${message.ownerId}`}>
-                  <strong>{message.ownerUsername}</strong>
+                  <strong className="text-spotify-green italic">{message.ownerUsername}</strong>
                 </Link>
-                <span>{new Date(message.createdAt).toLocaleDateString()}</span>
+                <span className="">{new Date(message.createdAt).toLocaleDateString()}</span>
               </div>
               <p>{message.text}</p>
+              <br></br>
             </div>
           );
         })}
         <div ref={bottomRef} className="clear-both"></div>
       </div>
       <form className="flex w-full" onSubmit={(e) => send(e)}>
-        <input className="grow border border-solid border-black p-2" type="text" ref={inputRef} />
-        <button className="w-fit border border-solid border-black p-2" type="submit">
+        <input className="grow border border-solid border-black p-2 bg-textbox-gray text-spotify-black" type="text" ref={inputRef} />
+        <button className="w-fit border border-solid border-black p-2 hover:bg-spotify-white font-bold bg-spotify-green text-spotify-black" type="submit">
           Send
         </button>
       </form>

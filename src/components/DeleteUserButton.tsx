@@ -43,10 +43,10 @@ export default function DeleteUserButton() {
 
   return (
     <button
-      className="absolute bottom-0 left-0 w-fit border border-solid border-red-600 p-2 m-4 text-red-600"
+      className="absolute bottom-0 left-0 w-fit rounded-3xl border-2 border-solid hover:bg-spotify-white hover:text-red-600 border-red-600 p-2 m-4 text-spotify-white bg-red-600 font-bold"
       onClick={() => handleDelete()}
     >
-      Delete
+      Delete Account
     </button>
   );
 }

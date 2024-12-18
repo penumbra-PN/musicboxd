@@ -27,6 +27,10 @@ export default function SinglePost(props: PostProps) {
   const [username] = useState<string>(props.user);
   const [comments, setComments] = useState<IComment[]>(props.comments);
   const [commentUsernames, setCommentUsernames] = useState<string[]>(props.commentUsernames);
+  const [likeColor, setLikeColor] = useState<string>("text-spotify-white");
+  const [dislikeColor, setDislikeColor] = useState<string>("text-spotify-white");
+  //const [commentLikeColors, setCommentLikeColors] = useState<string[]>();
+  //const [commentDislikeColors, setCommentDislikeColors] = useState<string[]>();
 
   const {
     register,
@@ -96,6 +100,10 @@ export default function SinglePost(props: PostProps) {
         toast.error(data.error);
       } else {
         setPost(data.post);
+        if (data.post.likes.includes(data.post.user_id))
+          setLikeColor("text-spotify-green");
+        else
+          setLikeColor("text-spotify-white");
       }
     } catch (error) {
       console.log(error);
@@ -120,6 +128,11 @@ export default function SinglePost(props: PostProps) {
         toast.error(data.error);
       } else {
         setPost(data.post);
+        console.log(data.post);
+        if (data.post.dislikes.includes(data.post.user_id))
+          setDislikeColor("text-red-600");
+        else
+          setDislikeColor("text-spotify-white");
       }
     } catch (error) {
       console.log(error);
@@ -194,26 +207,26 @@ export default function SinglePost(props: PostProps) {
   };
 
   return (
-    <div className="flex flex-col gap-y-4">
+    <div className="flex flex-col gap-y-4 text-spotify-white">
       <div className="space-y-6">
-        <h3 className="mt-5 text-2xl font-semibold text-pink-400">{post.title}</h3>
+        <h3 className="mt-5 text-4xl font-bold text-spotify-green">{post.title}</h3>
         <p className="text-gray mt-2">{post.text}</p>
         <div className="mt-3 flex gap-x-8 text-sm">
-          <Link href={`/profile/${post.user_id}`}>
+          <Link href={`/profile/${post.user_id}`} className="hover:text-spotify-green hover:underline">
             <p>@{username}</p>
           </Link>
-          <button onClick={() => handleLikes()}>&#x25B2; {post.likes.length}</button>
-          <button onClick={() => handleDislikes()}>&#x25BC; {post.dislikes.length}</button>
+          <button className={likeColor} onClick={() => handleLikes()}>&#x25B2; {post.likes.length}</button>
+          <button className={dislikeColor} onClick={() => handleDislikes()}>&#x25BC; {post.dislikes.length}</button>
         </div>
         <br />
-        <p>Comments</p>
+        <p className="text-2xl font-bold text-spotify-green">Comments</p>
         <ul>
           {comments &&
             comments.map((comment, index) => (
               <li key={index} className="mb-10">
                 <p>{comment.text}</p>
                 <div className="mt-3 flex gap-x-8 text-sm">
-                  <Link href={`/profile/${comment.user_id}`}>
+                  <Link href={`/profile/${comment.user_id}`} className="hover:text-spotify-green hover:underline">
                     <p>@{commentUsernames[index]}</p>
                   </Link>
                   <button onClick={() => handleCommentLikes(comment._id as string)}>
@@ -229,13 +242,13 @@ export default function SinglePost(props: PostProps) {
         <form className="flex flex-col gap-y-4" onSubmit={handleSubmit(createComment)}>
           <div className="flex flex-col gap-y-2">
             <label htmlFor="text">
-              <strong>Leave a Comment:</strong>
+              <strong className="text-spotify-green">Leave a Comment:</strong>
             </label>
-            <textarea className="grow border border-solid border-black p-2" {...register("text")} />
+            <textarea className="grow border border-solid rounded border-black p-2 bg-textbox-gray text-spotify-black" {...register("text")} />
             {errors.text && <span className="text-red-600">{errors.text.message}</span>}
           </div>
           {errors.root && <span className="text-red-600">{errors.root?.message}</span>}
-          <button className="w-fit self-center border border-solid border-black p-2" type="submit">
+          <button className="w-fit rounded-3xl self-center border border-solid hover:bg-spotify-white font-bold border-black p-2 bg-spotify-green text-spotify-black" type="submit">
             Submit
           </button>
         </form>

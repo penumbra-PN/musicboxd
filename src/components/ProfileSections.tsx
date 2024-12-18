@@ -50,39 +50,50 @@ export default function ProfileSections(props: ProfileSectionProps) {
         );
       case ProfileSection.REVIEWS:
         return (
-          <div className="flex flex-col">
+          <div className="flex flex-col inset-0 items-center justify-center relative p-10">
             {props.reviews.map((review) => {
               return (
-                <Link key={review.id} href={`/songs/${review.song_id}`}>
-                  {review.text}
-                </Link>
+                <>
+                  <br></br>
+                  <Link key={review.id} className="hover:text-spotify-green hover:underline" href={`/songs/${review.song_id}`}>
+                    {review.text}
+                  </Link>
+                </>
               );
             })}
           </div>
         );
       case ProfileSection.POSTS:
         return (
-          <div className="flex flex-col">
-            <Link className="w-fit border border-solid border-black p-2" href="/posts/create">
+          <div className="flex flex-col inset-0 items-center justify-center relative p-10">
+            <Link className="relative w-fit self-center rounded-3xl border border-solid hover:bg-spotify-white font-bold border-black p-2 bg-spotify-green text-spotify-black" href="/posts/create">
               Create A Post
             </Link>
+            <br></br>
+            <h2 className="text-spotify-green text-3xl font-bold underline">Posts</h2>
             {props.posts.map((post) => {
               return (
-                <Link key={post.id} href={`/posts/${post._id}`}>
-                  {post.title}
-                </Link>
+                <>
+                  <br></br>
+                  <Link className="hover:text-spotify-green hover:underline" key={post.id} href={`/posts/${post._id}`}>
+                    {post.title}
+                  </Link>
+                </>
               );
             })}
           </div>
         );
       case ProfileSection.COMMENTS:
         return (
-          <div className="flex flex-col">
+          <div className="flex flex-col inset-0 items-center justify-center relative p-10">
             {props.comments.map((comment) => {
               return (
-                <Link key={comment.id} href={`/posts/${comment.post_id}`}>
-                  {comment.text}
-                </Link>
+                <>
+                  <br></br>
+                  <Link className="hover:text-spotify-green hover:underline" key={comment.id} href={`/posts/${comment.post_id}`}>
+                    {comment.text}
+                  </Link>
+                </>
               );
             })}
           </div>

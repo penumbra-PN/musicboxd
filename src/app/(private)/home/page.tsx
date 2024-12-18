@@ -52,9 +52,9 @@ export default async function HomePage() {
             <strong>Popular Songs</strong>
           </h2>
           <ul className="flex flex-col w-full">
-            {popularSongs.map((song, i) => {
+            {popularSongs.map((song) => {
               return (
-                <li className="p-2 w-full" key={song.id + i}>
+                <li className="p-2 w-full" key={song.id}>
                   <a className="text-lg" href={`/songs/${song.spotify_id}`}>
                     {song.name}
                   </a>
@@ -68,9 +68,9 @@ export default async function HomePage() {
             <strong>Recently Listened</strong>
           </h2>
           <ul className="flex flex-col w-full">
-            {recentlyListened.map((song, i) => {
+            {recentlyListened.map((song) => {
               return (
-                <li className="p-2 w-full" key={song.id + i}>
+                <li className="p-2 w-full" key={song.id}>
                   <a className="text-lg" href={`/songs/${song.spotify_id}`}>
                     {song.name}
                   </a>
@@ -85,7 +85,7 @@ export default async function HomePage() {
           </h2>
           <ul className="flex flex-col w-full">
             {await Promise.all(
-              friends.map(async (friend, i) => {
+              friends.map(async (friend) => {
                 const recentlyListened = (await Promise.all(
                   friend.recently_listened.map(async (song_id) => {
                     return (await Song.findById(song_id).exec()) as ISong;
@@ -97,12 +97,12 @@ export default async function HomePage() {
                 }
 
                 return (
-                  <li className="p-2 w-full" key={friend.id + i}>
+                  <li className="p-2 w-full" key={friend.id}>
                     <p className="text-xl underline">{friend.username}</p>
                     <ul className="flex flex-col w-full">
-                      {recentlyListened.map((song, i) => {
+                      {recentlyListened.map((song) => {
                         return (
-                          <li className="p-2 w-full" key={song.id + i}>
+                          <li className="p-2 w-full" key={song.id}>
                             <a className="text-lg" href={`/songs/${song.spotify_id}`}>
                               {song.name}
                             </a>

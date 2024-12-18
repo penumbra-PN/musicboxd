@@ -32,7 +32,7 @@ export default function LogoutButton() {
   };
 
   return (
-    <button className="w-fit border border-solid border-black p-2 bg-spotify-green text-spotify-black" onClick={handleLogout}>
+    <button className="absolute top-0 right-0 p-2 m-4 w-fit rounded-3xl font-bold border border-solid hover:bg-spotify-white border-black bg-spotify-green text-spotify-black" onClick={handleLogout}>
       Log Out
     </button>
   );

@@ -38,7 +38,7 @@ export default function DeletePostButton(props: PostProps) {
 
   return (
     <button
-      className="fixed bottom-0 left-0 w-fit border border-solid border-red-600 p-2 m-4 text-red-600"
+      className="fixed bottom-0 left-0 w-fit rounded-3xl border border-solid hover:bg-spotify-white hover:text-red-600 border-red-600 p-2 m-4 text-spotify-white bg-red-600 font-bold"
       onClick={() => handleDelete()}
     >
       Delete
