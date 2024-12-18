@@ -1,31 +1,30 @@
 import { NextResponse } from "next/server";
-import mongoose from "mongoose";
-import User from "@/lib/models/user"; 
-import Song from "@/lib/models/song";
+
 import dotenv from "dotenv";
+
+// import mongoose from "mongoose";
+import Song from "@/lib/models/song";
+import User from "@/lib/models/user";
 
 dotenv.config();
 
-const connectToDatabase = async () => {
-  if (!mongoose.connection.readyState) {
-    await mongoose.connect(process.env.MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-  }
-};
+// const connectToDatabase = async () => {
+//   if (!mongoose.connection.readyState) {
+//     await mongoose.connect(process.env.MONGODB_URI, {
+//       useNewUrlParser: true,
+//       useUnifiedTopology: true,
+//     });
+//   }
+// };
 
 export const POST = async (request: Request) => {
   try {
-    await connectToDatabase();
+    // await connectToDatabase();
 
     const { userId, song } = await request.json();
 
     if (!userId || !song) {
-      return NextResponse.json(
-        { error: "Missing userId or song in request body" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Missing userId or song in request body" }, { status: 400 });
     }
 
     let dbSong = await Song.findOne({ spotify_id: song.id });
@@ -50,9 +49,9 @@ export const POST = async (request: Request) => {
     const alreadyInList = user.recently_listened.includes(dbSong.spotify_id);
 
     if (!alreadyInList) {
-      user.recently_listened.unshift(dbSong.id); 
+      user.recently_listened.unshift(dbSong.id);
       if (user.recently_listened.length > 20) {
-        user.recently_listened.pop(); 
+        user.recently_listened.pop();
       }
       await user.save();
     }
@@ -60,25 +59,19 @@ export const POST = async (request: Request) => {
     return NextResponse.json({ message: "Song added to recently listened" });
   } catch (error) {
     console.error("Error adding to recently listened:", error);
-    return NextResponse.json(
-      { error: "Failed to add to recently listened" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Failed to add to recently listened" }, { status: 500 });
   }
 };
 
 export const GET = async (request: Request) => {
   try {
-    await connectToDatabase();
+    // await connectToDatabase();
 
     const { searchParams } = new URL(request.url);
     const userId = searchParams.get("userId");
 
     if (!userId) {
-      return NextResponse.json(
-        { error: "Missing userId in query parameters" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Missing userId in query parameters" }, { status: 400 });
     }
 
     const user = await User.findById(userId);
@@ -91,9 +84,6 @@ export const GET = async (request: Request) => {
     return NextResponse.json({ recently_listened: songs });
   } catch (error) {
     console.error("Error retrieving recently listened songs:", error);
-    return NextResponse.json(
-      { error: "Failed to retrieve recently listened songs" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Failed to retrieve recently listened songs" }, { status: 500 });
   }
 };
