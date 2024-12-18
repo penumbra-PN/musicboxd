@@ -41,6 +41,10 @@ io.on("connection", (socket) => {
   });
 });
 
+app.get("/", (req, res) => {
+  res.send("Server up.");
+});
+
 httpServer.listen(8080, () => {
   if (DEVELOPMENT) {
     console.log(`Socket server listening on port 8080`);
