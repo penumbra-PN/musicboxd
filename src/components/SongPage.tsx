@@ -2,6 +2,8 @@
 
 import React, { useEffect, useState } from "react";
 
+import Link from "next/link";
+
 import { Song } from "@/components/SongsSearch";
 
 export type Review = {
@@ -21,8 +23,6 @@ export type Review = {
         email?: undefined;
       };
 };
-import React, { useState, useEffect } from "react";
-import Link from "next/link";
 
 const SongPage = ({ id, session }: { id: string; session: any }) => {
   const [song, setSong] = useState<null | Song>(null);
@@ -141,103 +141,22 @@ const SongPage = ({ id, session }: { id: string; session: any }) => {
   if (loading) return <div className="bg-spotify-black text-spotify-white">Loading...</div>;
   if (error) return <div className="bg-spotify-black text-red-600">Error: {error}</div>;
 
-  return song && (
-    <main className="flex min-h-screen w-screen flex-col items-center p-8 bg-spotify-black text-spotify-white">
-      <Link className="absolute top-0 left-0 p-4 hover:text-spotify-green hover:underline" href="/songs">Back</Link>
-      <h1 className="text-4xl font-bold text-spotify-green">{song.name}</h1>
-      <img src={song.image} alt={`${song.name} album cover`} className="w-64 h-64 my-4" />
-      <p>
-        <strong className="text-spotify-green">Artists:</strong> {song.artists.join(", ")}
-      </p>
-      <p>
-        <strong className="text-spotify-green">Album:</strong> {song.album}
-      </p>
-      <p>
-        <strong className="text-spotify-green">Release Date:</strong> {song.release_date}
-      </p>
-      {song.preview_url ? (
-        <audio controls className="mt-4">
-          <source src={song.preview_url} type="audio/mpeg" />
-          Your browser does not support the audio element.
-        </audio>
-      ) : (
-        <p>No preview available.</p>
-      )}
-      <button
-        onClick={handleAddToRecentlyListened}
-        className="mt-4 px-4 py-2 bg-spotify-green text-spotify-black rounded-3xl font-bold hover:bg-spotify-white"
-      >
-        Add to Recently Listened
-      </button>
-      {addToRecentlyListenedError && (
-        <p className="text-red-500 mt-2">{addToRecentlyListenedError}</p>
-      )}
-      <h2 className="mt-8 text-2xl text-spotify-green font-bold">Reviews</h2>
-      <div className="flex flex-row w-full max-w-2xl items-center justify-center">
-        {reviews.length > 0 ? (
-          reviews.map((review) => (
-            <div key={review.id} className="border-b py-4">
-              <p>
-                <strong className="text-spotify-green">{review.user?.name || "Unknown User"}</strong> ({review.rating}/5): {review.text}
-              </p>
-            </div>
-          ))
-        ) : (
-          <p><br></br>No reviews yet. Be the first to leave a review!</p>
-        )}
-      </div>
-      {session && (
-        <div className="flex flex-col items-center justify-center mt-6 w-1/4 max-w-2xl relative">
-          <h3 className="text-xl font-bold self-center justify-center text-spotify-green">Leave a Review</h3>
-          <textarea
-            value={newReview.text}
-            onChange={(e) => setNewReview({ ...newReview, text: e.target.value })}
-            placeholder="Write your review (max 250 characters)"
-            className="w-full p-2 rounded mt-2 bg-textbox-gray text-spotify-black placeholder-gray-600"
-            maxLength={250}
-          />
-          <br></br>
-          <div className="mt-2">
-            <label htmlFor="rating" className="mr-2">
-              Rating:
-            </label>
-            <input
-              type="number"
-              id="rating"
-              value={newReview.rating}
-              onChange={(e) => setNewReview({ ...newReview, rating: parseFloat(e.target.value) })}
-              min="0"
-              max="5"
-              step="0.5"
-              className="w-16 p-1 rounded bg-textbox-gray text-spotify-black"
-            />
-          </div>
-          <br></br>
-          <button
-            onClick={handleReviewSubmit}
-            className="mt-4 px-4 py-2 bg-spotify-green text-spotify-black font-bold rounded-3xl hover:bg-spotify-white"
-          >
-            Submit Review
-          </button>
-          {reviewError && <p className="text-red-500 mt-2">{reviewError}</p>}
-        </div>
-      )}
-    </main>
+  return (
     song && (
-      <main className="flex min-h-screen w-screen flex-col items-center p-8 relative">
-        <a className="hover:underline text-xl absolute top-0 left-0 m-4" href="/home">
-          Home
-        </a>
-        <h1 className="text-4xl font-bold">{song.name}</h1>
+      <main className="flex min-h-screen w-screen flex-col items-center p-8 bg-spotify-black text-spotify-white">
+        <Link className="absolute top-0 left-0 p-4 hover:text-spotify-green hover:underline" href="/songs">
+          Back
+        </Link>
+        <h1 className="text-4xl font-bold text-spotify-green">{song.name}</h1>
         <img src={song.image} alt={`${song.name} album cover`} className="w-64 h-64 my-4" />
         <p>
-          <strong>Artists:</strong> {song.artists.join(", ")}
+          <strong className="text-spotify-green">Artists:</strong> {song.artists.join(", ")}
         </p>
         <p>
-          <strong>Album:</strong> {song.album}
+          <strong className="text-spotify-green">Album:</strong> {song.album}
         </p>
         <p>
-          <strong>Release Date:</strong> {song.release_date}
+          <strong className="text-spotify-green">Release Date:</strong> {song.release_date}
         </p>
         {song.preview_url ? (
           <audio controls className="mt-4">
@@ -247,35 +166,42 @@ const SongPage = ({ id, session }: { id: string; session: any }) => {
         ) : (
           <p>No preview available.</p>
         )}
-        <button onClick={handleAddToRecentlyListened} className="mt-4 px-4 py-2 bg-blue-500 text-white rounded">
+        <button
+          onClick={handleAddToRecentlyListened}
+          className="mt-4 px-4 py-2 bg-spotify-green text-spotify-black rounded-3xl font-bold hover:bg-spotify-white"
+        >
           Add to Recently Listened
         </button>
         {addToRecentlyListenedError && <p className="text-red-500 mt-2">{addToRecentlyListenedError}</p>}
-        <h2 className="mt-8 text-2xl font-bold">Reviews</h2>
-        <div className="w-full max-w-2xl">
+        <h2 className="mt-8 text-2xl text-spotify-green font-bold">Reviews</h2>
+        <div className="flex flex-row w-full max-w-2xl items-center justify-center">
           {reviews.length > 0 ? (
             reviews.map((review) => (
               <div key={review.id} className="border-b py-4">
                 <p>
-                  <strong>{review.user?.name || "Unknown User"}</strong> ({review.rating}/5): {review.text}
+                  <strong className="text-spotify-green">{review.user?.name || "Unknown User"}</strong> ({review.rating}
+                  /5): {review.text}
                 </p>
               </div>
             ))
           ) : (
-            <p>No reviews yet. Be the first to leave a review!</p>
+            <p>
+              <br></br>No reviews yet. Be the first to leave a review!
+            </p>
           )}
         </div>
         {session && (
-          <div className="mt-6 w-full max-w-2xl">
-            <h3 className="text-xl font-bold">Leave a Review</h3>
+          <div className="flex flex-col items-center justify-center mt-6 w-1/4 max-w-2xl relative">
+            <h3 className="text-xl font-bold self-center justify-center text-spotify-green">Leave a Review</h3>
             <textarea
               value={newReview.text}
               onChange={(e) => setNewReview({ ...newReview, text: e.target.value })}
               placeholder="Write your review (max 250 characters)"
-              className="w-full p-2 border rounded mt-2"
+              className="w-full p-2 rounded mt-2 bg-textbox-gray text-spotify-black placeholder-gray-600"
               maxLength={250}
             />
-            <div className="flex items-center mt-2">
+            <br></br>
+            <div className="mt-2">
               <label htmlFor="rating" className="mr-2">
                 Rating:
               </label>
@@ -287,10 +213,14 @@ const SongPage = ({ id, session }: { id: string; session: any }) => {
                 min="0"
                 max="5"
                 step="0.5"
-                className="w-16 p-1 border rounded"
+                className="w-16 p-1 rounded bg-textbox-gray text-spotify-black"
               />
             </div>
-            <button onClick={handleReviewSubmit} className="mt-4 px-4 py-2 bg-blue-500 text-white rounded">
+            <br></br>
+            <button
+              onClick={handleReviewSubmit}
+              className="mt-4 px-4 py-2 bg-spotify-green text-spotify-black font-bold rounded-3xl hover:bg-spotify-white"
+            >
               Submit Review
             </button>
             {reviewError && <p className="text-red-500 mt-2">{reviewError}</p>}
