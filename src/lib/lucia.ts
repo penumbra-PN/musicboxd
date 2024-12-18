@@ -14,9 +14,11 @@ import User, { type IUser } from "@/lib/models/user";
 connectDatabase().then();
 
 export const auth = lucia({
-  env: process.env.NODE_ENV === "development" ? "DEV" : "PROD",
+  env: "DEV",
   middleware: nextjs_future(),
-  sessionCookie: { expires: false },
+  sessionCookie: {
+    expires: false,
+  },
   adapter: mongoose({ User, Key, Session }),
   getUserAttributes: (user: IUser) => {
     return {
