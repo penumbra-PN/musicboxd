@@ -1,3 +1,5 @@
+import React from "react";
+
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 
@@ -39,12 +41,12 @@ export default async function PostPage() {
     }
 
     return (
-      <main className="flex min-h-screen w-screen flex-col items-center justify-center gap-y-4">
+      <main className="flex min-h-screen w-screen flex-col items-center justify-center gap-y-4 relative">
+        <a className="hover:underline text-xl absolute top-0 left-0 m-4" href="/home">
+          Home
+        </a>
         <h1 className="text-4xl">Forum Page</h1>
-        <Link
-          className="fixed top-0 left-0 mt-5 ml-4 p-2 w-fit border border-solid border-black p-2"
-          href="/posts/create"
-        >
+        <Link className="fixed top-0 right-0 mt-5 m-4 p-2 w-fit border border-solid border-black" href="/posts/create">
           Create A Post
         </Link>
         <ForumPage posts={allPosts} usernames={usernames} />

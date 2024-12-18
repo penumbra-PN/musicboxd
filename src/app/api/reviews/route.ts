@@ -1,9 +1,11 @@
 import { NextResponse } from "next/server";
 
+import { v4 as uuid } from "uuid";
+
 // import mongoose from "mongoose";
 import Review from "@/lib/models/review";
 import Song, { type ISong } from "@/lib/models/song";
-import User from "@/lib/models/user";
+import User, { IUser } from "@/lib/models/user";
 
 // const connectDB = async () => {
 //   if (mongoose.connection.readyState === 0) {
@@ -68,12 +70,22 @@ export const POST = async (request: Request) => {
     // await connectDB();
 
     const newReview = new Review({
-      _id: new mongoose.Types.ObjectId().toString(),
+      _id: uuid(),
       song_id,
       user_id,
       text,
       rating,
     });
+
+    const reviewObj = JSON.parse(JSON.stringify(newReview));
+
+    const user = (await User.findById(user_id).exec()) as IUser;
+    reviewObj.id = newReview.id;
+    reviewObj.user = {
+      id: user.id,
+      name: user.username,
+      email: user.email,
+    };
 
     await newReview.save();
 
@@ -91,7 +103,7 @@ export const POST = async (request: Request) => {
 
     return NextResponse.json({
       success: true,
-      review: newReview,
+      review: reviewObj,
       updatedSong,
       updatedUser,
     });

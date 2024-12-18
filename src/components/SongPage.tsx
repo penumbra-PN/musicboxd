@@ -141,7 +141,10 @@ const SongPage = ({ id, session }: { id: string; session: any }) => {
 
   return (
     song && (
-      <main className="flex min-h-screen w-screen flex-col items-center p-8">
+      <main className="flex min-h-screen w-screen flex-col items-center p-8 relative">
+        <a className="hover:underline text-xl absolute top-0 left-0 m-4" href="/home">
+          Home
+        </a>
         <h1 className="text-4xl font-bold">{song.name}</h1>
         <img src={song.image} alt={`${song.name} album cover`} className="w-64 h-64 my-4" />
         <p>

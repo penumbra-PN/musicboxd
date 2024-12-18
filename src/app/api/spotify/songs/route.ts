@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import dotenv from "dotenv";
 // import mongoose from "mongoose";
 import SpotifyWebApi from "spotify-web-api-node";
+import { v4 as uuid } from "uuid";
 
 import Song from "@/lib/models/song";
 
@@ -76,7 +77,13 @@ export const POST = async (request: Request) => {
     }
 
     // Create and save the new song
-    const newSong = new Song({ name, artist, album, spotify_id });
+    const newSong = new Song({
+      _id: uuid(),
+      name,
+      artist,
+      album,
+      spotify_id,
+    });
     await newSong.save();
 
     return NextResponse.json({ message: "Song saved successfully" });

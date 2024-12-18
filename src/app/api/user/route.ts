@@ -77,7 +77,9 @@ export const DELETE = async (request: NextRequest) => {
     }).exec()) as IReview[];
     await Promise.all(
       reviews.map(async (review) => {
-        const song = (await Song.findById(review.song_id).exec()) as ISong;
+        const song = (await Song.findOne({
+          spotify_id: review.song_id,
+        }).exec()) as ISong;
         song.reviews.splice(song.reviews.indexOf(review.id), 1);
         song.markModified("reviews");
         await song.save();
