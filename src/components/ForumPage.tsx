@@ -16,8 +16,8 @@ type PostProps = {
 export default function Posts(props: PostProps) {
   const [posts, setPosts] = useState<IPost[]>(props.posts);
   const [usernames] = useState<string[]>(props.usernames);
-  const [likeColor, setLikeColor] = useState<string>("text-spotify-white");
-  const [dislikeColor, setDislikeColor] = useState<string>("text-spotify-white");
+  // const [likeColor, setLikeColor] = useState<string>("text-spotify-white");
+  // const [dislikeColor, setDislikeColor] = useState<string>("text-spotify-white");
 
   const handleLikes = async (postId: string) => {
     try {
