@@ -63,7 +63,7 @@ export default function ProfileSections(props: ProfileSectionProps) {
       case ProfileSection.POSTS:
         return (
           <div className="flex flex-col">
-            <Link className="w-fit rounded-3xl border border-solid border-black p-2 bg-spotify-green text-spotify-black" href="/posts/create">
+            <Link className="relative w-fit self-center rounded-3xl border border-solid border-black p-2 bg-spotify-green text-spotify-black" href="/posts/create">
               Create A Post
             </Link>
             {props.posts.map((post) => {
@@ -83,9 +83,12 @@ export default function ProfileSections(props: ProfileSectionProps) {
           <div className="flex flex-col">
             {props.comments.map((comment) => {
               return (
-                <Link key={comment.id} href={`/posts/${comment.post_id}`}>
-                  {comment.text}
-                </Link>
+                <>
+                  <br></br>
+                  <Link className="hover:text-spotify-green hover:underline" key={comment.id} href={`/posts/${comment.post_id}`}>
+                    {comment.text}
+                  </Link>
+                </>
               );
             })}
           </div>

@@ -85,9 +85,9 @@ export default async function ProfilePage({ params }: { params: { id: string } }
   );
 
   return (
-    <main className="flex min-h-screen w-screen flex-col items-center justify-center gap-y-4 relative">
-      <Link className="absolute top-0 left-0 w-fit border border-solid border-black p-2 m-4" href="/home">Home</Link>
-      <Link href={`/profile/${sessionUser.id}/edit`}>Edit</Link>
+    <main className="flex min-h-screen w-screen flex-col items-center justify-center gap-y-4 relative bg-spotify-black text-spotify-white">
+      <Link className="absolute top-0 left-0 w-fit border border-solid border-black p-2 m-4 rounded-3xl bg-spotify-green text-spotify-black" href="/home">Home</Link>
+      <Link className="absolute top-0 right-0 w-fit border border-solid border-black p-2 m-4 rounded-3xl bg-spotify-green text-spotify-black" href={`/profile/${sessionUser.id}/edit`}>Edit</Link>
       <h1 className="text-4xl">{sessionUser.username}&#39;s Profile</h1>
       <p>{sessionUser.bio}</p>
       <ProfileSections

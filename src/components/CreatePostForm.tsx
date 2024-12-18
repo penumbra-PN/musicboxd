@@ -47,14 +47,14 @@ export default function CreatePostForm() {
         <label htmlFor="title">
           <strong>Title:</strong>
         </label>
-        <input className="grow border border-solid border-black p-2 bg-textbox-gray" type="text" {...register("title")} />
+        <input className="grow border border-solid border-black p-2 bg-textbox-gray text-spotify-black" type="text" {...register("title")} />
         {errors.title && <span className="text-red-600">{errors.title.message}</span>}
       </div>
       <div className="flex flex-col gap-y-2">
         <label htmlFor="text">
           <strong>Text:</strong>
         </label>
-        <textarea className="grow border border-solid border-black p-2 bg-textbox-gray" {...register("text")} />
+        <textarea className="grow border border-solid border-black p-2 bg-textbox-gray text-spotify-black" {...register("text")} />
         {errors.text && <span className="text-red-600">{errors.text.message}</span>}
       </div>
       {errors.root && <span className="text-red-600">{errors.root?.message}</span>}

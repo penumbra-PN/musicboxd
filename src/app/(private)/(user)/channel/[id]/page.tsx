@@ -37,7 +37,7 @@ export default async function ChannelPage({ params }: { params: { id: string } }
   );
 
   return (
-    <main className="flex grow flex-col items-center justify-center gap-y-4">
+    <main className="flex grow flex-col items-center justify-center gap-y-4 bg-spotify-black text-spotify-white">
       <ChannelMessages
         userId={sessionUser.id}
         username={sessionUser.username}

@@ -32,23 +32,23 @@ export default async function HomePage() {
   )) as IUser[];
 
   return (
-    <main className="flex min-h-screen w-screen flex-col">
-      <nav className="w-screen h-fit p-4 flex justify-between">
-        <Link className="hover:underline text-xl" href={`/profile/${sessionUser.id}`}>
+    <main className="flex min-h-screen w-screen flex-col bg-spotify-black text-spotify-white">
+      <nav className="w-screen h-fit p-4 flex justify-between shadow-md">
+        <Link className="hover:underline hover:text-spotify-green text-xl" href={`/profile/${sessionUser.id}`}>
           Go to Profile
         </Link>
-        <div className="flex gap-x-2">
-          <Link className="hover:underline text-xl" href="/songs">
+        <div className="flex gap-x-5 pr-4">
+          <Link className="hover:underline hover:text-spotify-green text-xl" href="/songs">
             Search Songs
           </Link>
-          <Link className="hover:underline text-xl" href="/posts">
+          <Link className="hover:underline hover:text-spotify-green text-xl" href="/posts">
             Search Posts
           </Link>
         </div>
       </nav>
       <div className="flex min-h-screen w-screen">
         <div className="grow flex flex-col p-4 border-solid border-r border-black items-center">
-          <h2 className="text-2xl">
+          <h2 className="text-2xl text-spotify-green underline">
             <strong>Popular Songs</strong>
           </h2>
           <ul className="flex flex-col w-full">
@@ -64,7 +64,7 @@ export default async function HomePage() {
           </ul>
         </div>
         <div className="grow flex flex-col p-4 border-solid border-r border-black items-center">
-          <h2 className="text-2xl">
+          <h2 className="text-2xl text-spotify-green underline">
             <strong>Recently Listened</strong>
           </h2>
           <ul className="flex flex-col w-full">
@@ -80,7 +80,7 @@ export default async function HomePage() {
           </ul>
         </div>
         <div className="grow flex flex-col p-4 items-center">
-          <h2 className="text-2xl">
+          <h2 className="text-2xl text-spotify-green underline">
             <strong>Friend Activities</strong>
           </h2>
           <ul className="flex flex-col w-full">
