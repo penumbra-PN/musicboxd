@@ -10,6 +10,91 @@ import Message from "@/lib/models/message";
 import Session from "@/lib/models/session";
 import { v4 as uuid } from "uuid";
 import { auth } from "@/lib/lucia";
+ import https from "https";
+
+ const SPOTIFY_CLIENT_ID = process.env.CLIENT_ID;
+const SPOTIFY_CLIENT_SECRET = process.env.CLIENT_SECRET;
+
+function getSpotifyAccessToken() {
+  return new Promise((resolve, reject) => {
+    const data = new URLSearchParams({
+      grant_type: "client_credentials",
+      client_id: SPOTIFY_CLIENT_ID,
+      client_secret: SPOTIFY_CLIENT_SECRET,
+    }).toString();
+
+    const options = {
+      hostname: "accounts.spotify.com",
+      path: "/api/token",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Content-Length": data.length,
+      },
+    };
+
+    const req = https.request(options, (res) => {
+      let body = "";
+      res.on("data", (chunk) => {
+        body += chunk;
+      });
+
+      res.on("end", () => {
+        if (res.statusCode === 200) {
+          resolve(JSON.parse(body).access_token);
+        } else {
+          reject(new Error(`Failed to get access token: ${res.statusCode}`));
+        }
+      });
+    });
+
+    req.on("error", reject);
+    req.write(data);
+    req.end();
+  });
+}
+
+function getSpotifySongs(accessToken) {
+  return new Promise((resolve, reject) => {
+    const options = {
+      hostname: "api.spotify.com",
+      path: "/v1/playlists/4cHO5iUskNinEMC3xl8I6Y",
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    };
+
+    const req = https.request(options, (res) => {
+      let body = "";
+      res.on("data", (chunk) => {
+        body += chunk;
+      });
+
+      res.on("end", () => {
+        if (res.statusCode === 200) {
+          const data = JSON.parse(body);
+          const songs = data.tracks.items.map((item) => {
+            const track = item.track;
+            return {
+              spotify_id: track.id, // Spotify ID
+              name: track.name, // Track name
+              artist: track.artists.map((artist) => artist.name).join(", "), // Artists
+              album: track.album.name, // Album name
+            };
+          });
+          resolve(songs);
+        } else {
+          reject(new Error(`Failed to get songs: ${res.statusCode}`));
+        }
+      });
+    });
+
+    req.on("error", reject);
+    req.end();
+  });
+}
+
 
 
 export default async function seed() {
@@ -269,6 +354,54 @@ export default async function seed() {
       $push: { comments: newComment._id },
     }).exec();
     await newPost.save();
+
+    const accessToken = await getSpotifyAccessToken();
+    const songs = await getSpotifySongs(accessToken);
+
+    // Add songs to the database
+    for (const song of songs) {
+      await Song.create({
+        _id: uuid(),
+        spotify_id: song.spotify_id,
+        name: song.name,
+        artist: song.artist,
+        album: song.album,
+        reviews: [],
+      });
+    }
+
+    //Adding reviews
+    for (const song of songs) {
+      // Review 1
+      const review1 = await Review.create({
+        _id: uuid(),
+        song_id: song.spotify_id,
+        user_id: createdUserList[1].userId,
+        rating: 4, // Example rating
+        text: `Great song! Really enjoyed listening to "${song.name}" by ${song.artist}.`,
+        created_at: new Date(),
+        updated_at: "",
+      });
+      await review1.save();
+
+      await Song.findByIdAndUpdate(song._id, { $push: { reviews: review1._id } });
+      await User.findByIdAndUpdate(createdUserList[1].userId, { $push: { reviews: review1._id } });
+
+      // Review 2
+      const review2 = await Review.create({
+        _id: uuid(),
+        song_id: song.spotify_id,
+        user_id: createdUserList[2].userId,
+        rating: 5, // Example rating
+        text: `Absolutely love this track! "${song.name}" is fantastic.`,
+        created_at: new Date(),
+        updated_at: "",
+      });
+      await review2.save();
+
+      await Song.findByIdAndUpdate(song._id, { $push: { reviews: review2._id } });
+      await User.findByIdAndUpdate(createdUserList[2].userId, { $push: { reviews: review2._id } });
+    }
   
     /**
     // ADD FRIENDS
