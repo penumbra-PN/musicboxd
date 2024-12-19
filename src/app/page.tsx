@@ -2,7 +2,7 @@ import Header from "@/components/Header";
 
 import seed from "../../seed.js";
 
-// seed();
+//seed();
 
 export default async function HomePage() {
   return (
