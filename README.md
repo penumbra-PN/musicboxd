@@ -22,3 +22,6 @@ to seed the database.
 
 Run `docker compose up --build` to start running the NextJS application, socket server, and MongoDB containers
 simultaneously. After that, everything should work like if you were developing locally.
+
+## AWS
+http://34.238.240.55:3000/
